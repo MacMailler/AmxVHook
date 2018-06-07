@@ -1,0 +1,44 @@
+#pragma once
+
+#include "amxvhook.hpp"
+
+namespace AmxVHook {
+	struct Mod {
+		AMX * amx;
+		boost::filesystem::path path;
+	};
+
+	class Pool : boost::noncopyable {
+	private:
+		std::map<std::string, Mod> pool;
+		std::list<AMX_NATIVE_INFO *> natives;
+		std::string location;
+
+		cell loadAmx(AMX * amx, char * path, const char * name);
+
+	public:
+		Pool();
+		~Pool();
+		
+		void make();
+		void clear();
+		void remake();
+
+		bool find(std::string & name);
+		size_t size();
+
+		cell loadMod(boost::filesystem::path path);
+		bool unloadMod(std::string & name);
+		bool reloadMod(std::string & name);
+
+		void setLocation(std::string dir);
+		void setNatives(std::list<AMX_NATIVE_INFO *> n);
+
+		cell exec(AMX * amx, const char * funcname);
+		cell execAll(const char * funcname);
+		//void calback(const char * funcname, const char * format, ...);
+
+		void onModInputText(char *text);
+		void onModInputCommand(std::string cmd, cell params);
+	};
+};

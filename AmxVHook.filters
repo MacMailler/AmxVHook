@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\sdk">
+      <UniqueIdentifier>{85116ba2-6370-4290-ba46-ac71be1003ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\amx">
+      <UniqueIdentifier>{0c846def-9e07-43f5-8eeb-8368183fd418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\amx">
+      <UniqueIdentifier>{e5361c89-c968-41d4-a5ed-a37be6717126}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\vamx.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdk\enums.h">
+      <Filter>Header Files\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdk\main.h">
+      <Filter>Header Files\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdk\nativeCaller.h">
+      <Filter>Header Files\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdk\natives.h">
+      <Filter>Header Files\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdk\types.h">
+      <Filter>Header Files\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\keyboard.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\amx.h">
+      <Filter>Header Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\amx_internal.h">
+      <Filter>Header Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\amx_opcodes.h">
+      <Filter>Header Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\amxaux.h">
+      <Filter>Header Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\osdefs.h">
+      <Filter>Header Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pool.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\natives.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\string.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\amx_ptrarray.h">
+      <Filter>Header Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\amxcons.h">
+      <Filter>Header Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\funcs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\vamx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amx.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amx_exec.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amx_verifier.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amxaux.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amxcore.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\natives.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\string.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amxstring.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\float.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amxcons.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\funcs.cpp">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
