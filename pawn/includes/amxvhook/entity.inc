@@ -25,7 +25,7 @@ native isEntityDamagedByEntity(entity, target);
 native isEntityCollidedWithAnything(entity);*/
 
 native getEntityModel(entity);
-native getEntityHealth(entity);
+native Float:getEntityHealth(entity);
 native getEntityMaxHealth(entity);
 native Float:getEntitySpeed(entity);
 native Float:getEntityPitch(entity);

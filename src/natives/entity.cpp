@@ -145,7 +145,9 @@ namespace AmxVHook {
 				if (!arguments(1))
 					return 0;
 
-				return ENTITY::GET_ENTITY_HEALTH((::Entity)params[1]);
+				auto addr = getScriptHandleBaseAddress(params[1]);
+
+				return amx_ftoc(*(float *)(addr + 0x280));
 			}
 
 			AMX_NATIVE(getEntityMaxHealth) {
