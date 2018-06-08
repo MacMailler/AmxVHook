@@ -17,7 +17,7 @@ for (int i = 0; i < count; i++)\
 		vec[i] = Funcs::cellArrayToVector3(addr[i]); \
 	} \
 
-#include "natives\_core.hpp"
+#include "natives\core.hpp"
 #include "natives\blip.hpp"
 #include "natives\player.hpp"
 #include "natives\ped.hpp"

@@ -35,7 +35,7 @@
     <ClInclude Include="src\natives\camera.hpp" />
     <ClInclude Include="src\natives\checkpoint.hpp" />
     <ClInclude Include="src\natives\entity.hpp" />
-    <ClInclude Include="src\natives\_core.hpp" />
+    <ClInclude Include="src\natives\core.hpp" />
     <ClInclude Include="src\natives\gameplay.hpp" />
     <ClInclude Include="src\natives\graphics.hpp" />
     <ClInclude Include="src\natives\input.hpp" />
@@ -64,7 +64,7 @@
     <ClCompile Include="src\natives\camera.cpp" />
     <ClCompile Include="src\natives\checkpoint.cpp" />
     <ClCompile Include="src\natives\entity.cpp" />
-    <ClCompile Include="src\natives\_core.cpp" />
+    <ClCompile Include="src\natives\core.cpp" />
     <ClCompile Include="src\natives\gameplay.cpp" />
     <ClCompile Include="src\natives\graphics.cpp" />
     <ClCompile Include="src\natives\input.cpp" />
@@ -160,6 +160,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>AMX_USE_NEW_AMXEXEC;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -178,6 +179,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>AMX_USE_NEW_AMXEXEC;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -198,6 +200,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>AMX_USE_NEW_AMXEXEC;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -220,6 +223,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>AMX_USE_NEW_AMXEXEC;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

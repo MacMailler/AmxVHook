@@ -1,4 +1,4 @@
-#include "_core.hpp"
+#include "core.hpp"
 
 namespace AmxVHook {
 

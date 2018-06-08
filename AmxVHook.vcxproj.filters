@@ -93,13 +93,13 @@
     <ClInclude Include="src\natives\blip.hpp">
       <Filter>Headers Files\natives</Filter>
     </ClInclude>
-    <ClInclude Include="src\natives\_core.hpp">
-      <Filter>Headers Files\natives</Filter>
-    </ClInclude>
     <ClInclude Include="src\natives\entity.hpp">
       <Filter>Headers Files\natives</Filter>
     </ClInclude>
     <ClInclude Include="src\natives\camera.hpp">
+      <Filter>Headers Files\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\natives\core.hpp">
       <Filter>Headers Files\natives</Filter>
     </ClInclude>
   </ItemGroup>
@@ -176,13 +176,13 @@
     <ClCompile Include="src\core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\natives\_core.cpp">
-      <Filter>Source Files\natives</Filter>
-    </ClCompile>
     <ClCompile Include="src\natives\entity.cpp">
       <Filter>Source Files\natives</Filter>
     </ClCompile>
     <ClCompile Include="src\natives\camera.cpp">
+      <Filter>Source Files\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\natives\core.cpp">
       <Filter>Source Files\natives</Filter>
     </ClCompile>
   </ItemGroup>
