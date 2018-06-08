@@ -1,6 +1,5 @@
 #include "keyboard.hpp"
 
-
 namespace AmxVHook {
 
 	extern boost::shared_ptr<Pool> gPool;
@@ -105,7 +104,7 @@ namespace AmxVHook {
 									gPool->loadMod(params[i]);
 						}
 						else {
-							gPool->onModInputCommand(params[0], static_cast<cell>(params.size()) - 1);
+							gPool->onModInputCommand((char *)params[0].c_str(), static_cast<cell>(params.size()) - 1);
 						}
 					}
 					else {

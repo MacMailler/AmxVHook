@@ -1,6 +1,5 @@
 #include "core.hpp"
 
-
 namespace AmxVHook {
 
 	extern boost::shared_ptr<Pool> gPool;

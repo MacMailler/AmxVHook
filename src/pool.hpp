@@ -35,9 +35,8 @@ namespace AmxVHook {
 
 		cell exec(AMX * amx, const char * funcname);
 		cell execAll(const char * funcname);
-		//void calback(const char * funcname, const char * format, ...);
 
-		void onModInputText(char *text);
-		void onModInputCommand(std::string cmd, cell params);
+		void onModInputText(char * text);
+		void onModInputCommand(char * cmd, cell params);
 	};
 };

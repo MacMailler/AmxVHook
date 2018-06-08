@@ -1,6 +1,5 @@
 #include "funcs.hpp"
 
-
 namespace AmxVHook {
 	namespace Funcs {
 		int showNotify(std::string text, BOOL blink, BOOL showInBrief) {

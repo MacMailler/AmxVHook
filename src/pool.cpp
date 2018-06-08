@@ -48,6 +48,35 @@ namespace AmxVHook {
 		gDebug->log("Loaded %d mods!", pool.size());
 	}
 
+	cell Pool::loadAmx(AMX * amx, char * path, const char * name) {
+		cell err = AMX_ERR_NONE;
+
+		gDebug->log("Loading mod '%s'...", name);
+
+		if ((err = aux_LoadProgram(amx, path, NULL)) == AMX_ERR_NONE) {
+			amx_CoreInit(amx);
+			amx_FloatInit(amx);
+			amx_StringInit(amx);
+
+			for (const auto& list : natives)
+				err = amx_Register(amx, list, -1);
+
+			if (err == AMX_ERR_NONE) {
+				int num;
+				amx_NumNatives(amx, &num);
+				gDebug->log("Mod '%s' loaded! Registred natives: %d", name, num);
+				this->exec(amx, "onModLoad");
+			}
+			else {
+				gDebug->log("Failed to load '%s' mod! %s", name, aux_StrError(err));
+				aux_FreeProgram(amx);
+			}
+		}
+		else gDebug->log("Failed to load '%s' mod. %s!", name, aux_StrError(err));
+
+		return err;
+	}
+
 	void Pool::clear() {
 		for (const auto& i : pool) {
 			amx_StringCleanup(i.second.amx);
@@ -84,35 +113,6 @@ namespace AmxVHook {
 		err = this->loadAmx(mod.amx, (char *)path.string().c_str(), path.filename().string().c_str());
 		if (err == AMX_ERR_NONE)
 			pool.insert({ path.stem().string(), mod });
-
-		return err;
-	}
-	
-	cell Pool::loadAmx(AMX * amx, char * path, const char * name) {
-		cell err = AMX_ERR_NONE;
-
-		gDebug->log("Loading mod '%s'...", name);
-
-		if ((err = aux_LoadProgram(amx, path, NULL)) == AMX_ERR_NONE) {
-			amx_CoreInit(amx);
-			amx_FloatInit(amx);
-			amx_StringInit(amx);
-
-			for (const auto& list : natives)
-				err = amx_Register(amx, list, -1);
-
-			if (err == AMX_ERR_NONE) {
-				int num;
-				amx_NumNatives(amx, &num);
-				gDebug->log("Mod '%s' loaded! Registred natives: %d", name, num);
-				this->exec(amx, "onModLoad");
-			}
-			else {
-				gDebug->log("Failed to load '%s' mod! %s", name, aux_StrError(err));
-				aux_FreeProgram(amx);
-			}
-		}
-		else gDebug->log("Failed to load '%s' mod. %s!", name, aux_StrError(err));
 
 		return err;
 	}
@@ -166,6 +166,15 @@ namespace AmxVHook {
 		this->natives = n;
 	}
 
+	cell Pool::exec(AMX * amx, const char * funcname) {
+		cell ret;
+		int index;
+		if (amx_FindPublic(amx, funcname, &index) == AMX_ERR_NONE)
+			amx_Exec(amx, &ret, index);
+
+		return ret;
+	}
+
 	cell Pool::execAll(const char * funcname) {
 		cell count = 0;
 		for (const auto& i : pool) {
@@ -179,26 +188,6 @@ namespace AmxVHook {
 		return count;
 	}
 
-	cell Pool::exec(AMX * amx, const char * funcname) {
-		cell ret;
-		int index;
-		if (amx_FindPublic(amx, funcname, &index) == AMX_ERR_NONE)
-			amx_Exec(amx, &ret, index);
-
-		return ret;
-	}
-	 
-	/*void Pool::callback(std::string name, const char *f, ...) {
-		for (const auto& i : pool) {
-			int index;
-			cell ret, amx_addr, *phys_addr;
-			
-			if (amx_FindPublic(i.second.amx, name.c_str(), &index) == AMX_ERR_NONE) {
-				// ...
-			}
-		}
-	}*/
-
 	void Pool::onModInputText(char *text) {
 		for (const auto& i : pool) {
 			int index;
@@ -211,13 +200,13 @@ namespace AmxVHook {
 		}
 	}
 
-	void Pool::onModInputCommand(std::string cmd, cell params) {
+	void Pool::onModInputCommand(char * cmd, cell params) {
 		for (const auto& i : pool) {
 			int index;
 			cell ret, amx_addr, *phys_addr;
 			if (amx_FindPublic(i.second.amx, "onModInputCommand", &index) == AMX_ERR_NONE) {
 				amx_Push(i.second.amx, params);
-				amx_PushString(i.second.amx, &amx_addr, &phys_addr, cmd.c_str(), 0, 0);
+				amx_PushString(i.second.amx, &amx_addr, &phys_addr, cmd, 0, 0);
 				amx_Exec(i.second.amx, &ret, index);
 				amx_Release(i.second.amx, amx_addr);
 

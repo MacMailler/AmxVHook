@@ -1,7 +1,5 @@
 #pragma once
-
 #include "amxvhook.hpp"
-
 
 namespace AmxVHook {
 	namespace Keyboard {

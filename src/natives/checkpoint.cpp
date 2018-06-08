@@ -3,7 +3,6 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Checkpoint {
-
 			AMX_NATIVE_INFO list[] = {
 				AMX_DEFINE_NATIVE(createCP)
 				AMX_DEFINE_NATIVE(setCPScale)

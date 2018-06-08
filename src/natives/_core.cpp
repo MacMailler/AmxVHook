@@ -1,8 +1,10 @@
 #include "_core.hpp"
 
 namespace AmxVHook {
+
 	extern boost::shared_ptr<Debug> gDebug;
 	extern boost::shared_ptr<Pool> gPool;
+
 	namespace Natives {
 		namespace Core {
 			AMX_NATIVE_INFO list[] = {

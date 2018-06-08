@@ -3,7 +3,6 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Blip {
-
 			AMX_NATIVE_INFO list[] = {
 				AMX_DEFINE_NATIVE(addBlip)
 				AMX_DEFINE_NATIVE(setBlipPos)

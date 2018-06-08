@@ -1,7 +1,9 @@
 #include "graphics.hpp"
 
 namespace AmxVHook {
+
 	extern boost::shared_ptr<Debug> gDebug;
+
 	namespace Natives {
 		namespace Graphics {
 			AMX_NATIVE_INFO list[] = {

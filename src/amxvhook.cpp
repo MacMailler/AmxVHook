@@ -1,6 +1,5 @@
 #include "amxvhook.hpp"
 
-
 BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved) {
 	switch (reason) {
 		case DLL_PROCESS_ATTACH :

@@ -1,6 +1,5 @@
 #include "debug.hpp"
 
-
 namespace AmxVHook {
 
 	boost::shared_ptr<Debug> gDebug;
