@@ -141,7 +141,7 @@ namespace AmxVHook {
 	bool Pool::reloadMod(std::string & name) {
 		gDebug->log("Unloading mod '%s.amx'...", name.c_str());
 	
-		std::map<std::string, Mod>::iterator i = pool.find(name);
+		std::unordered_map<std::string, Mod>::iterator i = pool.find(name);
 		if (!i->first.empty()) {
 			this->exec(i->second.amx, "onModUnload");
 

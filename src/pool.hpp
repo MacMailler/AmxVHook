@@ -1,5 +1,4 @@
 #pragma once
-
 #include "amxvhook.hpp"
 
 namespace AmxVHook {
@@ -10,7 +9,7 @@ namespace AmxVHook {
 
 	class Pool : boost::noncopyable {
 	private:
-		std::map<std::string, Mod> pool;
+		std::unordered_map<std::string, Mod> pool;
 		std::list<AMX_NATIVE_INFO *> natives;
 		std::string location;
 

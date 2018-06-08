@@ -7,12 +7,10 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
-#include <map>
-#include <list>
 #include <queue>
 #include <string>
+#include <unordered_map>
 
-#include <boost\scoped_ptr.hpp>
 #include <boost\filesystem.hpp>
 #include <boost\thread\thread.hpp>
 #include <boost\thread\mutex.hpp>
