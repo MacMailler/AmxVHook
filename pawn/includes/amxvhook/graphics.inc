@@ -39,13 +39,21 @@ enum eMarkers {
 	MARKER_WOLFHEAD = 31
 };
 
+enum eFonts {
+	FONT_NORMAL = 0,
+	FONT_IMPACT = 4,
+	FONT_ITALIC = 1,
+	FONT_PRICEDOWN = 7,
+	FONT_CAPS = 2
+};
+
 native world3DToScreen2D(Float:coords[@Vector3], &Float:sx, &Float:sy);
 
 native getScreenSize(&width, &height);
 native Float:getSafeZoneSize();
 native bool:isWidescreen();
 
-native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = 0, color[@RGBA] = {255,255,255,255});
+native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color[@RGBA] = {255,255,255,255});
 native drawRect(Float:x, Float:y, Float:width, Float:height, color[@RGBA] = {255,255,255,255});
 native drawMarker(type, Float:pos[@Vector3], Float:dir[@Vector3]={0,...}, Float:rot[@Vector3]={0,...}, Float:scale[@Vector3]={1,...}, color[@RGBA]={255,255,255,255}, bool:bobUpAndDown = false, bool:fadeCamera = false, bool:drawOnEnts = false);
 native drawSprite(const textureDict[], const textureName[], Float:x, Float:y, Float:width, Float:height, Float:heading = 0.0, color[@RGBA]={255,255,255,255});
