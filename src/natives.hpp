@@ -2,8 +2,8 @@
 #include "amxvhook.hpp"
 
 #define arguments(a) !(params[0] != (a << 2))
-#define AMX_NATIVE(native) cell AMX_NATIVE_CALL native(AMX *amx, const cell *params)
-#define AMX_DEFINE_NATIVE(native) {#native, native},
+#define MOD_NATIVE(native) cell AMX_NATIVE_CALL native(AMX *amx, const cell *params)
+#define MOD_DEFINE_NATIVE(native) {#native, native},
 
 #define amxGetAddresses(amx,params,addr,start,count)\
 for (int i = 0; i < count; i++)\

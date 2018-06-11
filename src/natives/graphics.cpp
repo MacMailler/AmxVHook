@@ -7,22 +7,22 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Graphics {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(drawRect)
-				AMX_DEFINE_NATIVE(drawText)
-				AMX_DEFINE_NATIVE(drawMarker)
-				AMX_DEFINE_NATIVE(setUILayer)
-				AMX_DEFINE_NATIVE(setDrawPosition)
-				AMX_DEFINE_NATIVE(setDrawPositionRatio)
-				AMX_DEFINE_NATIVE(setDrawPositionEnd)
-				AMX_DEFINE_NATIVE(getSafeZoneSize)
-				AMX_DEFINE_NATIVE(isWidescreen)
-				AMX_DEFINE_NATIVE(getScreenSize)
-				AMX_DEFINE_NATIVE(world3DToScreen2D)
+				MOD_DEFINE_NATIVE(drawRect)
+				MOD_DEFINE_NATIVE(drawText)
+				MOD_DEFINE_NATIVE(drawMarker)
+				MOD_DEFINE_NATIVE(setUILayer)
+				MOD_DEFINE_NATIVE(setDrawPosition)
+				MOD_DEFINE_NATIVE(setDrawPositionRatio)
+				MOD_DEFINE_NATIVE(setDrawPositionEnd)
+				MOD_DEFINE_NATIVE(getSafeZoneSize)
+				MOD_DEFINE_NATIVE(isWidescreen)
+				MOD_DEFINE_NATIVE(getScreenSize)
+				MOD_DEFINE_NATIVE(world3DToScreen2D)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(getScreenSize) {
+			MOD_NATIVE(getScreenSize) {
 				if (!arguments(2))
 					return 0;
 
@@ -40,7 +40,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(world3DToScreen2D) {
+			MOD_NATIVE(world3DToScreen2D) {
 				if (!arguments(3))
 					return 0;
 
@@ -59,7 +59,7 @@ namespace AmxVHook {
 				return ret;
 			}
 
-			AMX_NATIVE(drawText) {
+			MOD_NATIVE(drawText) {
 				if (!arguments(6))
 					return 0;
 
@@ -81,7 +81,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(drawRect) {
+			MOD_NATIVE(drawRect) {
 				if (!arguments(5))
 					return 0;
 
@@ -93,7 +93,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(drawMarker) {
+			MOD_NATIVE(drawMarker) {
 				if (!arguments(9))
 					return 0;
 
@@ -119,7 +119,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(drawSprite) {
+			MOD_NATIVE(drawSprite) {
 				if (!arguments(8))
 					return 0;
 
@@ -139,7 +139,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setUILayer) {
+			MOD_NATIVE(setUILayer) {
 				if (!arguments(1))
 					return 0;
 
@@ -148,7 +148,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setDrawPosition) {
+			MOD_NATIVE(setDrawPosition) {
 				if (!arguments(2))
 					return 0;
 
@@ -157,7 +157,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setDrawPositionRatio) {
+			MOD_NATIVE(setDrawPositionRatio) {
 				if (!arguments(4))
 					return 0;
 
@@ -166,19 +166,19 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setDrawPositionEnd) {
+			MOD_NATIVE(setDrawPositionEnd) {
 				GRAPHICS::_0xE3A3DB414A373DAB();
 
 				return 1;
 			}
 
-			AMX_NATIVE(getSafeZoneSize) {
+			MOD_NATIVE(getSafeZoneSize) {
 				float size = GRAPHICS::GET_SAFE_ZONE_SIZE();
 
 				return amx_ftoc(size);
 			}
 
-			AMX_NATIVE(isWidescreen) {
+			MOD_NATIVE(isWidescreen) {
 				return GRAPHICS::GET_IS_WIDESCREEN();
 			}
 		};

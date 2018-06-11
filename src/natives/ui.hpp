@@ -4,14 +4,14 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace UI {
-			AMX_NATIVE(showNotify);
-			AMX_NATIVE(showSubtitle);
-			AMX_NATIVE(setHudVisible);
-			AMX_NATIVE(setRadarVisible);
-			AMX_NATIVE(setRadarZoom);
-			AMX_NATIVE(isHudComponentActive);
-			AMX_NATIVE(hideHudAndRadar);
-			AMX_NATIVE(hideHudAndRadarThisFrame);
+			MOD_NATIVE(showNotify);
+			MOD_NATIVE(showSubtitle);
+			MOD_NATIVE(setHudVisible);
+			MOD_NATIVE(setRadarVisible);
+			MOD_NATIVE(setRadarZoom);
+			MOD_NATIVE(isHudComponentActive);
+			MOD_NATIVE(hideHudAndRadar);
+			MOD_NATIVE(hideHudAndRadarThisFrame);
 
 			AMX_NATIVE_INFO list[];
 		};

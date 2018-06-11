@@ -4,31 +4,31 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Gameplay {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(isMissionFlag)
-				AMX_DEFINE_NATIVE(setWind)
-				AMX_DEFINE_NATIVE(setWindSpeed)
-				AMX_DEFINE_NATIVE(getWindSpeed)
-				AMX_DEFINE_NATIVE(setWindDirection)
-				AMX_DEFINE_NATIVE(getWindDirection)
-				AMX_DEFINE_NATIVE(setRainIntensity)
-				AMX_DEFINE_NATIVE(createLightningThunder)
-				AMX_DEFINE_NATIVE(getGameTimer)
-				AMX_DEFINE_NATIVE(getFrameTime)
-				AMX_DEFINE_NATIVE(getFrameCount)
-				AMX_DEFINE_NATIVE(getHashKey)
-				AMX_DEFINE_NATIVE(getDistanceBetweenPos)
-				AMX_DEFINE_NATIVE(setPoliceRadarBlips)
-				AMX_DEFINE_NATIVE(setPoliceIgnorePlayer)
-				AMX_DEFINE_NATIVE(setEveryoneIgnorePlayer)
+				MOD_DEFINE_NATIVE(isMissionFlag)
+				MOD_DEFINE_NATIVE(setWind)
+				MOD_DEFINE_NATIVE(setWindSpeed)
+				MOD_DEFINE_NATIVE(getWindSpeed)
+				MOD_DEFINE_NATIVE(setWindDirection)
+				MOD_DEFINE_NATIVE(getWindDirection)
+				MOD_DEFINE_NATIVE(setRainIntensity)
+				MOD_DEFINE_NATIVE(createLightningThunder)
+				MOD_DEFINE_NATIVE(getGameTimer)
+				MOD_DEFINE_NATIVE(getFrameTime)
+				MOD_DEFINE_NATIVE(getFrameCount)
+				MOD_DEFINE_NATIVE(getHashKey)
+				MOD_DEFINE_NATIVE(getDistanceBetweenPos)
+				MOD_DEFINE_NATIVE(setPoliceRadarBlips)
+				MOD_DEFINE_NATIVE(setPoliceIgnorePlayer)
+				MOD_DEFINE_NATIVE(setEveryoneIgnorePlayer)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(isMissionFlag) {
+			MOD_NATIVE(isMissionFlag) {
 				return GAMEPLAY::GET_MISSION_FLAG();
 			}
 
-			AMX_NATIVE(setWind) {
+			MOD_NATIVE(setWind) {
 				if (!arguments(1))
 					return 0;
 
@@ -37,7 +37,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setWindSpeed) {
+			MOD_NATIVE(setWindSpeed) {
 				if (!arguments(1))
 					return 0;
 
@@ -46,7 +46,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setWindDirection) {
+			MOD_NATIVE(setWindDirection) {
 				if (!arguments(1))
 					return 0;
 
@@ -55,17 +55,17 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getWindSpeed) {
+			MOD_NATIVE(getWindSpeed) {
 				float speed = GAMEPLAY::GET_WIND_SPEED();
 				return amx_ftoc(speed);
 			}
 
-			AMX_NATIVE(getWindDirection) {
+			MOD_NATIVE(getWindDirection) {
 				float speed = GAMEPLAY::GET_WIND_SPEED();
 				return amx_ftoc(speed);
 			}
 
-			AMX_NATIVE(setRainIntensity) {
+			MOD_NATIVE(setRainIntensity) {
 				if (!arguments(1))
 					return 0;
 
@@ -74,32 +74,32 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(createLightningThunder) {
+			MOD_NATIVE(createLightningThunder) {
 				GAMEPLAY::_CREATE_LIGHTNING_THUNDER();
 				return 1;
 			}
 
-			AMX_NATIVE(getGameTimer) {
+			MOD_NATIVE(getGameTimer) {
 				return GAMEPLAY::GET_GAME_TIMER();
 			}
 
-			AMX_NATIVE(getFrameTime) {
+			MOD_NATIVE(getFrameTime) {
 				float time = GAMEPLAY::GET_FRAME_TIME();
 				return amx_ftoc(time);
 			}
 
-			AMX_NATIVE(getFrameCount) {
+			MOD_NATIVE(getFrameCount) {
 				return GAMEPLAY::GET_FRAME_COUNT();
 			}
 
-			AMX_NATIVE(getHashKey) {
+			MOD_NATIVE(getHashKey) {
 				if (!arguments(1))
 					return 0;
 
 				return GAMEPLAY::GET_HASH_KEY((char *)String::get(amx, params[1]).c_str());
 			}
 
-			AMX_NATIVE(getDistanceBetweenPos) {
+			MOD_NATIVE(getDistanceBetweenPos) {
 				if (!arguments(3))
 					return 0;
 
@@ -117,7 +117,7 @@ namespace AmxVHook {
 				return amx_ftoc(dist);
 			}
 
-			AMX_NATIVE(setPoliceRadarBlips) {
+			MOD_NATIVE(setPoliceRadarBlips) {
 				if (!arguments(1))
 					return 0;
 
@@ -126,7 +126,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setPoliceIgnorePlayer) {
+			MOD_NATIVE(setPoliceIgnorePlayer) {
 				if (!arguments(1))
 					return 0;
 
@@ -135,7 +135,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setEveryoneIgnorePlayer) {
+			MOD_NATIVE(setEveryoneIgnorePlayer) {
 				if (!arguments(1))
 					return 0;
 

@@ -4,25 +4,25 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Input {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(isKeyDown)
-				AMX_DEFINE_NATIVE(isKeyJustUp)
-				AMX_DEFINE_NATIVE(resetKeyState)
-				AMX_DEFINE_NATIVE(getCommandParams)
-				AMX_DEFINE_NATIVE(getCommandParamsInt)
-				AMX_DEFINE_NATIVE(getCommandParamsFloat)
-				AMX_DEFINE_NATIVE(displayOnScreeKeyboard)
+				MOD_DEFINE_NATIVE(isKeyDown)
+				MOD_DEFINE_NATIVE(isKeyJustUp)
+				MOD_DEFINE_NATIVE(resetKeyState)
+				MOD_DEFINE_NATIVE(getCommandParams)
+				MOD_DEFINE_NATIVE(getCommandParamsInt)
+				MOD_DEFINE_NATIVE(getCommandParamsFloat)
+				MOD_DEFINE_NATIVE(displayOnScreeKeyboard)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(isKeyDown) {
+			MOD_NATIVE(isKeyDown) {
 				if (!arguments(1))
 					return 0;
 
 				return Keyboard::isKeyDown((DWORD)params[1]);
 			}
 
-			AMX_NATIVE(isKeyJustUp) {
+			MOD_NATIVE(isKeyJustUp) {
 				if (!arguments(2))
 					return 0;
 
@@ -30,7 +30,7 @@ namespace AmxVHook {
 
 			}
 
-			AMX_NATIVE(resetKeyState) {
+			MOD_NATIVE(resetKeyState) {
 				if (!arguments(1))
 					return 0;
 
@@ -39,7 +39,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(getCommandParams) {
+			MOD_NATIVE(getCommandParams) {
 				if (!arguments(3))
 					return 0;
 
@@ -48,14 +48,14 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getCommandParamsInt) {
+			MOD_NATIVE(getCommandParamsInt) {
 				if (!arguments(1))
 					return 0;
 
 				return Keyboard::getCommandParam(params[1]);
 			}
 
-			AMX_NATIVE(getCommandParamsFloat) {
+			MOD_NATIVE(getCommandParamsFloat) {
 				if (!arguments(1))
 					return 0;
 
@@ -64,7 +64,7 @@ namespace AmxVHook {
 				return amx_ftoc(ret);
 			}
 
-			AMX_NATIVE(displayOnScreeKeyboard) {
+			MOD_NATIVE(displayOnScreeKeyboard) {
 				if (!arguments(2))
 					return 0;
 

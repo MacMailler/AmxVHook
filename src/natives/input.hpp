@@ -4,13 +4,13 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Input {
-			AMX_NATIVE(isKeyDown);
-			AMX_NATIVE(isKeyJustUp);
-			AMX_NATIVE(resetKeyState);
-			AMX_NATIVE(getCommandParams);
-			AMX_NATIVE(getCommandParamsInt);
-			AMX_NATIVE(getCommandParamsFloat);
-			AMX_NATIVE(displayOnScreeKeyboard);
+			MOD_NATIVE(isKeyDown);
+			MOD_NATIVE(isKeyJustUp);
+			MOD_NATIVE(resetKeyState);
+			MOD_NATIVE(getCommandParams);
+			MOD_NATIVE(getCommandParamsInt);
+			MOD_NATIVE(getCommandParamsFloat);
+			MOD_NATIVE(displayOnScreeKeyboard);
 		
 			AMX_NATIVE_INFO list[];
 		};

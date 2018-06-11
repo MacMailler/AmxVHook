@@ -4,19 +4,19 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Vehicle {
-			AMX_NATIVE(createVehicle);
-			AMX_NATIVE(deleteVehicle);
-			AMX_NATIVE(isVehicleModel);
-			AMX_NATIVE(isVehicleStopped);
-			AMX_NATIVE(isVehicleTaxiLightsOn);
-			AMX_NATIVE(isVehicleStuckOnRoof);
-			AMX_NATIVE(setVehicleColor);
-			AMX_NATIVE(setVehicleDoorsLocked);
-			AMX_NATIVE(setVehicleTaxiLights);
-			AMX_NATIVE(getVehiclePassengers);
-			AMX_NATIVE(getVehicleMaxPassengers);
-			AMX_NATIVE(getVehicleModelNumberOfSeats);
-			AMX_NATIVE(getDisplayNameFromVehicleModel);
+			MOD_NATIVE(createVehicle);
+			MOD_NATIVE(deleteVehicle);
+			MOD_NATIVE(isVehicleModel);
+			MOD_NATIVE(isVehicleStopped);
+			MOD_NATIVE(isVehicleTaxiLightsOn);
+			MOD_NATIVE(isVehicleStuckOnRoof);
+			MOD_NATIVE(setVehicleColor);
+			MOD_NATIVE(setVehicleDoorsLocked);
+			MOD_NATIVE(setVehicleTaxiLights);
+			MOD_NATIVE(getVehiclePassengers);
+			MOD_NATIVE(getVehicleMaxPassengers);
+			MOD_NATIVE(getVehicleModelNumberOfSeats);
+			MOD_NATIVE(getDisplayNameFromVehicleModel);
 			
 			AMX_NATIVE_INFO list[];
 		};

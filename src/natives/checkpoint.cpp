@@ -4,16 +4,16 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Checkpoint {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(createCP)
-				AMX_DEFINE_NATIVE(setCPScale)
-				AMX_DEFINE_NATIVE(setCPCylinderHeight)
-				AMX_DEFINE_NATIVE(setCPColor)
-				AMX_DEFINE_NATIVE(deleteCP)
+				MOD_DEFINE_NATIVE(createCP)
+				MOD_DEFINE_NATIVE(setCPScale)
+				MOD_DEFINE_NATIVE(setCPCylinderHeight)
+				MOD_DEFINE_NATIVE(setCPColor)
+				MOD_DEFINE_NATIVE(deleteCP)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(createCP) {
+			MOD_NATIVE(createCP) {
 				if (!arguments(8))
 					return 0;
 
@@ -34,7 +34,7 @@ namespace AmxVHook {
 				);
 			}
 
-			AMX_NATIVE(setCPScale) {
+			MOD_NATIVE(setCPScale) {
 				if (!arguments(2))
 					return 0;
 
@@ -43,7 +43,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setCPCylinderHeight) {
+			MOD_NATIVE(setCPCylinderHeight) {
 				if (!arguments(4))
 					return 0;
 				
@@ -52,7 +52,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setCPColor) {
+			MOD_NATIVE(setCPColor) {
 				if (!arguments(6))
 					return 0;
 
@@ -72,7 +72,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(deleteCP) {
+			MOD_NATIVE(deleteCP) {
 				if (!arguments(1))
 					return 0;
 				

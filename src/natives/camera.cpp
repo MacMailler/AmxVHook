@@ -4,17 +4,17 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Camera {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(getRenderingCam)
-				AMX_DEFINE_NATIVE(setCamFov)
+				MOD_DEFINE_NATIVE(getRenderingCam)
+				MOD_DEFINE_NATIVE(setCamFov)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(getRenderingCam) {
+			MOD_NATIVE(getRenderingCam) {
 				return CAM::GET_RENDERING_CAM();
 			}
 
-			AMX_NATIVE(setCamFov) {
+			MOD_NATIVE(setCamFov) {
 				if (arguments(2))
 					return 0;
 

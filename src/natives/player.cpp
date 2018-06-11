@@ -4,45 +4,45 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Player {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(getPlayerPed)
-				AMX_DEFINE_NATIVE(getPlayerName)
-				AMX_DEFINE_NATIVE(setPlayerLockOn)
-				AMX_DEFINE_NATIVE(isPlayerPlaying)
-				AMX_DEFINE_NATIVE(isPlayerDead)
-				AMX_DEFINE_NATIVE(isPlayerClimbing)
-				AMX_DEFINE_NATIVE(isPlayerBusted)
-				AMX_DEFINE_NATIVE(isPlayerRidingTrain)
-				AMX_DEFINE_NATIVE(isPlayerTargettingEntity)
-				AMX_DEFINE_NATIVE(isPlayerTargettingAnything)
-				AMX_DEFINE_NATIVE(isPlayerControlOn)
-				AMX_DEFINE_NATIVE(reportPlayerCrime)
-				AMX_DEFINE_NATIVE(setPlayerWantedLevel)
-				AMX_DEFINE_NATIVE(setPlayerWantedLevelNoDrop)
-				AMX_DEFINE_NATIVE(getPlayerWantedLevel)
-				AMX_DEFINE_NATIVE(getPlayerWantedLevelThreshold)
-				AMX_DEFINE_NATIVE(getPlayerPos)
-				AMX_DEFINE_NATIVE(getPlayerMaxArmor)
-				AMX_DEFINE_NATIVE(getPlayerStealthNoise)
-				AMX_DEFINE_NATIVE(setPlayerInvincible)
-				AMX_DEFINE_NATIVE(getPlayerInvincible)
-				AMX_DEFINE_NATIVE(getTimeSincePlayerLastArrest)
-				AMX_DEFINE_NATIVE(getTimeSincePlayerLastDeath)
-				AMX_DEFINE_NATIVE(getTimeSincePlayerHitVehicle)
-				AMX_DEFINE_NATIVE(getTimeSincePlayerHitPed)
-				AMX_DEFINE_NATIVE(getTSPlayerDroveOnPavement)
-				AMX_DEFINE_NATIVE(getTSPlayerDroveAgainstTraffic)
-				AMX_DEFINE_NATIVE(setPlayerModel)
-				AMX_DEFINE_NATIVE(setPlayerSprint)
-				AMX_DEFINE_NATIVE(setPlayerMaxArmor)
+				MOD_DEFINE_NATIVE(getPlayerPed)
+				MOD_DEFINE_NATIVE(getPlayerName)
+				MOD_DEFINE_NATIVE(setPlayerLockOn)
+				MOD_DEFINE_NATIVE(isPlayerPlaying)
+				MOD_DEFINE_NATIVE(isPlayerDead)
+				MOD_DEFINE_NATIVE(isPlayerClimbing)
+				MOD_DEFINE_NATIVE(isPlayerBusted)
+				MOD_DEFINE_NATIVE(isPlayerRidingTrain)
+				MOD_DEFINE_NATIVE(isPlayerTargettingEntity)
+				MOD_DEFINE_NATIVE(isPlayerTargettingAnything)
+				MOD_DEFINE_NATIVE(isPlayerControlOn)
+				MOD_DEFINE_NATIVE(reportPlayerCrime)
+				MOD_DEFINE_NATIVE(setPlayerWantedLevel)
+				MOD_DEFINE_NATIVE(setPlayerWantedLevelNoDrop)
+				MOD_DEFINE_NATIVE(getPlayerWantedLevel)
+				MOD_DEFINE_NATIVE(getPlayerWantedLevelThreshold)
+				MOD_DEFINE_NATIVE(getPlayerPos)
+				MOD_DEFINE_NATIVE(getPlayerMaxArmor)
+				MOD_DEFINE_NATIVE(getPlayerStealthNoise)
+				MOD_DEFINE_NATIVE(setPlayerInvincible)
+				MOD_DEFINE_NATIVE(getPlayerInvincible)
+				MOD_DEFINE_NATIVE(getTimeSincePlayerLastArrest)
+				MOD_DEFINE_NATIVE(getTimeSincePlayerLastDeath)
+				MOD_DEFINE_NATIVE(getTimeSincePlayerHitVehicle)
+				MOD_DEFINE_NATIVE(getTimeSincePlayerHitPed)
+				MOD_DEFINE_NATIVE(getTSPlayerDroveOnPavement)
+				MOD_DEFINE_NATIVE(getTSPlayerDroveAgainstTraffic)
+				MOD_DEFINE_NATIVE(setPlayerModel)
+				MOD_DEFINE_NATIVE(setPlayerSprint)
+				MOD_DEFINE_NATIVE(setPlayerMaxArmor)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(getPlayerPed) {
+			MOD_NATIVE(getPlayerPed) {
 				return PLAYER::PLAYER_PED_ID();
 			}
 
-			AMX_NATIVE(getPlayerName) {
+			MOD_NATIVE(getPlayerName) {
 				if (!arguments(2))
 					return 0;
 
@@ -55,45 +55,45 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(isPlayerPlaying) {
+			MOD_NATIVE(isPlayerPlaying) {
 				return PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(isPlayerDead) {
+			MOD_NATIVE(isPlayerDead) {
 				return PLAYER::IS_PLAYER_DEAD(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(isPlayerTargettingEntity) {
+			MOD_NATIVE(isPlayerTargettingEntity) {
 				if (arguments(1))
 					return 0;
 
 				return PLAYER::IS_PLAYER_TARGETTING_ENTITY(PLAYER::PLAYER_ID(), (::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isPlayerTargettingAnything) {
+			MOD_NATIVE(isPlayerTargettingAnything) {
 				return PLAYER::IS_PLAYER_TARGETTING_ANYTHING(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(isPlayerControlOn) {
+			MOD_NATIVE(isPlayerControlOn) {
 				return PLAYER::IS_PLAYER_CONTROL_ON(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(isPlayerClimbing) {
+			MOD_NATIVE(isPlayerClimbing) {
 				return PLAYER::IS_PLAYER_CLIMBING(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(isPlayerBusted) {
+			MOD_NATIVE(isPlayerBusted) {
 				if (arguments(1))
 					return 0;
 
 				return PLAYER::IS_PLAYER_BEING_ARRESTED(PLAYER::PLAYER_ID(), params[1]);
 			}
 
-			AMX_NATIVE(isPlayerRidingTrain) {
+			MOD_NATIVE(isPlayerRidingTrain) {
 				return PLAYER::IS_PLAYER_RIDING_TRAIN(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(setPlayerSprint) {
+			MOD_NATIVE(setPlayerSprint) {
 				if (arguments(1))
 					return 0;
 
@@ -102,7 +102,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setPlayerLockOn) {
+			MOD_NATIVE(setPlayerLockOn) {
 				if (arguments(1))
 					return 0;
 
@@ -111,7 +111,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(reportPlayerCrime) {
+			MOD_NATIVE(reportPlayerCrime) {
 				if (!arguments(2))
 					return 0;
 
@@ -120,7 +120,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setPlayerWantedLevel) {
+			MOD_NATIVE(setPlayerWantedLevel) {
 				if (!arguments(1))
 					return 0;
 
@@ -132,7 +132,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setPlayerWantedLevelNoDrop) {
+			MOD_NATIVE(setPlayerWantedLevelNoDrop) {
 				if (!arguments(1))
 					return 0;
 
@@ -144,30 +144,30 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getPlayerWantedLevel) {
+			MOD_NATIVE(getPlayerWantedLevel) {
 				if (!arguments(1))
 					return -1;
 
 				return PLAYER::GET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(getPlayerWantedLevelThreshold) {
+			MOD_NATIVE(getPlayerWantedLevelThreshold) {
 				if (!arguments(1))
 					return -1;
 
 				return PLAYER::GET_WANTED_LEVEL_THRESHOLD(params[1]);
 			}
 
-			AMX_NATIVE(getPlayerMaxArmor) {
+			MOD_NATIVE(getPlayerMaxArmor) {
 				return PLAYER::GET_PLAYER_MAX_ARMOUR(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(getPlayerStealthNoise) {
+			MOD_NATIVE(getPlayerStealthNoise) {
 				float noise = PLAYER::GET_PLAYER_CURRENT_STEALTH_NOISE(PLAYER::PLAYER_ID());
 				return amx_ftoc(noise);
 			}
 
-			AMX_NATIVE(getPlayerTargetEntity) {
+			MOD_NATIVE(getPlayerTargetEntity) {
 				if (!arguments(1))
 					return 0;
 
@@ -178,31 +178,31 @@ namespace AmxVHook {
 				return PLAYER::GET_PLAYER_TARGET_ENTITY(PLAYER::PLAYER_ID(), (::Entity *)entity);
 			}
 
-			AMX_NATIVE(getTimeSincePlayerLastArrest) {
+			MOD_NATIVE(getTimeSincePlayerLastArrest) {
 				return PLAYER::GET_TIME_SINCE_LAST_ARREST();
 			}
 
-			AMX_NATIVE(getTimeSincePlayerLastDeath) {
+			MOD_NATIVE(getTimeSincePlayerLastDeath) {
 				return PLAYER::GET_TIME_SINCE_LAST_DEATH();
 			}
 
-			AMX_NATIVE(getTimeSincePlayerHitVehicle) {
+			MOD_NATIVE(getTimeSincePlayerHitVehicle) {
 				return PLAYER::GET_TIME_SINCE_PLAYER_HIT_VEHICLE(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(getTimeSincePlayerHitPed) {
+			MOD_NATIVE(getTimeSincePlayerHitPed) {
 				return PLAYER::GET_TIME_SINCE_PLAYER_HIT_PED(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(getTSPlayerDroveOnPavement) {
+			MOD_NATIVE(getTSPlayerDroveOnPavement) {
 				return PLAYER::GET_TIME_SINCE_PLAYER_DROVE_ON_PAVEMENT(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(getTSPlayerDroveAgainstTraffic) {
+			MOD_NATIVE(getTSPlayerDroveAgainstTraffic) {
 				return PLAYER::GET_TIME_SINCE_PLAYER_DROVE_AGAINST_TRAFFIC(PLAYER::PLAYER_ID());
 			}
 
-			AMX_NATIVE(getPlayerPos) {
+			MOD_NATIVE(getPlayerPos) {
 				if (!arguments(2))
 					return 0;
 
@@ -217,7 +217,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setPlayerInvincible) {
+			MOD_NATIVE(setPlayerInvincible) {
 				if (!arguments(2))
 					return 0;
 
@@ -226,14 +226,14 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getPlayerInvincible) {
+			MOD_NATIVE(getPlayerInvincible) {
 				if (!arguments(1))
 					return 0;
 
 				return PLAYER::GET_PLAYER_INVINCIBLE(params[1]);
 			}
 
-			AMX_NATIVE(setPlayerMaxArmor) {
+			MOD_NATIVE(setPlayerMaxArmor) {
 				if (!arguments(1))
 					return 0;
 
@@ -242,7 +242,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setPlayerModel) {
+			MOD_NATIVE(setPlayerModel) {
 				if (!arguments(1))
 					return 0;
 

@@ -4,52 +4,52 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Entity {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(isEntityAPed)
-				AMX_DEFINE_NATIVE(isEntityAVehicle)
-				AMX_DEFINE_NATIVE(isEntityAObject)
-				AMX_DEFINE_NATIVE(isEntityDead)
-				AMX_DEFINE_NATIVE(isEntityInAir)
-				AMX_DEFINE_NATIVE(isEntityInWater)
-				AMX_DEFINE_NATIVE(isEntityInZone)
-				AMX_DEFINE_NATIVE(isEntityOnScreen)
-				AMX_DEFINE_NATIVE(isEntityTouchingEntity)
-				AMX_DEFINE_NATIVE(isEntityTouchingModel)
-				AMX_DEFINE_NATIVE(isEntityVisible)
-				AMX_DEFINE_NATIVE(isEntityExist)
-				AMX_DEFINE_NATIVE(isEntityHaveDrawable)
-				AMX_DEFINE_NATIVE(isEntityHavePhysics)
-				AMX_DEFINE_NATIVE(getEntityModel)
-				AMX_DEFINE_NATIVE(getEntityHealth)
-				AMX_DEFINE_NATIVE(getEntityMaxHealth)
-				AMX_DEFINE_NATIVE(getEntitySpeed)
-				AMX_DEFINE_NATIVE(getEntityPitch)
-				AMX_DEFINE_NATIVE(getEntityHeight)
-				AMX_DEFINE_NATIVE(getEntityHeightAboveGround)
-				AMX_DEFINE_NATIVE(getEntityQuaternion)
-				AMX_DEFINE_NATIVE(getEntityPos)
-				AMX_DEFINE_NATIVE(setEntityHealth)
-				AMX_DEFINE_NATIVE(setEntityMaxHealth)
-				AMX_DEFINE_NATIVE(setEntityInvincible)
-				AMX_DEFINE_NATIVE(setEntityMaxSpeed)
+				MOD_DEFINE_NATIVE(isEntityAPed)
+				MOD_DEFINE_NATIVE(isEntityAVehicle)
+				MOD_DEFINE_NATIVE(isEntityAObject)
+				MOD_DEFINE_NATIVE(isEntityDead)
+				MOD_DEFINE_NATIVE(isEntityInAir)
+				MOD_DEFINE_NATIVE(isEntityInWater)
+				MOD_DEFINE_NATIVE(isEntityInZone)
+				MOD_DEFINE_NATIVE(isEntityOnScreen)
+				MOD_DEFINE_NATIVE(isEntityTouchingEntity)
+				MOD_DEFINE_NATIVE(isEntityTouchingModel)
+				MOD_DEFINE_NATIVE(isEntityVisible)
+				MOD_DEFINE_NATIVE(isEntityExist)
+				MOD_DEFINE_NATIVE(isEntityHaveDrawable)
+				MOD_DEFINE_NATIVE(isEntityHavePhysics)
+				MOD_DEFINE_NATIVE(getEntityModel)
+				MOD_DEFINE_NATIVE(getEntityHealth)
+				MOD_DEFINE_NATIVE(getEntityMaxHealth)
+				MOD_DEFINE_NATIVE(getEntitySpeed)
+				MOD_DEFINE_NATIVE(getEntityPitch)
+				MOD_DEFINE_NATIVE(getEntityHeight)
+				MOD_DEFINE_NATIVE(getEntityHeightAboveGround)
+				MOD_DEFINE_NATIVE(getEntityQuaternion)
+				MOD_DEFINE_NATIVE(getEntityPos)
+				MOD_DEFINE_NATIVE(setEntityHealth)
+				MOD_DEFINE_NATIVE(setEntityMaxHealth)
+				MOD_DEFINE_NATIVE(setEntityInvincible)
+				MOD_DEFINE_NATIVE(setEntityMaxSpeed)
 
 				{NULL, NULL}
 			};
 
-			AMX_NATIVE(isEntityAPed) {
+			MOD_NATIVE(isEntityAPed) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::IS_ENTITY_A_PED((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityAVehicle) {
+			MOD_NATIVE(isEntityAVehicle) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::IS_ENTITY_A_VEHICLE((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityAObject) {
+			MOD_NATIVE(isEntityAObject) {
 				if (!arguments(1))
 					return 0;
 
@@ -57,91 +57,91 @@ namespace AmxVHook {
 			}
 
 
-			AMX_NATIVE(isEntityDead) {
+			MOD_NATIVE(isEntityDead) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::IS_ENTITY_DEAD((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityInAir) {
+			MOD_NATIVE(isEntityInAir) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::IS_ENTITY_IN_AIR((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityInWater) {
+			MOD_NATIVE(isEntityInWater) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::IS_ENTITY_IN_WATER((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityInZone) {
+			MOD_NATIVE(isEntityInZone) {
 				if (!arguments(2))
 					return 0;
 
 				return ENTITY::IS_ENTITY_IN_ZONE((::Entity)params[1], (char *)String::get(amx, params[2]).c_str());
 			}
 
-			AMX_NATIVE(isEntityOnScreen) {
+			MOD_NATIVE(isEntityOnScreen) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::IS_ENTITY_ON_SCREEN((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityTouchingEntity) {
+			MOD_NATIVE(isEntityTouchingEntity) {
 				if (!arguments(2))
 					return 0;
 
 				return ENTITY::IS_ENTITY_TOUCHING_ENTITY((::Entity)params[1], params[2]);
 			}
 
-			AMX_NATIVE(isEntityTouchingModel) {
+			MOD_NATIVE(isEntityTouchingModel) {
 				if (!arguments(2))
 					return 0;
 
 				return ENTITY::IS_ENTITY_TOUCHING_MODEL((::Entity)params[1], params[2]);
 			}
 
-			AMX_NATIVE(isEntityVisible) {
+			MOD_NATIVE(isEntityVisible) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::IS_ENTITY_VISIBLE((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityExist) {
+			MOD_NATIVE(isEntityExist) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::DOES_ENTITY_EXIST((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityHaveDrawable) {
+			MOD_NATIVE(isEntityHaveDrawable) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::DOES_ENTITY_HAVE_DRAWABLE((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(isEntityHavePhysics) {
+			MOD_NATIVE(isEntityHavePhysics) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::DOES_ENTITY_HAVE_PHYSICS((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(getEntityModel) {
+			MOD_NATIVE(getEntityModel) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::GET_ENTITY_MODEL((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(getEntityHealth) {
+			MOD_NATIVE(getEntityHealth) {
 				if (!arguments(1))
 					return 0;
 
@@ -150,14 +150,14 @@ namespace AmxVHook {
 				return amx_ftoc(*(float *)(addr + 0x280));
 			}
 
-			AMX_NATIVE(getEntityMaxHealth) {
+			MOD_NATIVE(getEntityMaxHealth) {
 				if (!arguments(1))
 					return 0;
 
 				return ENTITY::GET_ENTITY_MAX_HEALTH((::Entity)params[1]);
 			}
 
-			AMX_NATIVE(getEntitySpeed) {
+			MOD_NATIVE(getEntitySpeed) {
 				if (!arguments(1))
 					return 0;
 
@@ -165,7 +165,7 @@ namespace AmxVHook {
 				return amx_ftoc(speed);
 			}
 
-			AMX_NATIVE(getEntityPitch) {
+			MOD_NATIVE(getEntityPitch) {
 				if (!arguments(1))
 					return 0;
 
@@ -173,7 +173,7 @@ namespace AmxVHook {
 				return amx_ftoc(pitch);
 			}
 
-			AMX_NATIVE(getEntityHeight) {
+			MOD_NATIVE(getEntityHeight) {
 				if (!arguments(4))
 					return 0;
 
@@ -186,7 +186,7 @@ namespace AmxVHook {
 				return amx_ftoc(height);
 			}
 
-			AMX_NATIVE(getEntityHeightAboveGround) {
+			MOD_NATIVE(getEntityHeightAboveGround) {
 				if (!arguments(1))
 					return 0;
 
@@ -195,7 +195,7 @@ namespace AmxVHook {
 				return amx_ftoc(height);
 			}
 
-			AMX_NATIVE(getEntityQuaternion) {
+			MOD_NATIVE(getEntityQuaternion) {
 				if (!arguments(5))
 					return 0;
 
@@ -217,7 +217,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getEntityPos) {
+			MOD_NATIVE(getEntityPos) {
 				if (!arguments(3))
 					return 0;
 
@@ -232,7 +232,7 @@ namespace AmxVHook {
 			}
 
 
-			AMX_NATIVE(setEntityHealth) {
+			MOD_NATIVE(setEntityHealth) {
 				if (!arguments(2))
 					return 0;
 
@@ -241,7 +241,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(setEntityMaxHealth) {
+			MOD_NATIVE(setEntityMaxHealth) {
 				if (!arguments(2))
 					return 0;
 
@@ -250,7 +250,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(setEntityInvincible) {
+			MOD_NATIVE(setEntityInvincible) {
 				if (!arguments(2))
 					return 0;
 
@@ -259,7 +259,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(setEntityMaxSpeed) {
+			MOD_NATIVE(setEntityMaxSpeed) {
 				if (!arguments(2))
 					return 0;
 

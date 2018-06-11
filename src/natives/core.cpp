@@ -8,20 +8,20 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Core {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(log)
-				AMX_DEFINE_NATIVE(getVersion)
-				AMX_DEFINE_NATIVE(getPoolSize)
-				AMX_DEFINE_NATIVE(getTickCount)
-				AMX_DEFINE_NATIVE(getAllPeds)
-				AMX_DEFINE_NATIVE(getAllObjects)
-				AMX_DEFINE_NATIVE(getAllPickups)
-				AMX_DEFINE_NATIVE(getAllVehicles)
-				AMX_DEFINE_NATIVE(setVersionVisible)
+				MOD_DEFINE_NATIVE(log)
+				MOD_DEFINE_NATIVE(getVersion)
+				MOD_DEFINE_NATIVE(getPoolSize)
+				MOD_DEFINE_NATIVE(getTickCount)
+				MOD_DEFINE_NATIVE(getAllPeds)
+				MOD_DEFINE_NATIVE(getAllObjects)
+				MOD_DEFINE_NATIVE(getAllPickups)
+				MOD_DEFINE_NATIVE(getAllVehicles)
+				MOD_DEFINE_NATIVE(setVersionVisible)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(log) {
+			MOD_NATIVE(log) {
 				if (!arguments(1))
 					return 0;
 
@@ -30,19 +30,19 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getVersion) {
+			MOD_NATIVE(getVersion) {
 				return AmxVHook::Core::AMXVHOOK_VERSION;
 			}
 
-			AMX_NATIVE(getPoolSize) {
+			MOD_NATIVE(getPoolSize) {
 				return static_cast<cell>(gPool->size());
 			}
 
-			AMX_NATIVE(getTickCount) {
+			MOD_NATIVE(getTickCount) {
 				return GetTickCount();
 			}
 
-			AMX_NATIVE(getAllPeds) {
+			MOD_NATIVE(getAllPeds) {
 				if (!arguments(2))
 					return 0;
 
@@ -53,7 +53,7 @@ namespace AmxVHook {
 				return worldGetAllPeds(addr, params[2]);
 			}
 
-			AMX_NATIVE(getAllObjects) {
+			MOD_NATIVE(getAllObjects) {
 				if (!arguments(2))
 					return 0;
 
@@ -64,7 +64,7 @@ namespace AmxVHook {
 				return worldGetAllObjects(addr, params[2]);
 			}
 
-			AMX_NATIVE(getAllPickups) {
+			MOD_NATIVE(getAllPickups) {
 				if (!arguments(2))
 					return 0;
 
@@ -75,7 +75,7 @@ namespace AmxVHook {
 				return worldGetAllPickups(addr, params[2]);
 			}
 
-			AMX_NATIVE(getAllVehicles) {
+			MOD_NATIVE(getAllVehicles) {
 				if (!arguments(2))
 					return 0;
 
@@ -86,7 +86,7 @@ namespace AmxVHook {
 				return worldGetAllVehicles(addr, params[2]);
 			}
 
-			AMX_NATIVE(setVersionVisible) {
+			MOD_NATIVE(setVersionVisible) {
 				if (!arguments(1))
 					return 0;
 

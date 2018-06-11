@@ -4,25 +4,25 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace UI {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(showNotify)
-				AMX_DEFINE_NATIVE(showSubtitle)
-				AMX_DEFINE_NATIVE(setHudVisible)
-				AMX_DEFINE_NATIVE(setRadarVisible)
-				AMX_DEFINE_NATIVE(setRadarZoom)
-				AMX_DEFINE_NATIVE(isHudComponentActive)
-				AMX_DEFINE_NATIVE(hideHudAndRadarThisFrame)
+				MOD_DEFINE_NATIVE(showNotify)
+				MOD_DEFINE_NATIVE(showSubtitle)
+				MOD_DEFINE_NATIVE(setHudVisible)
+				MOD_DEFINE_NATIVE(setRadarVisible)
+				MOD_DEFINE_NATIVE(setRadarZoom)
+				MOD_DEFINE_NATIVE(isHudComponentActive)
+				MOD_DEFINE_NATIVE(hideHudAndRadarThisFrame)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(showNotify) {
+			MOD_NATIVE(showNotify) {
 				if (!arguments(3))
 					return 0;
 
 				return Funcs::showNotify(String::get(amx, params[1]), (BOOL)params[2], (BOOL)params[3]);
 			}
 
-			AMX_NATIVE(showSubtitle) {
+			MOD_NATIVE(showSubtitle) {
 				if (!arguments(3))
 					return 0;
 
@@ -31,7 +31,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setHudVisible) {
+			MOD_NATIVE(setHudVisible) {
 				if (!arguments(1))
 					return 0;
 
@@ -40,7 +40,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setRadarVisible) {
+			MOD_NATIVE(setRadarVisible) {
 				if (!arguments(1))
 					return 0;
 
@@ -49,7 +49,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setRadarZoom) {
+			MOD_NATIVE(setRadarZoom) {
 				if (!arguments(1))
 					return 0;
 
@@ -61,14 +61,14 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(isHudComponentActive) {
+			MOD_NATIVE(isHudComponentActive) {
 				if (!arguments(1))
 					return 0;
 
 				return ::UI::IS_HUD_COMPONENT_ACTIVE(params[1]);
 			}
 
-			AMX_NATIVE(hideHudAndRadarThisFrame) {
+			MOD_NATIVE(hideHudAndRadarThisFrame) {
 				::UI::HIDE_HUD_AND_RADAR_THIS_FRAME();
 				return 1;
 			}

@@ -4,24 +4,24 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Vehicle {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(createVehicle)
-				AMX_DEFINE_NATIVE(deleteVehicle)
-				AMX_DEFINE_NATIVE(isVehicleModel)
-				AMX_DEFINE_NATIVE(isVehicleStopped)
-				AMX_DEFINE_NATIVE(isVehicleTaxiLightsOn)
-				AMX_DEFINE_NATIVE(isVehicleStuckOnRoof)
-				AMX_DEFINE_NATIVE(setVehicleColor)
-				AMX_DEFINE_NATIVE(setVehicleDoorsLocked)
-				AMX_DEFINE_NATIVE(setVehicleTaxiLights)
-				AMX_DEFINE_NATIVE(getVehiclePassengers)
-				AMX_DEFINE_NATIVE(getVehicleMaxPassengers)
-				AMX_DEFINE_NATIVE(getVehicleModelNumberOfSeats)
-				AMX_DEFINE_NATIVE(getDisplayNameFromVehicleModel)
+				MOD_DEFINE_NATIVE(createVehicle)
+				MOD_DEFINE_NATIVE(deleteVehicle)
+				MOD_DEFINE_NATIVE(isVehicleModel)
+				MOD_DEFINE_NATIVE(isVehicleStopped)
+				MOD_DEFINE_NATIVE(isVehicleTaxiLightsOn)
+				MOD_DEFINE_NATIVE(isVehicleStuckOnRoof)
+				MOD_DEFINE_NATIVE(setVehicleColor)
+				MOD_DEFINE_NATIVE(setVehicleDoorsLocked)
+				MOD_DEFINE_NATIVE(setVehicleTaxiLights)
+				MOD_DEFINE_NATIVE(getVehiclePassengers)
+				MOD_DEFINE_NATIVE(getVehicleMaxPassengers)
+				MOD_DEFINE_NATIVE(getVehicleModelNumberOfSeats)
+				MOD_DEFINE_NATIVE(getDisplayNameFromVehicleModel)
 
 				{NULL, NULL} // terminator
 			};
 
-			AMX_NATIVE(createVehicle) {
+			MOD_NATIVE(createVehicle) {
 				if (!arguments(3))
 					return -1;
 
@@ -41,7 +41,7 @@ namespace AmxVHook {
 			}
 
 
-			AMX_NATIVE(deleteVehicle) {
+			MOD_NATIVE(deleteVehicle) {
 				if (!arguments(1))
 					return 0;
 
@@ -52,7 +52,7 @@ namespace AmxVHook {
 			}
 
 
-			AMX_NATIVE(isVehicleModel) {
+			MOD_NATIVE(isVehicleModel) {
 				if (!arguments(2))
 					return 0;
 
@@ -61,7 +61,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(isVehicleStopped) {
+			MOD_NATIVE(isVehicleStopped) {
 				if (!arguments(1))
 					return 0;
 
@@ -70,7 +70,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(isVehicleTaxiLightsOn) {
+			MOD_NATIVE(isVehicleTaxiLightsOn) {
 				if (!arguments(1))
 					return 0;
 
@@ -79,7 +79,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(isVehicleStuckOnRoof) {
+			MOD_NATIVE(isVehicleStuckOnRoof) {
 				if (!arguments(1))
 					return 0;
 
@@ -88,7 +88,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(setVehicleColor) {
+			MOD_NATIVE(setVehicleColor) {
 				if (!arguments(3))
 					return 0;
 
@@ -97,7 +97,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(setVehicleDoorsLocked) {
+			MOD_NATIVE(setVehicleDoorsLocked) {
 				if (!arguments(2))
 					return 0;
 
@@ -106,7 +106,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			AMX_NATIVE(setVehicleTaxiLights) {
+			MOD_NATIVE(setVehicleTaxiLights) {
 				if (!arguments(2))
 					return 0;
 
@@ -115,28 +115,28 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getVehiclePassengers) {
+			MOD_NATIVE(getVehiclePassengers) {
 				if (!arguments(1))
 					return 0;
 
 				return VEHICLE::GET_VEHICLE_NUMBER_OF_PASSENGERS((::Vehicle)params[1]);
 			}
 
-			AMX_NATIVE(getVehicleMaxPassengers) {
+			MOD_NATIVE(getVehicleMaxPassengers) {
 				if (!arguments(1))
 					return 0;
 
 				return VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS((::Vehicle)params[1]);
 			}
 			
-			AMX_NATIVE(getVehicleModelNumberOfSeats) {
+			MOD_NATIVE(getVehicleModelNumberOfSeats) {
 				if (!arguments(1))
 					return 0;
 
 				return VEHICLE::_GET_VEHICLE_MODEL_MAX_NUMBER_OF_PASSENGERS((::Hash)params[1]);
 			}
 			
-			AMX_NATIVE(getDisplayNameFromVehicleModel) {
+			MOD_NATIVE(getDisplayNameFromVehicleModel) {
 				if (!arguments(3))
 					return 0;
 

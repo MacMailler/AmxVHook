@@ -4,28 +4,28 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Blip {	
-			AMX_NATIVE(addBlip);
-			AMX_NATIVE(removeBlip);
-			AMX_NATIVE(setBlipPos);
-			AMX_NATIVE(getBlipPos);
-			AMX_NATIVE(setBlipSprite);
-			AMX_NATIVE(getBlipSprite);
-			AMX_NATIVE(setBlipAlpha);
-			AMX_NATIVE(setBlipFade);
-			AMX_NATIVE(setBlipColor);
-			AMX_NATIVE(getBlipColor);
-			AMX_NATIVE(setBlipScale);
-			AMX_NATIVE(setBlipCategory);
-			AMX_NATIVE(isBlipExist);
-			AMX_NATIVE(isBlipFlashing);
-			AMX_NATIVE(isBlipOnMinimap);
-			AMX_NATIVE(setBlipRoute);
-			AMX_NATIVE(setBlipRouteColor);
-			AMX_NATIVE(setBlipRotation);
-			AMX_NATIVE(setBlipFlashTimer);
-			AMX_NATIVE(setBlipFlashes);
-			AMX_NATIVE(setBlipFlashesAlternate);
-			AMX_NATIVE(setBlipPriority);
+			MOD_NATIVE(addBlip);
+			MOD_NATIVE(removeBlip);
+			MOD_NATIVE(setBlipPos);
+			MOD_NATIVE(getBlipPos);
+			MOD_NATIVE(setBlipSprite);
+			MOD_NATIVE(getBlipSprite);
+			MOD_NATIVE(setBlipAlpha);
+			MOD_NATIVE(setBlipFade);
+			MOD_NATIVE(setBlipColor);
+			MOD_NATIVE(getBlipColor);
+			MOD_NATIVE(setBlipScale);
+			MOD_NATIVE(setBlipCategory);
+			MOD_NATIVE(isBlipExist);
+			MOD_NATIVE(isBlipFlashing);
+			MOD_NATIVE(isBlipOnMinimap);
+			MOD_NATIVE(setBlipRoute);
+			MOD_NATIVE(setBlipRouteColor);
+			MOD_NATIVE(setBlipRotation);
+			MOD_NATIVE(setBlipFlashTimer);
+			MOD_NATIVE(setBlipFlashes);
+			MOD_NATIVE(setBlipFlashesAlternate);
+			MOD_NATIVE(setBlipPriority);
 			
 			AMX_NATIVE_INFO list[];
 		};

@@ -4,22 +4,22 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Gameplay {
-			AMX_NATIVE(isMissionFlag);
-			AMX_NATIVE(setWind);
-			AMX_NATIVE(setWindSpeed);
-			AMX_NATIVE(setWindDirection);
-			AMX_NATIVE(getWindSpeed);
-			AMX_NATIVE(getWindDirection);
-			AMX_NATIVE(setRainIntensity);
-			AMX_NATIVE(createLightningThunder);
-			AMX_NATIVE(getGameTimer);
-			AMX_NATIVE(getFrameTime);
-			AMX_NATIVE(getFrameCount);
-			AMX_NATIVE(getHashKey);
-			AMX_NATIVE(getDistanceBetweenPos);
-			AMX_NATIVE(setPoliceRadarBlips);
-			AMX_NATIVE(setPoliceIgnorePlayer);
-			AMX_NATIVE(setEveryoneIgnorePlayer);
+			MOD_NATIVE(isMissionFlag);
+			MOD_NATIVE(setWind);
+			MOD_NATIVE(setWindSpeed);
+			MOD_NATIVE(setWindDirection);
+			MOD_NATIVE(getWindSpeed);
+			MOD_NATIVE(getWindDirection);
+			MOD_NATIVE(setRainIntensity);
+			MOD_NATIVE(createLightningThunder);
+			MOD_NATIVE(getGameTimer);
+			MOD_NATIVE(getFrameTime);
+			MOD_NATIVE(getFrameCount);
+			MOD_NATIVE(getHashKey);
+			MOD_NATIVE(getDistanceBetweenPos);
+			MOD_NATIVE(setPoliceRadarBlips);
+			MOD_NATIVE(setPoliceIgnorePlayer);
+			MOD_NATIVE(setEveryoneIgnorePlayer);
 			
 			AMX_NATIVE_INFO list[];
 		};

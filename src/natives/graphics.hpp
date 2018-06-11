@@ -4,17 +4,17 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Graphics {
-			AMX_NATIVE(drawRect);
-			AMX_NATIVE(drawText);
-			AMX_NATIVE(drawMarker);
-			AMX_NATIVE(setUILayer);
-			AMX_NATIVE(setDrawPosition);
-			AMX_NATIVE(setDrawPositionRatio);
-			AMX_NATIVE(setDrawPositionEnd);
-			AMX_NATIVE(getSafeZoneSize);
-			AMX_NATIVE(isWidescreen);
-			AMX_NATIVE(getScreenSize);
-			AMX_NATIVE(world3DToScreen2D);
+			MOD_NATIVE(drawRect);
+			MOD_NATIVE(drawText);
+			MOD_NATIVE(drawMarker);
+			MOD_NATIVE(setUILayer);
+			MOD_NATIVE(setDrawPosition);
+			MOD_NATIVE(setDrawPositionRatio);
+			MOD_NATIVE(setDrawPositionEnd);
+			MOD_NATIVE(getSafeZoneSize);
+			MOD_NATIVE(isWidescreen);
+			MOD_NATIVE(getScreenSize);
+			MOD_NATIVE(world3DToScreen2D);
 		
 			AMX_NATIVE_INFO list[];
 		};

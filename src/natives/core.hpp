@@ -4,15 +4,15 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Core {
-			AMX_NATIVE(log);
-			AMX_NATIVE(getVersion);
-			AMX_NATIVE(getPoolSize);
-			AMX_NATIVE(getTickCount);
-			AMX_NATIVE(setVersionVisible);
-			AMX_NATIVE(getAllPeds);
-			AMX_NATIVE(getAllObjects);
-			AMX_NATIVE(getAllPickups);
-			AMX_NATIVE(getAllVehicles);
+			MOD_NATIVE(log);
+			MOD_NATIVE(getVersion);
+			MOD_NATIVE(getPoolSize);
+			MOD_NATIVE(getTickCount);
+			MOD_NATIVE(setVersionVisible);
+			MOD_NATIVE(getAllPeds);
+			MOD_NATIVE(getAllObjects);
+			MOD_NATIVE(getAllPickups);
+			MOD_NATIVE(getAllVehicles);
 
 			AMX_NATIVE_INFO list[];
 		};

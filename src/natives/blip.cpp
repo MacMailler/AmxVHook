@@ -4,40 +4,40 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Blip {
 			AMX_NATIVE_INFO list[] = {
-				AMX_DEFINE_NATIVE(addBlip)
-				AMX_DEFINE_NATIVE(setBlipPos)
-				AMX_DEFINE_NATIVE(getBlipPos)
-				AMX_DEFINE_NATIVE(setBlipSprite)
-				AMX_DEFINE_NATIVE(getBlipSprite)
-				AMX_DEFINE_NATIVE(setBlipAlpha)
-				AMX_DEFINE_NATIVE(setBlipFade)
-				AMX_DEFINE_NATIVE(setBlipColor)
-				AMX_DEFINE_NATIVE(getBlipColor)
-				AMX_DEFINE_NATIVE(setBlipScale)
-				AMX_DEFINE_NATIVE(setBlipCategory)
-				AMX_DEFINE_NATIVE(isBlipExist)
-				AMX_DEFINE_NATIVE(isBlipFlashing)
-				AMX_DEFINE_NATIVE(isBlipOnMinimap)
-				AMX_DEFINE_NATIVE(removeBlip)
-				AMX_DEFINE_NATIVE(setBlipRoute)
-				AMX_DEFINE_NATIVE(setBlipRouteColor)
-				AMX_DEFINE_NATIVE(setBlipRotation)
-				AMX_DEFINE_NATIVE(setBlipFlashTimer)
-				AMX_DEFINE_NATIVE(setBlipFlashes)
-				AMX_DEFINE_NATIVE(setBlipFlashesAlternate)
-				AMX_DEFINE_NATIVE(setBlipPriority)
+				MOD_DEFINE_NATIVE(addBlip)
+				MOD_DEFINE_NATIVE(setBlipPos)
+				MOD_DEFINE_NATIVE(getBlipPos)
+				MOD_DEFINE_NATIVE(setBlipSprite)
+				MOD_DEFINE_NATIVE(getBlipSprite)
+				MOD_DEFINE_NATIVE(setBlipAlpha)
+				MOD_DEFINE_NATIVE(setBlipFade)
+				MOD_DEFINE_NATIVE(setBlipColor)
+				MOD_DEFINE_NATIVE(getBlipColor)
+				MOD_DEFINE_NATIVE(setBlipScale)
+				MOD_DEFINE_NATIVE(setBlipCategory)
+				MOD_DEFINE_NATIVE(isBlipExist)
+				MOD_DEFINE_NATIVE(isBlipFlashing)
+				MOD_DEFINE_NATIVE(isBlipOnMinimap)
+				MOD_DEFINE_NATIVE(removeBlip)
+				MOD_DEFINE_NATIVE(setBlipRoute)
+				MOD_DEFINE_NATIVE(setBlipRouteColor)
+				MOD_DEFINE_NATIVE(setBlipRotation)
+				MOD_DEFINE_NATIVE(setBlipFlashTimer)
+				MOD_DEFINE_NATIVE(setBlipFlashes)
+				MOD_DEFINE_NATIVE(setBlipFlashesAlternate)
+				MOD_DEFINE_NATIVE(setBlipPriority)
 				
 				{NULL, NULL} // terminator
 			};
 			
-			AMX_NATIVE(addBlip) {
+			MOD_NATIVE(addBlip) {
 				if (!arguments(3))
 					return 0;
 
 				return ::UI::ADD_BLIP_FOR_COORD(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]));
 			}
 
-			AMX_NATIVE(setBlipPos) {
+			MOD_NATIVE(setBlipPos) {
 				if (!arguments(4))
 					return 0;
 
@@ -46,7 +46,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getBlipPos) {
+			MOD_NATIVE(getBlipPos) {
 				if (!arguments(4))
 					return 0;
 
@@ -66,7 +66,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipSprite) {
+			MOD_NATIVE(setBlipSprite) {
 				if (!arguments(2))
 					return 0;
 
@@ -75,14 +75,14 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getBlipSprite) {
+			MOD_NATIVE(getBlipSprite) {
 				if (!arguments(1))
 					return 0;
 
 				return ::UI::GET_BLIP_SPRITE(params[1]);
 			}
 
-			AMX_NATIVE(setBlipAlpha) {
+			MOD_NATIVE(setBlipAlpha) {
 				if (!arguments(2))
 					return 0;
 
@@ -91,14 +91,14 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getBlipAlpha) {
+			MOD_NATIVE(getBlipAlpha) {
 				if (!arguments(1))
 					return 0;
 
 				return ::UI::GET_BLIP_ALPHA(params[1]);
 			}
 
-			AMX_NATIVE(setBlipFade) {
+			MOD_NATIVE(setBlipFade) {
 				if (!arguments(3))
 					return 0;
 
@@ -107,7 +107,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipRotation) {
+			MOD_NATIVE(setBlipRotation) {
 				if (!arguments(2))
 					return 0;
 
@@ -116,7 +116,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipColor) {
+			MOD_NATIVE(setBlipColor) {
 				if (!arguments(2))
 					return 0;
 
@@ -125,14 +125,14 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(getBlipColor) {
+			MOD_NATIVE(getBlipColor) {
 				if (!arguments(1))
 					return 0;
 
 				return ::UI::GET_BLIP_COLOUR(params[1]);
 			}
 
-			AMX_NATIVE(setBlipScale) {
+			MOD_NATIVE(setBlipScale) {
 				if (!arguments(2))
 					return 0;
 
@@ -141,7 +141,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipCategory) {
+			MOD_NATIVE(setBlipCategory) {
 				if (!arguments(2))
 					return 0;
 
@@ -150,7 +150,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipRoute) {
+			MOD_NATIVE(setBlipRoute) {
 				if (!arguments(2))
 					return 0;
 
@@ -159,7 +159,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipRouteColor) {
+			MOD_NATIVE(setBlipRouteColor) {
 				if (!arguments(2))
 					return 0;
 
@@ -168,7 +168,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipPriority) {
+			MOD_NATIVE(setBlipPriority) {
 				if (!arguments(2))
 					return 0;
 
@@ -177,7 +177,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipFlashes) {
+			MOD_NATIVE(setBlipFlashes) {
 				if (!arguments(2))
 					return 0;
 
@@ -186,7 +186,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipFlashesAlternate) {
+			MOD_NATIVE(setBlipFlashesAlternate) {
 				if (!arguments(2))
 					return 0;
 
@@ -195,7 +195,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipFlashTimer) {
+			MOD_NATIVE(setBlipFlashTimer) {
 				if (!arguments(2))
 					return 0;
 
@@ -204,7 +204,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(setBlipFlashInerval) {
+			MOD_NATIVE(setBlipFlashInerval) {
 				if (!arguments(2))
 					return 0;
 
@@ -213,28 +213,28 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			AMX_NATIVE(isBlipExist) {
+			MOD_NATIVE(isBlipExist) {
 				if (!arguments(1))
 					return 0;
 
 				return ::UI::DOES_BLIP_EXIST((::Blip)params[1]);
 			}
 
-			AMX_NATIVE(isBlipFlashing) {
+			MOD_NATIVE(isBlipFlashing) {
 				if (!arguments(1))
 					return 0;
 
 				return ::UI::IS_BLIP_FLASHING((::Blip)params[1]);
 			}
 
-			AMX_NATIVE(isBlipOnMinimap) {
+			MOD_NATIVE(isBlipOnMinimap) {
 				if (!arguments(1))
 					return 0;
 
 				return ::UI::IS_BLIP_ON_MINIMAP((::Blip)params[1]);
 			}
 
-			AMX_NATIVE(removeBlip) {
+			MOD_NATIVE(removeBlip) {
 				if (!arguments(1))
 					return 0;
 				::Blip blip = params[1];
