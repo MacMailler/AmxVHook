@@ -30,9 +30,6 @@
     <ClInclude Include="src\amx\amx_opcodes.h">
       <Filter>Headers Files\amx</Filter>
     </ClInclude>
-    <ClInclude Include="src\amx\amx_ptrarray.h">
-      <Filter>Headers Files\amx</Filter>
-    </ClInclude>
     <ClInclude Include="src\amx\amxaux.h">
       <Filter>Headers Files\amx</Filter>
     </ClInclude>
