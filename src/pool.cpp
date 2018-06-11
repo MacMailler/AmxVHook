@@ -95,8 +95,8 @@ namespace AmxVHook {
 		this->make();
 	}
 
-	bool Pool::find(std::string & name) {
-		return pool.find(name)->first.empty();
+	std::unordered_map<std::string, Mod>::iterator & Pool::find(std::string & name) {
+		return pool.find(name);
 	}
 
 	size_t Pool::size() {
