@@ -1,8 +1,6 @@
 #ifndef AMXCONS_H_INCLUDED
 #define AMXCONS_H_INCLUDED
 
-#define FLOATPOINT
-
 typedef struct tagFMTINFO {
   const cell *params;
   int numparams;

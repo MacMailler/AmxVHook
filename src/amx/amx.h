@@ -79,6 +79,9 @@
   #include <alloca.h>
 #endif
 #if defined __WIN32__ || defined _WIN32 || defined WIN32 /* || defined __MSDOS__ */
+  #if defined HAVE_MALLOC_H
+    #include <malloc.h>
+  #endif
   #if !defined alloca
     #define alloca(n)   _alloca(n)
   #endif
@@ -278,14 +281,14 @@ typedef struct tagAMX {
     int reloc_size      PACKED; /* required temporary buffer for relocations */
     long code_size      PACKED; /* estimated memory footprint of the native code */
   #endif
-#if (!defined AMX_PTR_SIZE) || (AMX_PTR_SIZE*8>PAWN_CELL_SIZE)
+#if (!defined AMX_PTR_SIZE) || (AMX_PTR_SIZE>PAWN_CELL_SIZE)
   void **libraries      PACKED; /* physical addresses of AMX extension modules */
   void **natives        PACKED; /* physical addresses of native functions */
 #endif
 } AMX;
 
 /* The AMX_HEADER structure is both the memory format as the file format. The
- * structure is used internaly.
+ * structure is used internally.
  */
 typedef struct tagAMX_HEADER {
   int32_t size          PACKED; /* size of the "file" */
@@ -385,7 +388,7 @@ enum {
       cell *amx_cstr_; int amx_length_;                                     \
       amx_GetAddr((amx), (param), &amx_cstr_);                              \
       if (amx_StrLen(amx_cstr_, &amx_length_)==AMX_ERR_NONE &&              \
-          ((result) = (char*)alloca((amx_length_ + 1) * sizeof(*(result)))) != NULL) \
+          ((result) = (void*)alloca((amx_length_ + 1) * sizeof(*(result)))) != NULL) \
         amx_GetString((char*)(result), amx_cstr_, sizeof(*(result))>1, amx_length_ + 1); \
       else (result) = NULL;                                                 \
     } while (0)
