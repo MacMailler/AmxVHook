@@ -59,21 +59,67 @@ namespace AmxVHook {
 			UI::SET_TEXT_EDGE(0, 0, 0, 0, 0);
 			UI::SET_TEXT_OUTLINE();
 		}
+	};
 
-		void vector3ToCellArray(cell * addr, Vector3 * vec) {
-			addr[0] = amx_ftoc(vec->x);
-			addr[1] = amx_ftoc(vec->y);
-			addr[2] = amx_ftoc(vec->z);
+	namespace Utility {
+		Color::Color(uint32_t color) {
+			this->R = ((color & 0xFF000000) >> 24);
+			this->G = ((color & 0xFF0000) >> 16);
+			this->B = ((color & 0xFF00) >> 8);
+			this->A = (color & 0xFF);
+			this->RGBA = color;
 		}
 
-		Vector3 cellArrayToVector3(cell * addr) {
-			Vector3 vec;
+		Color::Color(uint16_t r, uint16_t g, uint16_t b, uint16_t a) {
+			this->R = r;
+			this->G = g;
+			this->B = b;
+			this->A = a;
+			this->RGBA = ((r << 24) | (g << 16) | (b << 8) | a);
+		}
+
+		bool setVector3ToParam(AMX * amx, cell param, Vector3 & vec) {
+			cell * addr;
+			if (amx_GetAddr(amx, param, &addr) != AMX_ERR_NONE)
+				return false;
+
+			addr[0] = amx_ftoc(vec.x);
+			addr[1] = amx_ftoc(vec.y);
+			addr[2] = amx_ftoc(vec.z);
+
+			return true;
+		}
+
+		bool getVector3FromParam(AMX * amx, cell param, Vector3 & vec) {
+			cell * addr;
+			if (amx_GetAddr(amx, param, &addr) != AMX_ERR_NONE)
+				return false;
 
 			vec.x = amx_ctof(addr[0]);
 			vec.y = amx_ctof(addr[1]);
 			vec.z = amx_ctof(addr[2]);
 
-			return vec;
+			return true;
+		}
+
+		bool getArrayFromParam(AMX * amx, const cell param, cell * addr, int size) {
+			cell * ptr;
+			for (int i = 0; i < size; i++)
+				if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
+					return false;
+				else
+					addr[i] = *ptr;
+			return true;
+		}
+
+		bool getFloatArrayFromParam(AMX * amx, const cell param, float * addr, int size) {
+			cell * ptr;
+			for (int i = 0; i < size; i++)
+				if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
+					return false;
+				else
+					addr[i] = amx_ctof(*ptr);
+			return true;
 		}
 	};
 };

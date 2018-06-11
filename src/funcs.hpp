@@ -13,8 +13,25 @@ namespace AmxVHook {
 		void drawString(std::string value, float x, float y);
 		void drawInt(int value, float x, float y);
 		void drawFloat(float value, DWORD decimal_places, float x, float y);
+	};
 
-		void vector3ToCellArray(cell * addr, Vector3 * vec);
-		Vector3 cellArrayToVector3(cell *addr);
+	namespace Utility {
+		class Color {
+		public:
+			uint16_t R = 255;
+			uint16_t G = 255;
+			uint16_t B = 255;
+			uint16_t A = 255;
+			uint32_t RGBA = 0xFFFFFFFF;
+
+			Color(uint32_t);
+			Color(uint16_t, uint16_t, uint16_t, uint16_t);
+		};
+
+		bool setVector3ToParam(AMX * amx, cell param, Vector3 & vec);
+		bool getVector3FromParam(AMX * amx, cell param, Vector3 & vec);
+
+		bool getArrayFromParam(AMX * amx, cell param, cell * addr, int size);
+		bool getFloatArrayFromParam(AMX * amx, cell param, float * addr, int size);
 	};
 };
