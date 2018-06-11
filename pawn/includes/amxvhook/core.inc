@@ -6,7 +6,7 @@
 #include <core>
 #include <float>
 
-#include <amxvhook\enum>
+#include <amxvhook\defines>
 #include <amxvhook\player>
 #include <amxvhook\ui>
 #include <amxvhook\graphics>
@@ -24,6 +24,8 @@ forward onModUnload();
 forward onModUpdate();
 
 native log(text[]);
+
+native isModLoaded(const modname[]);
 
 native getVersion();
 native getPoolSize();

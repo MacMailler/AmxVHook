@@ -5,6 +5,7 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Core {
 			MOD_NATIVE(log);
+			MOD_NATIVE(isModLoaded);
 			MOD_NATIVE(getVersion);
 			MOD_NATIVE(getPoolSize);
 			MOD_NATIVE(getTickCount);

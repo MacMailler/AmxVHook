@@ -9,6 +9,7 @@ namespace AmxVHook {
 		namespace Core {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(log)
+				MOD_DEFINE_NATIVE(isModLoaded)
 				MOD_DEFINE_NATIVE(getVersion)
 				MOD_DEFINE_NATIVE(getPoolSize)
 				MOD_DEFINE_NATIVE(getTickCount)
@@ -29,12 +30,22 @@ namespace AmxVHook {
 
 				return 1;
 			}
+			
+			MOD_NATIVE(isModLoaded) {
+				if (!arguments(1))
+					return 0;
+
+				if (!gPool->find(String::get(amx, params[1]))->first.empty())
+					return 1;
+
+				return 0;
+			}
 
 			MOD_NATIVE(getVersion) {
 				return AmxVHook::Core::AMXVHOOK_VERSION;
 			}
 
-			MOD_NATIVE(getPoolSize) {
+			MOD_NATIVE(getModPoolSize) {
 				return static_cast<cell>(gPool->size());
 			}
 
