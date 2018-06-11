@@ -102,23 +102,25 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool getArrayFromParam(AMX * amx, const cell param, cell * addr, int size) {
+		bool getArrayFromParam(AMX * amx, const cell param, cell * dest, int size) {
 			cell * ptr;
+			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
+				return false;
+
 			for (int i = 0; i < size; i++)
-				if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
-					return false;
-				else
-					addr[i] = *ptr;
+				dest[i] = ptr[i];
+
 			return true;
 		}
 
-		bool getFloatArrayFromParam(AMX * amx, const cell param, float * addr, int size) {
+		bool getFloatArrayFromParam(AMX * amx, const cell param, float * dest, int size) {
 			cell * ptr;
+			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
+				return false;
+
 			for (int i = 0; i < size; i++)
-				if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
-					return false;
-				else
-					addr[i] = amx_ctof(*ptr);
+				dest[i] = amx_ctof(ptr[i]);
+
 			return true;
 		}
 	};
