@@ -8,29 +8,29 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setCPScale)
 				MOD_DEFINE_NATIVE(setCPCylinderHeight)
 				MOD_DEFINE_NATIVE(setCPColor)
+				MOD_DEFINE_NATIVE(setCPIconColor)
 				MOD_DEFINE_NATIVE(deleteCP)
 
 				{NULL, NULL} // terminator
 			};
 
 			MOD_NATIVE(createCP) {
-				if (!arguments(8))
+				if (!arguments(5))
 					return 0;
 
-				cell * addr1 = nullptr, * addr2 = nullptr;
-				if ((amx_GetAddr(amx, params[2], &addr1) != AMX_ERR_NONE || addr1 == nullptr) ||
-					(amx_GetAddr(amx, params[3], &addr2) != AMX_ERR_NONE || addr2 == nullptr))
+				float coords[3], next[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[3], next, 3))
 					return 0;
 
-				Vector3 vec1 = Funcs::cellArrayToVector3(addr1);
-				Vector3 vec2 = Funcs::cellArrayToVector3(addr2);
+				Utility::Color color(params[5]);
 
 				return GRAPHICS::CREATE_CHECKPOINT(
 					params[1],
-					vec1.x, vec1.y, vec1.z,
-					vec2.x, vec2.y, vec2.z,
+					coords[0], coords[1], coords[2],
+					next[0], next[1], next[2],
 					amx_ctof(params[4]),
-					params[5], params[6], params[7], params[8], 0
+					color.R, color.G, color.B, color.A, 0
 				);
 			}
 
@@ -53,22 +53,21 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCPColor) {
-				if (!arguments(6))
+				if (!arguments(2))
 					return 0;
 
-				switch (params[6]) {
-				case 1:
-					GRAPHICS::_SET_CHECKPOINT_ICON_RGBA(params[1], params[2], params[3], params[4], params[5]);
-					break;
-				case 2:
-					GRAPHICS::_SET_CHECKPOINT_ICON_RGBA(params[1], params[2], params[3], params[4], params[5]);
-					GRAPHICS::SET_CHECKPOINT_RGBA(params[1], params[2], params[3], params[4], params[5]);
-					break;
-				default:
-					GRAPHICS::SET_CHECKPOINT_RGBA(params[1], params[2], params[3], params[4], params[5]);
-					break;
-				}
+				Utility::Color color(params[2]);
+				GRAPHICS::SET_CHECKPOINT_RGBA(params[1], color.R, color.G, color.B, color.A);
 
+				return 1;
+			}
+			
+			MOD_NATIVE(setCPIconColor) {
+				if (!arguments(2))
+					return 0;
+
+				Utility::Color color(params[2]);
+				GRAPHICS::_SET_CHECKPOINT_ICON_RGBA(params[1], color.R, color.G, color.B, color.A);
 				return 1;
 			}
 

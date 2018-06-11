@@ -8,6 +8,7 @@ namespace AmxVHook {
 			MOD_NATIVE(setCPScale);
 			MOD_NATIVE(setCPCylinderHeight);
 			MOD_NATIVE(setCPColor);
+			MOD_NATIVE(setCPIconColor);
 			MOD_NATIVE(deleteCP);
 		
 			AMX_NATIVE_INFO list[];

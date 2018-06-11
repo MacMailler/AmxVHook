@@ -206,15 +206,8 @@ namespace AmxVHook {
 				if (!arguments(2))
 					return 0;
 
-				cell *addr = nullptr;
-
-				if (amx_GetAddr(amx, params[1], &addr) != AMX_ERR_NONE || addr == nullptr)
-					return 0;
-
 				Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), params[2]);
-				Funcs::vector3ToCellArray(addr, &coords);
-
-				return 1;
+				return Utility::setVector3ToParam(amx, params[1], coords);
 			}
 
 			MOD_NATIVE(setPlayerInvincible) {

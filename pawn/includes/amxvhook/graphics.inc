@@ -53,10 +53,10 @@ native getScreenSize(&width, &height);
 native Float:getSafeZoneSize();
 native bool:isWidescreen();
 
-native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color[@RGBA] = {255,255,255,255});
-native drawRect(Float:x, Float:y, Float:width, Float:height, color[@RGBA] = {255,255,255,255});
-native drawMarker(type, Float:pos[@Vector3], Float:dir[@Vector3]={0,...}, Float:rot[@Vector3]={0,...}, Float:scale[@Vector3]={1,...}, color[@RGBA]={255,255,255,255}, bool:bobUpAndDown = false, bool:fadeCamera = false, bool:drawOnEnts = false);
-native drawSprite(const textureDict[], const textureName[], Float:x, Float:y, Float:width, Float:height, Float:heading = 0.0, color[@RGBA]={255,255,255,255});
+native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF);
+native drawRect(Float:x, Float:y, Float:width, Float:height, color = 0xFFFFFFFF);
+native drawMarker(type, Float:pos[@Vector3], Float:dir[@Vector3]={0,...}, Float:rot[@Vector3]={0,...}, Float:scale[@Vector3]={1,...}, color = 0xFFFFFFFF, bool:bobUpAndDown = false, bool:fadeCamera = false, bool:drawOnEnts = false);
+native drawSprite(const textureDict[], const textureName[], Float:x, Float:y, Float:width, Float:height, Float:heading = 0.0, color = 0xFFFFFFFF);
 
 native setUILayer(layer);
 native setDrawPosition(Float:x, Float:y);

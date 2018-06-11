@@ -25,16 +25,15 @@ namespace AmxVHook {
 				if (!arguments(3))
 					return -1;
 
-				cell * addr = nullptr;
-				if (amx_GetAddr(amx, params[2], &addr) != AMX_ERR_NONE || addr == nullptr)
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
 					return 0;
 
-				Vector3 vec = Funcs::cellArrayToVector3(addr);
 				::Vehicle vehicle = -1;
 				if (STREAMING::IS_MODEL_IN_CDIMAGE((::Hash)params[1]) && STREAMING::IS_MODEL_A_VEHICLE((::Hash)params[1])) {
 					STREAMING::REQUEST_MODEL((::Hash)params[1]);
 					while (!STREAMING::HAS_MODEL_LOADED((::Hash)params[1])) WAIT(0);
-					vehicle = VEHICLE::CREATE_VEHICLE(params[1], vec.x, vec.y, vec.z, amx_ctof(params[3]), FALSE, TRUE);
+					vehicle = VEHICLE::CREATE_VEHICLE(params[1], coords[0], coords[1], coords[2], amx_ctof(params[3]), FALSE, TRUE);
 					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED((::Hash)params[1]);
 				}
 				return vehicle;

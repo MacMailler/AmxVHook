@@ -63,13 +63,11 @@ namespace AmxVHook {
 				if (!arguments(6))
 					return 0;
 
-				cell * color = nullptr;
-				if (amx_GetAddr(amx, params[6], &color) != AMX_ERR_NONE)
-					return 0;
+				Utility::Color color(params[6]);
 
 				::UI::SET_TEXT_FONT(params[5]);
 				::UI::SET_TEXT_SCALE(amx_ctof(params[4]), amx_ctof(params[4]));
-				::UI::SET_TEXT_COLOUR(color[0], color[1], color[2], color[3]);
+				::UI::SET_TEXT_COLOUR(color.R, color.G, color.B, color.A);
 				::UI::SET_TEXT_WRAP(0.0, 1.0);
 				::UI::SET_TEXT_CENTRE(0);
 				::UI::SET_TEXT_DROPSHADOW(2, 2, 0, 0, 0);
@@ -85,11 +83,8 @@ namespace AmxVHook {
 				if (!arguments(5))
 					return 0;
 
-				cell * color = nullptr;
-				if (amx_GetAddr(amx, params[5], &color) != AMX_ERR_NONE)
-					return 0;
-
-				Funcs::drawRect(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), color[0], color[1], color[2], color[3]);
+				Utility::Color color(params[5]);
+				Funcs::drawRect(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), color.R, color.G, color.B, color.A);
 				return 1;
 			}
 
@@ -97,22 +92,22 @@ namespace AmxVHook {
 				if (!arguments(9))
 					return 0;
 
-				cell * addr[4] = { nullptr };
-				Vector3 vec[4];
-
-				amxAddrToVector3(amx, params, 2, 4);
-
-				cell * color = nullptr;
-				if (amx_GetAddr(amx, params[6], &color) != AMX_ERR_NONE)
+				float coords[3], dir[3], rot[3], scale[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[3], dir, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[4], rot, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[5], scale, 3))
 					return 0;
+
+				Utility::Color color(params[6]);
 
 				GRAPHICS::DRAW_MARKER(
 					params[1],
-					vec[0].x, vec[0].y, vec[0].z, // x y z
-					vec[1].x, vec[1].y, vec[1].z, // dx dy dz
-					vec[2].x, vec[2].y, vec[2].z, // rx ry rz
-					vec[3].x, vec[3].y, vec[3].z, // sx sy sz
-					color[0], color[1], color[2], color[3], // r b g a
+					coords[0], coords[1], coords[2], // x y z
+					dir[0], dir[1], dir[2], // dx dy dz
+					rot[0], rot[1], rot[2], // rx ry rz
+					scale[0], scale[1], scale[2], // sx sy sz
+					color.R, color.G, color.B, color.A, // r b g a
 					params[7], params[8], 2, FALSE, NULL, NULL, params[9]
 				);
 
@@ -123,9 +118,7 @@ namespace AmxVHook {
 				if (!arguments(8))
 					return 0;
 
-				cell * color = nullptr;
-				if (amx_GetAddr(amx, params[8], &color) != AMX_ERR_NONE)
-					return 0;
+				Utility::Color color(params[8]);
 
 				GRAPHICS::DRAW_SPRITE(
 					(char *)String::get(amx, params[1]).c_str(),
@@ -133,7 +126,7 @@ namespace AmxVHook {
 					amx_ctof(params[3]), amx_ctof(params[4]),
 					amx_ctof(params[5]), amx_ctof(params[6]),
 					amx_ctof(params[7]),
-					color[0], color[1], color[2], color[3]
+					color.R, color.G, color.B, color.A
 				);
 
 				return 1;

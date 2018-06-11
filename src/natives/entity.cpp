@@ -220,15 +220,9 @@ namespace AmxVHook {
 			MOD_NATIVE(getEntityPos) {
 				if (!arguments(3))
 					return 0;
-
-				cell * addr = nullptr;
-				if (amx_GetAddr(amx, params[2], &addr) != AMX_ERR_NONE || addr == nullptr)
-					return 0;
 				
 				Vector3 coords = ENTITY::GET_ENTITY_COORDS((::Entity)params[1], params[3]);
-				Funcs::vector3ToCellArray(addr, &coords);
-
-				return 1;
+				return Utility::setVector3ToParam(amx, params[2], coords);
 			}
 
 
