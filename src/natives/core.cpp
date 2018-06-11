@@ -45,7 +45,7 @@ namespace AmxVHook {
 				return AmxVHook::Core::AMXVHOOK_VERSION;
 			}
 
-			MOD_NATIVE(getModPoolSize) {
+			MOD_NATIVE(getPoolSize) {
 				return static_cast<cell>(gPool->size());
 			}
 

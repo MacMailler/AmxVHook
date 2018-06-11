@@ -107,11 +107,11 @@ namespace AmxVHook {
 				if (!arguments(4))
 					return -1;
 
-				cell * addr = nullptr;
-				if (amx_GetAddr(amx, params[3], &addr) != AMX_ERR_NONE)
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[3], coords, 3))
 					return 0;
 
-				return PED::CREATE_PED(params[1], params[2], amx_ctof(addr[0]), amx_ctof(addr[1]), amx_ctof(addr[2]), amx_ctof(params[4]), FALSE, TRUE);
+				return PED::CREATE_PED(params[1], params[2], coords[0], coords[1], coords[2], amx_ctof(params[4]), FALSE, TRUE);
 			}
 
 			MOD_NATIVE(createPedInVehicle) {
@@ -125,11 +125,11 @@ namespace AmxVHook {
 				if (!arguments(1))
 					return -1;
 
-				cell * addr = nullptr;
-				if (amx_GetAddr(amx, params[1], &addr) != AMX_ERR_NONE)
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3))
 					return 0;
 
-				return PED::CREATE_RANDOM_PED(amx_ctof(addr[0]), amx_ctof(addr[1]), amx_ctof(addr[3]));
+				return PED::CREATE_RANDOM_PED(coords[0], coords[1], coords[2]);
 			}
 
 			MOD_NATIVE(clonePed) {
