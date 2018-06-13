@@ -83,15 +83,14 @@ namespace AmxVHook {
 								Funcs::showSubtitle("~g~AmxVHook:~w~ all mods reloaded!", 4000, TRUE);
 							}
 							else {
+								char temp[64];
 								for (int i = 1; i < params.size(); i++)
 									if (!params[i].empty()) {
 										if (gPool->reloadMod(params[i])) {
-											char temp[64];
 											sprintf_s(temp, "~g~AmxVHook: ~w~`~b~%s~w~` reloaded!", params[i].c_str());
 											Funcs::showSubtitle(std::string(temp), 4000, TRUE);
 										}
 										else {
-											char temp[64];
 											sprintf_s(temp, "~g~AmxVHook:~w~`~b~%s~w~` ~r~NOT ~w~found!", params[i].c_str());
 											Funcs::showSubtitle(std::string(temp), 4000, TRUE);
 										}

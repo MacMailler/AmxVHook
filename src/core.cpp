@@ -27,7 +27,6 @@ namespace AmxVHook {
 				Natives::Graphics::list,
 				Natives::Checkpoint::list,
 				Natives::Input::list,
-				Natives::UI::list,
 				Natives::Entity::list,
 				Natives::Camera::list
 			});

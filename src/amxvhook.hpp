@@ -1,8 +1,6 @@
 #pragma once
 #pragma warning(disable:4996 4244)
-
 #pragma comment(lib, "ScriptHookV.lib")
-
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -14,7 +12,6 @@
 #include <boost\filesystem.hpp>
 #include <boost\thread\thread.hpp>
 #include <boost\thread\mutex.hpp>
-#include <boost\thread\shared_mutex.hpp>
 #include <boost\algorithm\string.hpp>
 
 #include <sdk\main.h>

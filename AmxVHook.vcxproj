@@ -40,7 +40,6 @@
     <ClInclude Include="src\natives\input.hpp" />
     <ClInclude Include="src\natives\ped.hpp" />
     <ClInclude Include="src\natives\player.hpp" />
-    <ClInclude Include="src\natives\ui.hpp" />
     <ClInclude Include="src\natives\vehicle.hpp" />
     <ClInclude Include="src\pool.hpp" />
     <ClInclude Include="src\string.hpp" />
@@ -69,7 +68,6 @@
     <ClCompile Include="src\natives\input.cpp" />
     <ClCompile Include="src\natives\ped.cpp" />
     <ClCompile Include="src\natives\player.cpp" />
-    <ClCompile Include="src\natives\ui.cpp" />
     <ClCompile Include="src\natives\vehicle.cpp" />
     <ClCompile Include="src\pool.cpp" />
     <ClCompile Include="src\string.cpp" />

@@ -4,6 +4,33 @@
 #define __graphics_inc__
 
 
+enum eHudComps {
+	HUD = 0,
+	HUD_WANTED_STARS = 1,
+	HUD_WEAPON_ICON = 2,
+	HUD_CASH = 3,
+	HUD_MP_CASH = 4,
+	HUD_MP_MESSAGE = 5,
+	HUD_VEHICLE_NAME = 6,
+	HUD_AREA_NAME = 7,
+	HUD_VEHICLE_CLASS = 8,
+	HUD_STREET_NAME = 9,
+	HUD_HELP_TEXT = 10,
+	HUD_FLOATING_HELP_TEXT_1 = 11,
+	HUD_FLOATING_HELP_TEXT_2 = 12,
+	HUD_CASH_CHANGE = 13,
+	HUD_RETICLE = 14,
+	HUD_SUBTITLE_TEXT = 15,
+	HUD_RADIO_STATIONS = 16,
+	HUD_SAVING_GAME = 17,
+	HUD_GAME_STREAM = 18,
+	HUD_WEAPON_WHEEL = 19,
+	HUD_WEAPON_WHEEL_STATS = 20,
+	MAX_HUD_COMPONENTS = 21,
+	MAX_HUD_WEAPONS = 22,
+	MAX_SCRIPTED_HUD_COMPONENTS = 141
+};
+
 enum eMarkers {
 	MARKER_UPSIDEDOWNCONE = 0,
 	MARKER_VERTICALCYLINDER = 1,
@@ -47,52 +74,31 @@ enum eFonts {
 	FONT_CAPS = 2
 };
 
-native world3DToScreen2D(Float:coords[@Vector3], &Float:sx, &Float:sy);
-
-native getScreenSize(&width, &height);
-native Float:getSafeZoneSize();
-native bool:isWidescreen();
-
 native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF, bool:centre = false);
 native drawRect(Float:x, Float:y, Float:width, Float:height, color = 0xFFFFFFFF);
 native drawMarker(type, Float:pos[@Vector3], Float:dir[@Vector3]={0,...}, Float:rot[@Vector3]={0,...}, Float:scale[@Vector3]={1,...}, color = 0xFFFFFFFF, bool:bobUpAndDown = false, bool:fadeCamera = false, bool:drawOnEnts = false);
 native drawSprite(const textureDict[], const textureName[], Float:x, Float:y, Float:width, Float:height, Float:heading = 0.0, color = 0xFFFFFFFF);
 
-native setTextDropShadow(dist, color = 0x00000000);
-native setTextEdge(dist, color = 0x00000000);
-native setTextWrap(Float:start = 0.0, Float:end = 1.0);
+native bool:isWidescreen();
+native bool:isHudComponentActive(id);
 
 native setUILayer(layer);
 native setDrawPosition(Float:x, Float:y);
 native setDrawPositionRatio(Float:x, Float:y, Float:p2, Float:p3);
 native setDrawPositionEnd();
+native setTextDropShadow(dist, color = 0x00000000);
+native setTextEdge(dist, color = 0x00000000);
+native setTextWrap(Float:start = 0.0, Float:end = 1.0);
+native setHudVisible(bool:visible);
+native setRadarVisible(bool:visible);
+native setRadarZoom(zoom);
 
-/*
-enum eDrawCommands {
-	SET_TEXT_FONT,
-	SET_TEXT_SCALE,
-	SET_TEXT_COLOR,
-	SET_TEXT_WRAP,
-	SET_TEXT_CENTRE,
-	SET_TEXT_DROPSHADOW,
-	SET_TEXT_EDGE,
-	SET_TEXT_RIGHT_JUSTIFY,
-	SET_TEXT_JUSTIFICATION,
-	SET_TEXT_LEADING,
-	SET_TEXT_PROPORTIONAL,
-	SET_TEXT_OUTLINE,
-	SET_TEXT_ENTRY,
-	SET_TEXT_ENTRY_2,
-	SET_TEXT_RENDER_ID,
-	ADD_TEXT_STRING,
-	ADD_TEXT_INTEGER,
-	ADD_TEXT_FLOAT,
-	SET_NOTIFY_TEXT_ENTRY,
-	DRAW_SUBTITLE_TIMED,
-	DRAW_NOTIFY,
-	DRAW_TEXT,
-	DRAW_RECT,
-	DRAW_LINE,
-	DRAW_POLY,
-	DRAW_BOX
-};*/
+native showNotify(const text[], bool:blink = false, bool:in_breif = false);
+native showSubtitle(const text[], duration = 2000, bool:immediately = true);
+
+native getScreenSize(&width, &height);
+native Float:getSafeZoneSize();
+
+native hideHudAndRadarThisFrame();
+
+native world3DToScreen2D(Float:coords[@Vector3], &Float:sx, &Float:sy);

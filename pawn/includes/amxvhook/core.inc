@@ -8,7 +8,6 @@
 
 #include <amxvhook\defines>
 #include <amxvhook\player>
-#include <amxvhook\ui>
 #include <amxvhook\graphics>
 #include <amxvhook\input>
 #include <amxvhook\blip>
