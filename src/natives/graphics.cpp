@@ -10,6 +10,9 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(drawRect)
 				MOD_DEFINE_NATIVE(drawText)
 				MOD_DEFINE_NATIVE(drawMarker)
+				MOD_DEFINE_NATIVE(setTextDropShadow)
+				MOD_DEFINE_NATIVE(setTextEdge)
+				MOD_DEFINE_NATIVE(setTextWrap)
 				MOD_DEFINE_NATIVE(setUILayer)
 				MOD_DEFINE_NATIVE(setDrawPosition)
 				MOD_DEFINE_NATIVE(setDrawPositionRatio)
@@ -60,7 +63,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(drawText) {
-				if (!arguments(6))
+				if (!arguments(7))
 					return 0;
 
 				Utility::Color color(params[6]);
@@ -68,10 +71,7 @@ namespace AmxVHook {
 				::UI::SET_TEXT_FONT(params[5]);
 				::UI::SET_TEXT_SCALE(amx_ctof(params[4]), amx_ctof(params[4]));
 				::UI::SET_TEXT_COLOUR(color.R, color.G, color.B, color.A);
-				::UI::SET_TEXT_WRAP(0.0, 1.0);
-				::UI::SET_TEXT_CENTRE(0);
-				::UI::SET_TEXT_DROPSHADOW(2, 2, 0, 0, 0);
-				::UI::SET_TEXT_EDGE(1, 0, 0, 0, 205);
+				::UI::SET_TEXT_CENTRE(params[7]);
 				::UI::_SET_TEXT_ENTRY("STRING");
 				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
 				::UI::_DRAW_TEXT(amx_ctof(params[2]), amx_ctof(params[3]));
@@ -85,6 +85,7 @@ namespace AmxVHook {
 
 				Utility::Color color(params[5]);
 				Funcs::drawRect(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), color.R, color.G, color.B, color.A);
+
 				return 1;
 			}
 
@@ -128,6 +129,35 @@ namespace AmxVHook {
 					amx_ctof(params[7]),
 					color.R, color.G, color.B, color.A
 				);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setTextDropShadow) {
+				if (!arguments(2))
+					return 0;
+
+				Utility::Color color(params[2]);
+				::UI::SET_TEXT_DROPSHADOW(params[1], color.R, color.G, color.B, color.A);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setTextEdge) {
+				if (!arguments(2))
+					return 0;
+
+				Utility::Color color(params[2]);
+				::UI::SET_TEXT_EDGE(params[1], color.R, color.G, color.B, color.A);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setTextWrap) {
+				if (!arguments(2))
+					return 0;
+
+				::UI::SET_TEXT_WRAP(amx_ctof(params[1]), amx_ctof(params[2]));
 
 				return 1;
 			}

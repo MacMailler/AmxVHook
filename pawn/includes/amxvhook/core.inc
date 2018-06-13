@@ -27,6 +27,7 @@ native log(text[]);
 
 native isModLoaded(const modname[]);
 
+native getFps();
 native getVersion();
 native getPoolSize();
 native getTickCount();

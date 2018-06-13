@@ -7,6 +7,7 @@ namespace AmxVHook {
 
 	namespace Core {
 
+		uint32_t lastFrames = 0;
 		bool versionVisible = true;
 
 		void init() {
@@ -34,6 +35,16 @@ namespace AmxVHook {
 			gPool->make();
 
 			while (true) {
+				static uint32_t timer, frames = 0;
+
+				if (GAMEPLAY::GET_GAME_TIMER() - timer < 1000)
+					frames++;
+				else {
+					timer = GAMEPLAY::GET_GAME_TIMER();
+					lastFrames = frames;
+					frames = 0;
+				}
+
 				Keyboard::displayOnScreeKeyboardProcess();
 				gPool->execAll("onModUpdate");
 				
@@ -46,6 +57,10 @@ namespace AmxVHook {
 
 		void cleanup() {
 			gPool->clear();
+		}
+		
+		uint32_t getFps() {
+			return lastFrames;
 		}
 	};
 };

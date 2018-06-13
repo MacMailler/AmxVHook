@@ -7,6 +7,9 @@ namespace AmxVHook {
 			MOD_NATIVE(drawRect);
 			MOD_NATIVE(drawText);
 			MOD_NATIVE(drawMarker);
+			MOD_NATIVE(setTextDropShadow);
+			MOD_NATIVE(setTextEdge);
+			MOD_NATIVE(setTextWrap);
 			MOD_NATIVE(setUILayer);
 			MOD_NATIVE(setDrawPosition);
 			MOD_NATIVE(setDrawPositionRatio);

@@ -53,10 +53,14 @@ native getScreenSize(&width, &height);
 native Float:getSafeZoneSize();
 native bool:isWidescreen();
 
-native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF);
+native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF, bool:centre = false);
 native drawRect(Float:x, Float:y, Float:width, Float:height, color = 0xFFFFFFFF);
 native drawMarker(type, Float:pos[@Vector3], Float:dir[@Vector3]={0,...}, Float:rot[@Vector3]={0,...}, Float:scale[@Vector3]={1,...}, color = 0xFFFFFFFF, bool:bobUpAndDown = false, bool:fadeCamera = false, bool:drawOnEnts = false);
 native drawSprite(const textureDict[], const textureName[], Float:x, Float:y, Float:width, Float:height, Float:heading = 0.0, color = 0xFFFFFFFF);
+
+native setTextDropShadow(dist, color = 0x00000000);
+native setTextEdge(dist, color = 0x00000000);
+native setTextWrap(Float:start = 0.0, Float:end = 1.0);
 
 native setUILayer(layer);
 native setDrawPosition(Float:x, Float:y);

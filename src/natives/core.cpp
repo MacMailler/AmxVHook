@@ -10,6 +10,7 @@ namespace AmxVHook {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(log)
 				MOD_DEFINE_NATIVE(isModLoaded)
+				MOD_DEFINE_NATIVE(getFps)
 				MOD_DEFINE_NATIVE(getVersion)
 				MOD_DEFINE_NATIVE(getPoolSize)
 				MOD_DEFINE_NATIVE(getTickCount)
@@ -41,6 +42,10 @@ namespace AmxVHook {
 				return 0;
 			}
 
+			MOD_NATIVE(getFps) {
+				return AmxVHook::Core::getFps();
+			}
+			
 			MOD_NATIVE(getVersion) {
 				return AmxVHook::Core::AMXVHOOK_VERSION;
 			}
