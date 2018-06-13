@@ -76,8 +76,15 @@ enum eFonts {
 
 native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF, bool:centre = false);
 native drawRect(Float:x, Float:y, Float:width, Float:height, color = 0xFFFFFFFF);
+native drawBox(Float:point1[@Vector3], Float:point2[@Vector3], color = 0xFFFFFFFF);
+native drawLine(Float:point1[@Vector3], Float:point2[@Vector3], color = 0xFFFFFFFF);
+native drawPoly(Float:point1[@Vector3], Float:point2[@Vector3], Float:point3[@Vector3], color = 0xFFFFFFFF);
 native drawMarker(type, Float:pos[@Vector3], Float:dir[@Vector3]={0,...}, Float:rot[@Vector3]={0,...}, Float:scale[@Vector3]={1,...}, color = 0xFFFFFFFF, bool:bobUpAndDown = false, bool:fadeCamera = false, bool:drawOnEnts = false);
 native drawSprite(const textureDict[], const textureName[], Float:x, Float:y, Float:width, Float:height, Float:heading = 0.0, color = 0xFFFFFFFF);
+native drawSpotLight(Float:coords[@Vector3], Float:dir[@Vector3], Float:distance, Float:brightness, Float:roundness, Float:radius, Float:fadeout, color = 0xFFFFFFFF);
+native drawSpotLightWithShadow(Float:coords[@Vector3], Float:dir[@Vector3], Float:distance, Float:brightness, Float:roundness, Float:radius, Float:fadeout, shadowid, color = 0xFFFFFFFF);
+native drawLightWithRange(Float:coords[@Vector3], Float:range, Float:intensity, color = 0xFFFFFFFF);
+native drawLightWithRangeAndShadow(Float:coords[@Vector3], Float:range, Float:intensity, Float:shadow, color = 0xFFFFFFFF);
 
 native bool:isWidescreen();
 native bool:isHudComponentActive(id);
@@ -100,5 +107,7 @@ native getScreenSize(&width, &height);
 native Float:getSafeZoneSize();
 
 native hideHudAndRadarThisFrame();
+
+native requestStreamedTextureDict();
 
 native world3DToScreen2D(Float:coords[@Vector3], &Float:sx, &Float:sy);

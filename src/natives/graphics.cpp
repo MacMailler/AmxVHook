@@ -9,7 +9,15 @@ namespace AmxVHook {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(drawRect)
 				MOD_DEFINE_NATIVE(drawText)
+				MOD_DEFINE_NATIVE(drawLine)
+				MOD_DEFINE_NATIVE(drawPoly)
+				MOD_DEFINE_NATIVE(drawBox)
 				MOD_DEFINE_NATIVE(drawMarker)
+				MOD_DEFINE_NATIVE(drawSprite)
+				MOD_DEFINE_NATIVE(drawSpotLight)
+				MOD_DEFINE_NATIVE(drawSpotLightWithShadpw)
+				MOD_DEFINE_NATIVE(drawLightWithRange)
+				MOD_DEFINE_NATIVE(drawLightWithRangeAndShadow)
 				MOD_DEFINE_NATIVE(setTextDropShadow)
 				MOD_DEFINE_NATIVE(setTextEdge)
 				MOD_DEFINE_NATIVE(setTextWrap)
@@ -86,6 +94,52 @@ namespace AmxVHook {
 				return 1;
 			}
 
+			MOD_NATIVE(drawBox) {
+				if (!arguments(3))
+					return 0;
+
+				float point1[3], point2[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], point1, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[2], point2, 3))
+					return 0;
+
+				Utility::Color color(params[3]);
+				GRAPHICS::DRAW_BOX(point1[0], point1[1], point1[2], point2[0], point2[1], point2[2], color.R, color.G, color.B, color.A);
+
+				return 1;
+			}
+
+			MOD_NATIVE(drawLine) {
+				if (!arguments(3))
+					return 0;
+
+				float point1[3], point2[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], point1, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[2], point2, 3))
+					return 0;
+
+				Utility::Color color(params[3]);
+				GRAPHICS::DRAW_LINE(point1[0], point1[1], point1[2], point2[0], point2[1], point2[2], color.R, color.G, color.B, color.A);
+
+				return 1;
+			}
+
+			MOD_NATIVE(drawPoly) {
+				if (!arguments(4))
+					return 0;
+
+				float point1[3], point2[3], point3[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], point1, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[2], point2, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[2], point3, 3))
+					return 0;
+
+				Utility::Color color(params[3]);
+				GRAPHICS::DRAW_POLY(point1[0], point1[1], point1[2], point2[0], point2[1], point2[2], point3[0], point3[1], point3[2], color.R, color.G, color.B, color.A);
+
+				return 1;
+			}
+
 			MOD_NATIVE(drawRect) {
 				if (!arguments(5))
 					return 0;
@@ -135,6 +189,88 @@ namespace AmxVHook {
 					amx_ctof(params[5]), amx_ctof(params[6]),
 					amx_ctof(params[7]),
 					color.R, color.G, color.B, color.A
+				);
+
+				return 1;
+			}
+
+			MOD_NATIVE(drawSpotLight) {
+				if (!arguments(8))
+					return 0;
+
+				float coords[3], dir[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[2], dir, 3))
+					return 0;
+
+				Utility::Color color(params[8]);
+
+				GRAPHICS::DRAW_SPOT_LIGHT(
+					coords[0], coords[1], coords[2],
+					dir[0], dir[1], dir[2],
+					color.R, color.G, color.B,
+					amx_ctof(params[3]), amx_ctof(params[4]),
+					amx_ctof(params[5]), amx_ctof(params[6]),
+					amx_ctof(params[7])
+				);
+
+				return 1;
+			}
+
+			MOD_NATIVE(drawSpotLightWithShadow) {
+				if (!arguments(9))
+					return 0;
+
+				float coords[3], dir[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[2], dir, 3))
+					return 0;
+
+				Utility::Color color(params[9]);
+
+				GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW(
+					coords[0], coords[1], coords[2],
+					dir[0], dir[1], dir[2],
+					color.R, color.G, color.B,
+					amx_ctof(params[3]), amx_ctof(params[4]),
+					amx_ctof(params[5]), amx_ctof(params[6]),
+					amx_ctof(params[7]), params[8]
+				);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(drawLightWithRange) {
+				if (!arguments(4))
+					return 0;
+
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3))
+					return 0;
+
+				Utility::Color color(params[4]);
+
+				GRAPHICS::DRAW_LIGHT_WITH_RANGE(
+					coords[0], coords[1], coords[2],
+					color.R, color.G, color.B, amx_ctof(params[2]), amx_ctof(params[3])
+				);
+
+				return 1;
+			}
+
+			MOD_NATIVE(drawLightWithRangeAndShadow) {
+				if (!arguments(4))
+					return 0;
+
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3))
+					return 0;
+
+				Utility::Color color(params[5]);
+
+				GRAPHICS::_DRAW_LIGHT_WITH_RANGE_WITH_SHADOW(
+					coords[0], coords[1], coords[2],
+					color.R, color.G, color.B, amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4])
 				);
 
 				return 1;
