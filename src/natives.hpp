@@ -16,3 +16,4 @@
 #include "natives\gameplay.hpp"
 #include "natives\entity.hpp"
 #include "natives\camera.hpp"
+#include "natives\time.hpp"

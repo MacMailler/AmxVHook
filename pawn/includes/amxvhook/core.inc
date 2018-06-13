@@ -17,6 +17,7 @@
 #include <amxvhook\ped>
 #include <amxvhook\entity>
 #include <amxvhook\camera>
+#include <amxvhook\time>
 
 forward onModLoad();
 forward onModUnload();
