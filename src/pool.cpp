@@ -95,7 +95,7 @@ namespace AmxVHook {
 		this->make();
 	}
 
-	std::unordered_map<std::string, Mod>::iterator & Pool::find(std::string & name) {
+	std::unordered_map<std::string, Mod>::iterator Pool::find(std::string & name) {
 		return pool.find(name);
 	}
 
@@ -120,7 +120,7 @@ namespace AmxVHook {
 	bool Pool::unloadMod(std::string & name) {
 		gDebug->log("Unloading mod '%s.amx'...", name.c_str());
 
-		auto i = pool.find(name);
+		std::unordered_map<std::string, Mod>::iterator i = pool.find(name);
 		if (!i->first.empty()) {
 			this->exec(i->second.amx, "onModUnload");
 

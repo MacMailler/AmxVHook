@@ -23,7 +23,7 @@ namespace AmxVHook {
 		void clear();
 		void remake();
 
-		std::unordered_map<std::string, Mod>::iterator & find(std::string & name);
+		std::unordered_map<std::string, Mod>::iterator find(std::string & name);
 		size_t size();
 
 		cell loadMod(boost::filesystem::path path);

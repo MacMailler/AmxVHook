@@ -13,6 +13,7 @@ namespace AmxVHook {
 			MOD_NATIVE(drawSprite);
 			MOD_NATIVE(drawSpotLight);
 			MOD_NATIVE(drawSpotLightWithShadpw);
+			MOD_NATIVE(drawLightWithRange);
 			MOD_NATIVE(drawLightWithRangeAndShadow);
 			MOD_NATIVE(setTextDropShadow);
 			MOD_NATIVE(setTextEdge);

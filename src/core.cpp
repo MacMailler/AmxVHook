@@ -28,7 +28,8 @@ namespace AmxVHook {
 				Natives::Checkpoint::list,
 				Natives::Input::list,
 				Natives::Entity::list,
-				Natives::Camera::list
+				Natives::Camera::list,
+				Natives::Time::list
 			});
 
 			gPool->make();
