@@ -14,7 +14,7 @@ namespace AmxVHook {
 			UI::_DRAW_SUBTITLE_TIMED(duration, drawImmediately);
 		}
 
-		void drawText(char *text, float x, float y, float scale, int font, int r, int g, int b, int a) {
+		void drawText(char *text, float x, float y, float scale, int font, int r, int b, int g, int a) {
 			UI::SET_TEXT_FONT(font);
 			UI::SET_TEXT_SCALE(scale, scale);
 			UI::SET_TEXT_COLOUR(r, g, b, a);
@@ -27,8 +27,8 @@ namespace AmxVHook {
 			UI::_DRAW_TEXT(x, y);
 		}
 
-		void drawRect(float x, float y, float width, float height, int r, int g, int b, int a) {
-			GRAPHICS::DRAW_RECT(x, y, width, height, r, g, b, a);
+		void drawRect(float x, float y, float width, float height, int r, int b, int g, int a) {
+			GRAPHICS::DRAW_RECT((x + (width * 0.5f)), (y + (height * 0.5f)), width, height, r, g, b, a);
 		}
 
 		void drawInt(int value, float x, float y) {
@@ -48,20 +48,17 @@ namespace AmxVHook {
 			UI::_ADD_TEXT_COMPONENT_STRING((char *)value.c_str());
 			UI::_DRAW_TEXT(x, y);
 		}
-
-		void setupDraw(int font, float scale, int r, int b, int g, int a) {
-			UI::SET_TEXT_FONT(font);
-			UI::SET_TEXT_SCALE(scale, scale);
-			UI::SET_TEXT_COLOUR(r, b, g, a);
-			UI::SET_TEXT_WRAP(0.0f, 1.0f);
-			UI::SET_TEXT_CENTRE(0);
-			UI::SET_TEXT_DROPSHADOW(0, 0, 0, 0, 0);
-			UI::SET_TEXT_EDGE(0, 0, 0, 0, 0);
-			UI::SET_TEXT_OUTLINE();
-		}
 	};
 
 	namespace Utility {
+		Color::Color() {
+			this->R = 255;
+			this->G = 255;
+			this->B = 255;
+			this->A = 255;
+			this->RGBA = 0xFFFFFFFF;
+		}
+
 		Color::Color(uint32_t color) {
 			this->R = ((color & 0xFF000000) >> 24);
 			this->G = ((color & 0xFF0000) >> 16);

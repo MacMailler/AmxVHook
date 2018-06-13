@@ -32,7 +32,7 @@ native Float:getCamFarClip(cam);
 native Float:getCamFarDof(cam);
 native getRenderingCam();
 
-native setCamActive(cam);
+native setCamActive(cam, bool:active);
 native setCamFov(cam, Float:fov);
 native setCamPos(cam, Float:pos[@Vector3]);
 native setCamRot(cam, Float:rot[@Vector3]);
