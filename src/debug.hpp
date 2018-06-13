@@ -7,7 +7,6 @@ namespace AmxVHook {
 		std::string logFile;
 		std::queue<std::string> logQueue;
 		boost::mutex lwrMutex;
-		boost::shared_mutex ftrMutex;
 		boost::shared_ptr<boost::thread> threadInstance;
 
 	public:
