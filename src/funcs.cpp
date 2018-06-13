@@ -87,6 +87,17 @@ namespace AmxVHook {
 			return true;
 		}
 
+		bool setArrayToParam(AMX * amx, const cell param, cell * arr, int size) {
+			cell * ptr;
+			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
+				return false;
+
+			for (int i = 0; i < size; i++)
+				ptr[i] = arr[i];
+
+			return true;
+		}
+
 		bool getVector3FromParam(AMX * amx, cell param, Vector3 & vec) {
 			cell * addr;
 			if (amx_GetAddr(amx, param, &addr) != AMX_ERR_NONE)
