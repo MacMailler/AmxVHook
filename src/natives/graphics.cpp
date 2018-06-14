@@ -7,6 +7,9 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Graphics {
 			AMX_NATIVE_INFO list[] = {
+				MOD_DEFINE_NATIVE(drawInt)
+				MOD_DEFINE_NATIVE(drawFloat)
+				MOD_DEFINE_NATIVE(drawString)
 				MOD_DEFINE_NATIVE(drawRect)
 				MOD_DEFINE_NATIVE(drawText)
 				MOD_DEFINE_NATIVE(drawLine)
@@ -15,12 +18,13 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(drawMarker)
 				MOD_DEFINE_NATIVE(drawSprite)
 				MOD_DEFINE_NATIVE(drawSpotLight)
-				MOD_DEFINE_NATIVE(drawSpotLightWithShadpw)
+				MOD_DEFINE_NATIVE(drawSpotLightWithShadow)
 				MOD_DEFINE_NATIVE(drawLightWithRange)
 				MOD_DEFINE_NATIVE(drawLightWithRangeAndShadow)
 				MOD_DEFINE_NATIVE(setTextDropShadow)
 				MOD_DEFINE_NATIVE(setTextEdge)
 				MOD_DEFINE_NATIVE(setTextWrap)
+				MOD_DEFINE_NATIVE(setTextColor)
 				MOD_DEFINE_NATIVE(setUILayer)
 				MOD_DEFINE_NATIVE(setDrawPosition)
 				MOD_DEFINE_NATIVE(setDrawPositionRatio)
@@ -35,7 +39,15 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isWidescreen)
 				MOD_DEFINE_NATIVE(isHudComponentActive)
 				MOD_DEFINE_NATIVE(hideHudAndRadarThisFrame)
+				MOD_DEFINE_NATIVE(hideHudComponentThisFrame)
+				MOD_DEFINE_NATIVE(showHudComponentThisFrame)
 				MOD_DEFINE_NATIVE(world3DToScreen2D)
+				MOD_DEFINE_NATIVE(activateFrontendMenu)
+				MOD_DEFINE_NATIVE(restartFrontendMenu)
+				MOD_DEFINE_NATIVE(getCurrentFrontendMenu)
+				MOD_DEFINE_NATIVE(requestStreamedTextureDict)
+				MOD_DEFINE_NATIVE(isStreamedTextureDictLoaded)
+				MOD_DEFINE_NATIVE(setStreamedTDictAsNoLongerNeeded)
 
 				{NULL, NULL} // terminator
 			};
@@ -75,6 +87,33 @@ namespace AmxVHook {
 				*sy = amx_ftoc(sy2);
 
 				return ret;
+			}
+
+			MOD_NATIVE(drawInt) {
+				if (!arguments(3))
+					return 0;
+
+				Funcs::drawInt(params[1], amx_ctof(params[2]), amx_ctof(params[3]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(drawFloat) {
+				if (!arguments(4))
+					return 0;
+
+				Funcs::drawFloat(amx_ctof(params[1]), params[4], amx_ctof(params[2]), amx_ctof(params[3]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(drawString) {
+				if (!arguments(3))
+					return 0;
+
+				Funcs::drawString(String::get(amx, params[1]), amx_ctof(params[2]), amx_ctof(params[3]));
+
+				return 1;
 			}
 
 			MOD_NATIVE(drawText) {
@@ -305,6 +344,16 @@ namespace AmxVHook {
 				return 1;
 			}
 
+			MOD_NATIVE(setTextColor) {
+				if (!arguments(1))
+					return 0;
+
+				Utility::Color color(params[1]);
+				::UI::SET_TEXT_COLOUR(color.R, color.G, color.B, color.A);
+
+				return 1;
+			}
+
 			MOD_NATIVE(setUILayer) {
 				if (!arguments(1))
 					return 0;
@@ -403,6 +452,74 @@ namespace AmxVHook {
 
 			MOD_NATIVE(hideHudAndRadarThisFrame) {
 				::UI::HIDE_HUD_AND_RADAR_THIS_FRAME();
+				return 1;
+			}
+			
+			MOD_NATIVE(hideHudComponentThisFrame) {
+				if (!arguments(1))
+					return 0;
+
+				::UI::HIDE_HUD_COMPONENT_THIS_FRAME(params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(showHudComponentThisFrame) {
+				if (!arguments(1))
+					return 0;
+
+				::UI::SHOW_HUD_COMPONENT_THIS_FRAME(params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(activateFrontendMenu) {
+				if (!arguments(3))
+					return 0;
+
+				::UI::ACTIVATE_FRONTEND_MENU(params[1], params[2], params[3]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(restartFrontendMenu) {
+				if (!arguments(1))
+					return 0;
+
+				::UI::RESTART_FRONTEND_MENU(params[1], -1);
+
+				return 1;
+			}
+
+			MOD_NATIVE(getCurrentFrontendMenu) {
+				if (!arguments(1))
+					return 0;
+
+				return ::UI::_0x2309595AD6145265();
+			}
+			
+			MOD_NATIVE(requestStreamedTextureDict) {
+				if (!arguments(1))
+					return 0;
+
+				GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT((char *)String::get(amx, params[1]).c_str(), TRUE);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(isStreamedTextureDictLoaded) {
+				if (!arguments(1))
+					return 0;
+
+				return GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED((char *)String::get(amx, params[1]).c_str());
+			}
+			
+			MOD_NATIVE(setStreamedTDictAsNoLongerNeeded) {
+				if (!arguments(1))
+					return 0;
+
+				GRAPHICS::SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED((char *)String::get(amx, params[1]).c_str());
+
 				return 1;
 			}
 		};

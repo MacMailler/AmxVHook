@@ -4,6 +4,9 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Graphics {
+			MOD_NATIVE(drawInt);
+			MOD_NATIVE(drawFloat);
+			MOD_NATIVE(drawString);
 			MOD_NATIVE(drawRect);
 			MOD_NATIVE(drawText);
 			MOD_NATIVE(drawLine);
@@ -12,12 +15,13 @@ namespace AmxVHook {
 			MOD_NATIVE(drawMarker);
 			MOD_NATIVE(drawSprite);
 			MOD_NATIVE(drawSpotLight);
-			MOD_NATIVE(drawSpotLightWithShadpw);
+			MOD_NATIVE(drawSpotLightWithShadow);
 			MOD_NATIVE(drawLightWithRange);
 			MOD_NATIVE(drawLightWithRangeAndShadow);
 			MOD_NATIVE(setTextDropShadow);
 			MOD_NATIVE(setTextEdge);
 			MOD_NATIVE(setTextWrap);
+			MOD_NATIVE(setTextColor);
 			MOD_NATIVE(setUILayer);
 			MOD_NATIVE(setDrawPosition);
 			MOD_NATIVE(setDrawPositionRatio);
@@ -32,7 +36,15 @@ namespace AmxVHook {
 			MOD_NATIVE(isWidescreen);
 			MOD_NATIVE(isHudComponentActive);
 			MOD_NATIVE(hideHudAndRadarThisFrame);
+			MOD_NATIVE(hideHudComponentThisFrame);
+			MOD_NATIVE(showHudComponentThisFrame);
 			MOD_NATIVE(world3DToScreen2D);
+			MOD_NATIVE(activateFrontendMenu);
+			MOD_NATIVE(restartFrontendMenu);
+			MOD_NATIVE(getCurrentFrontendMenu);
+			MOD_NATIVE(requestStreamedTextureDict);
+			MOD_NATIVE(isStreamedTextureDictLoaded);
+			MOD_NATIVE(setStreamedTDictAsNoLongerNeeded);
 			
 			AMX_NATIVE_INFO list[];
 		};

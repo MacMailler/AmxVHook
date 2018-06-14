@@ -74,6 +74,8 @@ enum eFonts {
 	FONT_CAPS = 2
 };
 
+native drawInt(value, Float:x, Float:y);
+native drawFloat(value, Float:x, Float:y, decimal_places = 0);
 native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF, bool:centre = false);
 native drawRect(Float:x, Float:y, Float:width, Float:height, color = 0xFFFFFFFF);
 native drawBox(Float:point1[@Vector3], Float:point2[@Vector3], color = 0xFFFFFFFF);
@@ -93,6 +95,7 @@ native setUILayer(layer);
 native setDrawPosition(Float:x, Float:y);
 native setDrawPositionRatio(Float:x, Float:y, Float:p2, Float:p3);
 native setDrawPositionEnd();
+native setTextColor(color = 0x00000000);
 native setTextDropShadow(dist, color = 0x00000000);
 native setTextEdge(dist, color = 0x00000000);
 native setTextWrap(Float:start = 0.0, Float:end = 1.0);
@@ -107,7 +110,15 @@ native getScreenSize(&width, &height);
 native Float:getSafeZoneSize();
 
 native hideHudAndRadarThisFrame();
+native hideHudComponentThisFrame(id);
+native showHudComponentThisFrame(id);
 
-native requestStreamedTextureDict();
+native requestStreamedTextureDict(const textureDict[]);
+native isStreamedTextureDictLoaded(const textureDict[]);
+native setStreamedTDictAsNoLongerNeeded(const textureDict[]);
 
 native world3DToScreen2D(Float:coords[@Vector3], &Float:sx, &Float:sy);
+
+native activateFrontendMenu(menuhash, bool:pause, component);
+native restartFrontendMenu(menuhash);
+native getCurrentFrontendMenu();
