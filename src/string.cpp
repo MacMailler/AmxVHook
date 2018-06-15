@@ -2,6 +2,133 @@
 
 namespace AmxVHook {
 	namespace String {
+		void format(AMX * amx, const cell * params, cell * f, std::string & out) {
+			cell index = 0;
+
+			while (*f != '\0') {
+				char buff[32];
+				cell * ptr = nullptr;
+
+				switch (*f) {
+				case '%': {
+					f++;
+					switch (*f) {
+					case 'i':
+					case 'd': {
+						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						if (ptr != nullptr) {
+							sprintf_s(buff, "%i", *ptr);
+							out.append(buff);
+						}
+						else {
+							out.append("(null)");
+						}
+						f++;
+					}
+					break;
+
+					case 'c': {
+						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						if (ptr != nullptr) {
+							out.push_back(*ptr);
+						}
+						else {
+							out.append("(null)");
+						}
+						f++;
+					}
+					break;
+
+					case 'H':
+					case 'h': {
+						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						if (ptr != nullptr) {
+							sprintf_s(buff, *f == 'h' ? "%x" : "%X", *ptr);
+							out.append(buff);
+						}
+						else {
+							out.append("(null)");
+						}
+						f++;
+					}
+					break;
+
+					#ifdef FLOATPOINT
+					case 'f': {
+						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						if (ptr != nullptr) {
+							sprintf_s(buff, "%f", amx_ctof(*ptr));
+							out.append(buff);
+						}
+						else {
+							out.append("(null)");
+						}
+						f++;
+					}
+					break;
+
+					case '.': {
+						char fstr[] = { '%', '.', (char)*(++f), 'f', '\0' };
+
+						if (*(++f) == 'f') {
+							ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+							if (ptr != nullptr) {
+								sprintf(buff, fstr, amx_ctof(*ptr));
+								out.append(buff);
+							}
+							else {
+								out.append("(null)");
+							}
+						}
+						else {
+							out.push_back(fstr[0]);
+							out.push_back(fstr[1]);
+							out.push_back(fstr[2]);
+						}
+						f++;
+					}
+					break;
+					#endif
+
+					case 'b': {
+						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						if (ptr != nullptr) {
+							out.append(*ptr == 0 ? "false" : "true");
+						}
+						else {
+							out.append("(null)");
+						}
+						f++;
+					}
+					break;
+
+					case 's': {
+						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						if (ptr != nullptr) {
+							while (*ptr != '\0') {
+								out.push_back(*ptr);
+								ptr++;
+							}
+						}
+						else {
+							out.append("(null)");
+						}
+						f++;
+					}
+					break;
+
+					default:
+						out.push_back(*f), f++;
+					}
+				}
+				break;
+
+				default:
+					out.push_back(*f), f++;
+				}
+			}
+		}
+
 		void set(AMX * amx, cell param, std::string data, std::size_t size) {
 			cell *dest = NULL;
 

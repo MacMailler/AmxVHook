@@ -31,6 +31,7 @@ namespace AmxVHook {
 		bool setVector3ToParam(AMX * amx, cell param, Vector3 & vec);
 		bool getVector3FromParam(AMX * amx, cell param, Vector3 & vec);
 
+		cell * getAmxAddrFromParam(AMX * amx, const cell param);
 		bool setArrayToParam(AMX * amx, cell param, cell * arr, int size);
 		bool getArrayFromParam(AMX * amx, cell param, cell * dest, int size);
 		bool getFloatArrayFromParam(AMX * amx, cell param, float * dest, int size);

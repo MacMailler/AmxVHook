@@ -110,6 +110,14 @@ namespace AmxVHook {
 			return true;
 		}
 
+		cell * getAmxAddrFromParam(AMX * amx, const cell param) {
+			cell * ptr;
+			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
+				return nullptr;
+
+			return ptr;
+		}
+
 		bool getArrayFromParam(AMX * amx, const cell param, cell * dest, int size) {
 			cell * ptr;
 			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)

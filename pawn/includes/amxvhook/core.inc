@@ -23,7 +23,8 @@ forward onModLoad();
 forward onModUnload();
 forward onModUpdate();
 
-native log(text[]);
+native log(const text[]);
+native logf(const text[], {Float, _}:...);
 
 native isModLoaded(const modname[]);
 
@@ -40,4 +41,4 @@ native setVersionVisible(bool:visible);
 
 // native callFunction(const funcname[], const f[]="", bool:local=true, {Float,_}:...});
 
-native format(dest[], size=sizeof dest, bool:pack=false, const format[], {Float,_}:...) = strformat;
+native format(dest[], size=sizeof dest, const format[], {Float, _}:...);

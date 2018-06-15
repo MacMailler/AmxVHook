@@ -5,6 +5,8 @@ namespace AmxVHook {
 	namespace Natives {
 		namespace Core {
 			MOD_NATIVE(log);
+			MOD_NATIVE(logf);
+			MOD_NATIVE(format);
 			MOD_NATIVE(isModLoaded);
 			MOD_NATIVE(getFps);
 			MOD_NATIVE(getVersion);
