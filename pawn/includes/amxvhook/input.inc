@@ -90,16 +90,79 @@ enum eKeys {
 	VK_RMENU  = 0xA5
 };
 
-native isKeyDown(key);
-native isKeyJustUp(key, bool:exclusive = false);
-native resetKeyState(key);
-
-native getCommandParams(id, dest[], len = sizeof dest);
-native getCommandParamsInt(id);
-native Float:getCommandParamsFloat(id);
-
-native displayOnScreeKeyboard(const title[], const defaultText[]);
+enum eInputGroups {
+	IG_MOVE = 0,
+	IG_LOOK = 1,
+	IG_WHEEL = 2,
+	IG_CELLPHONE_NAVIGATE = 3,
+	IG_CELLPHONE_NAVIGATE_UD = 4,
+	IG_CELLPHONE_NAVIGATE_LR = 5,
+	IG_FRONTEND_DPAD_ALL = 6,
+	IG_FRONTEND_DPAD_UD = 7,
+	IG_FRONTEND_DPAD_LR = 8,
+	IG_FRONTEND_LSTICK_ALL = 9,
+	IG_FRONTEND_RSTICK_ALL = 10,
+	IG_FRONTEND_GENERIC_UD = 11,
+	IG_FRONTEND_GENERIC_LR = 12,
+	IG_FRONTEND_GENERIC_ALL = 13,
+	IG_FRONTEND_BUMPERS = 14,
+	IG_FRONTEND_TRIGGERS = 15,
+	IG_FRONTEND_STICKS = 16,
+	IG_SCRIPT_DPAD_ALL = 17,
+	IG_SCRIPT_DPAD_UD = 18,
+	IG_SCRIPT_DPAD_LR = 19,
+	IG_SCRIPT_LSTICK_ALL = 20,
+	IG_SCRIPT_RSTICK_ALL = 21,
+	IG_SCRIPT_BUMPERS = 22,
+	IG_SCRIPT_TRIGGERS = 23,
+	IG_WEAPON_WHEEL_CYCLE = 24,
+	IG_FLY = 25,
+	IG_SUB = 26,
+	IG_VEH_MOVE_ALL = 27,
+	IG_CURSOR = 28,
+	IG_CURSOR_SCROLL = 29,
+	IG_SNIPER_ZOOM_SECONDARY = 30,
+	IG_VEH_HYDRAULICS_CONTROL = 31,
+	IG_MAX_INPUTGROUPS = 32,
+	IG_INVALID = 33
+};
 
 forward onModInputText(text[]);
 forward onModInputCommand(cmd[], params);
 forward onModInputCanceled();
+
+native isLookInverted();
+native isControlEnabled(group, control);
+native isControlPressed(group, control);
+native isControlReleased(group, control);
+native isControlJustPressed(group, control);
+native isControlJustReleased(group, control);
+native isDisabledControlPressed(group, control);
+native isDisabledControlJustPressed(group, control);
+native isDisabledControlJustReleased(group, control);
+
+native isKeyDown(key);
+native isKeyJustUp(key, bool:exclusive = false);
+native resetKeyState(key);
+
+native disableControlAction(group, control, bool:disable);
+native enableControlAction(group, control, bool:enable);
+native disableAllControlActions(group);
+native enableAllControlActions(group);
+
+native setPadShake(duration, frequency);
+native setInputExclusive(group, control); 
+native setControlNormal(group, control, Float:normal); 
+
+native getControlValue(group, control); 
+native Float:getControlNormal(group, control); 
+native Float:getDisabledControlNormal(group, control); 
+
+native getCommandParams(id, dest[], len = sizeof dest);
+native getCommandParamsInt(id);
+native getCommandParamsHash(id);
+native Float:getCommandParamsFloat(id);
+
+native stopPadShake();
+
+native displayOnScreeKeyboard(const title[], const defaultText[]);
