@@ -60,9 +60,6 @@
     <ClInclude Include="src\amxvhook.hpp">
       <Filter>Headers Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\amx\amxcons.h">
-      <Filter>Headers Files\amx</Filter>
-    </ClInclude>
     <ClInclude Include="src\natives\checkpoint.hpp">
       <Filter>Headers Files\natives</Filter>
     </ClInclude>
@@ -139,9 +136,6 @@
     </ClCompile>
     <ClCompile Include="src\amxvhook.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\amx\amxcons.c">
-      <Filter>Source Files\amx</Filter>
     </ClCompile>
     <ClCompile Include="src\natives\checkpoint.cpp">
       <Filter>Source Files\natives</Filter>

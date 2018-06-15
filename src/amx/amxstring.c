@@ -45,7 +45,10 @@
 # define _tcscpy        strcpy
 # define _tcslen        strlen
 #endif
-#include "amxcons.h"
+
+#ifndef AMX_NOSTRFMT
+	#include "amxcons.h"
+#endif
 
 #if !defined isdigit
 # define isdigit(c)     ((unsigned)((c)-'0')<10u)
