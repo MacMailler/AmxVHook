@@ -115,7 +115,7 @@ native showHudComponentThisFrame(id);
 
 native requestStreamedTextureDict(const textureDict[]);
 native isStreamedTextureDictLoaded(const textureDict[]);
-native setStreamedTDictAsNoLongerNeeded(const textureDict[]);
+native setStreamedTextureDictNoNeeded(const textureDict[]);
 
 native world3DToScreen2D(Float:coords[@Vector3], &Float:sx, &Float:sy);
 

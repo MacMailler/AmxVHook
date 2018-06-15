@@ -44,7 +44,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getCurrentFrontendMenu);
 			MOD_NATIVE(requestStreamedTextureDict);
 			MOD_NATIVE(isStreamedTextureDictLoaded);
-			MOD_NATIVE(setStreamedTDictAsNoLongerNeeded);
+			MOD_NATIVE(setStreamedTextureDictNoNeeded);
 			
 			AMX_NATIVE_INFO list[];
 		};

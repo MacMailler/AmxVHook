@@ -47,7 +47,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getCurrentFrontendMenu)
 				MOD_DEFINE_NATIVE(requestStreamedTextureDict)
 				MOD_DEFINE_NATIVE(isStreamedTextureDictLoaded)
-				MOD_DEFINE_NATIVE(setStreamedTDictAsNoLongerNeeded)
+				MOD_DEFINE_NATIVE(setStreamedTextureDictNoNeeded)
 
 				{NULL, NULL} // terminator
 			};
@@ -514,7 +514,7 @@ namespace AmxVHook {
 				return GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED((char *)String::get(amx, params[1]).c_str());
 			}
 			
-			MOD_NATIVE(setStreamedTDictAsNoLongerNeeded) {
+			MOD_NATIVE(setStreamedTextureDictNoNeeded) {
 				if (!arguments(1))
 					return 0;
 
