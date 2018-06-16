@@ -6,9 +6,9 @@ namespace AmxVHook {
 		namespace Graphics {
 			MOD_NATIVE(drawInt);
 			MOD_NATIVE(drawFloat);
-			MOD_NATIVE(drawString);
 			MOD_NATIVE(drawRect);
 			MOD_NATIVE(drawText);
+			MOD_NATIVE(drawTextf);
 			MOD_NATIVE(drawLine);
 			MOD_NATIVE(drawPoly);
 			MOD_NATIVE(drawBox);
@@ -22,6 +22,9 @@ namespace AmxVHook {
 			MOD_NATIVE(setTextEdge);
 			MOD_NATIVE(setTextWrap);
 			MOD_NATIVE(setTextColor);
+			MOD_NATIVE(setTextScale);
+			MOD_NATIVE(setTextCentre);
+			MOD_NATIVE(setTextFont);
 			MOD_NATIVE(setUILayer);
 			MOD_NATIVE(setDrawPosition);
 			MOD_NATIVE(setDrawPositionRatio);

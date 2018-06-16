@@ -77,6 +77,7 @@ enum eFonts {
 native drawInt(value, Float:x, Float:y);
 native drawFloat(value, Float:x, Float:y, decimal_places = 0);
 native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF, bool:centre = false);
+native drawTextf(const text[], Float:x, Float:y, {Float, _}:...);
 native drawRect(Float:x, Float:y, Float:width, Float:height, color = 0xFFFFFFFF);
 native drawBox(Float:point1[@Vector3], Float:point2[@Vector3], color = 0xFFFFFFFF);
 native drawLine(Float:point1[@Vector3], Float:point2[@Vector3], color = 0xFFFFFFFF);
@@ -95,6 +96,9 @@ native setUILayer(layer);
 native setDrawPosition(Float:x, Float:y);
 native setDrawPositionRatio(Float:x, Float:y, Float:p2, Float:p3);
 native setDrawPositionEnd();
+native setTextFont(font);
+native setTextCentre(bool:centre = true);
+native setTextScale(Float:scale, Float:size);
 native setTextColor(color = 0x00000000);
 native setTextDropShadow(dist, color = 0x00000000);
 native setTextEdge(dist, color = 0x00000000);

@@ -9,9 +9,9 @@ namespace AmxVHook {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(drawInt)
 				MOD_DEFINE_NATIVE(drawFloat)
-				MOD_DEFINE_NATIVE(drawString)
 				MOD_DEFINE_NATIVE(drawRect)
 				MOD_DEFINE_NATIVE(drawText)
+				MOD_DEFINE_NATIVE(drawTextf)
 				MOD_DEFINE_NATIVE(drawLine)
 				MOD_DEFINE_NATIVE(drawPoly)
 				MOD_DEFINE_NATIVE(drawBox)
@@ -25,6 +25,9 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setTextEdge)
 				MOD_DEFINE_NATIVE(setTextWrap)
 				MOD_DEFINE_NATIVE(setTextColor)
+				MOD_DEFINE_NATIVE(setTextScale)
+				MOD_DEFINE_NATIVE(setTextCentre)
+				MOD_DEFINE_NATIVE(setTextFont)
 				MOD_DEFINE_NATIVE(setUILayer)
 				MOD_DEFINE_NATIVE(setDrawPosition)
 				MOD_DEFINE_NATIVE(setDrawPositionRatio)
@@ -56,16 +59,13 @@ namespace AmxVHook {
 				if (!arguments(2))
 					return 0;
 
-				int w, h;
-				GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(&w, &h);
+				cell * w = Utility::getAddrFromParam(amx, params[1]),
+					 * h = Utility::getAddrFromParam(amx, params[1]);
 
-				cell *w_addr = nullptr, *h_addr = nullptr;
-				if ((amx_GetAddr(amx, params[1], &w_addr) != AMX_ERR_NONE || w_addr == nullptr)
-					|| (amx_GetAddr(amx, params[2], &h_addr) != AMX_ERR_NONE || h_addr == nullptr))
+				if (w == nullptr || h == nullptr)
 					return 0;
 
-				*w_addr = (cell)w;
-				*h_addr = (cell)h;
+				GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(w, h);
 
 				return 1;
 			}
@@ -74,15 +74,17 @@ namespace AmxVHook {
 				if (!arguments(3))
 					return 0;
 
-				cell * vec = nullptr, *sx = nullptr, *sy = nullptr;
-				if ((amx_GetAddr(amx, params[1], &vec) != AMX_ERR_NONE) ||
-					(amx_GetAddr(amx, params[2], &sx) != AMX_ERR_NONE) ||
-					(amx_GetAddr(amx, params[3], &sy) != AMX_ERR_NONE))
+				float coords[3];
+				cell * sx = Utility::getAddrFromParam(amx, params[2]),
+					 * sy = Utility::getAddrFromParam(amx, params[3]);
+
+				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
+					sx == nullptr || sy == nullptr)
 					return 0;
 
 				float sx2, sy2;
-
-				BOOL ret = GRAPHICS::_WORLD3D_TO_SCREEN2D(amx_ctof(vec[0]), amx_ctof(vec[1]), amx_ctof(vec[2]), &sx2, &sy2);
+				BOOL ret = GRAPHICS::_WORLD3D_TO_SCREEN2D(coords[0], coords[1], coords[2], &sx2, &sy2);
+				
 				*sx = amx_ftoc(sx2);
 				*sy = amx_ftoc(sy2);
 
@@ -107,15 +109,6 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			MOD_NATIVE(drawString) {
-				if (!arguments(3))
-					return 0;
-
-				Funcs::drawString(String::get(amx, params[1]), amx_ctof(params[2]), amx_ctof(params[3]));
-
-				return 1;
-			}
-
 			MOD_NATIVE(drawText) {
 				if (!arguments(7))
 					return 0;
@@ -128,6 +121,26 @@ namespace AmxVHook {
 				::UI::SET_TEXT_CENTRE(params[7]);
 				::UI::_SET_TEXT_ENTRY("STRING");
 				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
+				::UI::_DRAW_TEXT(amx_ctof(params[2]), amx_ctof(params[3]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(drawTextf) {
+				std::string out;
+				cell paramsCount = (params[0] / sizeof(cell));
+
+				if (paramsCount < 3)
+					return 0;
+
+				else if (paramsCount == 3)
+					out = String::get(amx, params[1]);
+
+				else
+					String::format(amx, (params + 4), Utility::getAddrFromParam(amx, params[1]), out);
+
+				::UI::_SET_TEXT_ENTRY("STRING");
+				::UI::_ADD_TEXT_COMPONENT_STRING((char *)out.c_str());
 				::UI::_DRAW_TEXT(amx_ctof(params[2]), amx_ctof(params[3]));
 
 				return 1;
@@ -350,6 +363,33 @@ namespace AmxVHook {
 
 				Utility::Color color(params[1]);
 				::UI::SET_TEXT_COLOUR(color.R, color.G, color.B, color.A);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setTextCentre) {
+				if (!arguments(1))
+					return 0;
+
+				::UI::SET_TEXT_CENTRE(params[1]);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setTextFont) {
+				if (!arguments(1))
+					return 0;
+
+				::UI::SET_TEXT_FONT(params[1]);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setTextScale) {
+				if (!arguments(2))
+					return 0;
+
+				::UI::SET_TEXT_SCALE(amx_ctof(params[1]), amx_ctof(params[2]));
 
 				return 1;
 			}
