@@ -46,10 +46,12 @@ namespace AmxVHook {
 				if (!arguments(2))
 					return 0;
 
-				cell * dest = NULL;
+				cell * dest = Utility::getAddrFromParam(amx, params[1]);
+				if (dest == nullptr)
+					return 0;
+
 				char * name = PLAYER::GET_PLAYER_NAME(PLAYER::PLAYER_ID());
 
-				amx_GetAddr(amx, params[1], &dest);
 				amx_SetString(dest, name, NULL, NULL, params[2]);
 
 				return 1;
@@ -145,9 +147,6 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getPlayerWantedLevel) {
-				if (!arguments(1))
-					return -1;
-
 				return PLAYER::GET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID());
 			}
 
@@ -171,8 +170,8 @@ namespace AmxVHook {
 				if (!arguments(1))
 					return 0;
 
-				cell *entity = nullptr;
-				if (amx_GetAddr(amx, params[1], &entity) != AMX_ERR_NONE || entity == nullptr)
+				cell * entity = Utility::getAddrFromParam(amx, params[1]);
+				if (entity == nullptr)
 					return 0;
 
 				return PLAYER::GET_PLAYER_TARGET_ENTITY(PLAYER::PLAYER_ID(), (::Entity *)entity);

@@ -103,14 +103,14 @@ namespace AmxVHook {
 				if (!arguments(3))
 					return 0;
 
-				cell * vec1 = nullptr, *vec2 = nullptr;
-				if ((amx_GetAddr(amx, params[1], &vec1) != AMX_ERR_NONE) ||
-					(amx_GetAddr(amx, params[2], &vec2) != AMX_ERR_NONE))
+				float coords[3], coords2[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
+					!Utility::getFloatArrayFromParam(amx, params[2], coords2, 3))
 					return 0;
 
 				float dist = GAMEPLAY::GET_DISTANCE_BETWEEN_COORDS(
-					amx_ctof(vec1[0]), amx_ctof(vec1[1]), amx_ctof(vec1[2]),
-					amx_ctof(vec2[0]), amx_ctof(vec2[1]), amx_ctof(vec2[2]),
+					coords[0], coords[1], coords[2],
+					coords2[0], coords2[1], coords2[2],
 					params[3]
 				);
 				

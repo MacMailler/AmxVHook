@@ -31,39 +31,41 @@ namespace AmxVHook {
 			};
 			
 			MOD_NATIVE(addBlip) {
-				if (!arguments(3))
+				if (!arguments(1))
 					return 0;
 
-				return ::UI::ADD_BLIP_FOR_COORD(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]));
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3))
+					return 0;
+
+				return ::UI::ADD_BLIP_FOR_COORD(coords[0], coords[1], coords[2]);
 			}
 
 			MOD_NATIVE(setBlipPos) {
-				if (!arguments(4))
+				if (!arguments(2))
 					return 0;
 
-				::UI::SET_BLIP_COORDS(params[1], amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]));
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
+					return 0;
+
+				::UI::SET_BLIP_COORDS(params[1], coords[0], coords[1], coords[2]);
 
 				return 1;
 			}
 
 			MOD_NATIVE(getBlipPos) {
-				if (!arguments(4))
+				if (!arguments(2))
 					return 0;
 
-				cell *x = nullptr, *y = nullptr, *z = nullptr;
+				cell * addr = Utility::getAddrFromParam(amx, params[2]);
 
-				if ((amx_GetAddr(amx, params[1], &x) != AMX_ERR_NONE || x == nullptr)
-					|| (amx_GetAddr(amx, params[2], &y) != AMX_ERR_NONE || y == nullptr)
-					|| (amx_GetAddr(amx, params[3], &z) != AMX_ERR_NONE || z == nullptr))
+				if (addr == nullptr)
 					return 0;
 
-				Vector3 pos = ::UI::GET_BLIP_COORDS(params[1]);
+				Vector3 coords = ::UI::GET_BLIP_COORDS(params[1]);
 
-				*x = amx_ftoc(pos.x);
-				*y = amx_ftoc(pos.y);
-				*z = amx_ftoc(pos.z);
-
-				return 1;
+				return Utility::setVector3ToParam(amx, params[2], coords);
 			}
 
 			MOD_NATIVE(setBlipSprite) {

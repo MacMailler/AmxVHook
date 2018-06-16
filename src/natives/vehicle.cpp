@@ -139,9 +139,11 @@ namespace AmxVHook {
 				if (!arguments(3))
 					return 0;
 
-				cell *dest = NULL;
-				amx_GetAddr(amx, params[2], &dest);
-				amx_SetString(dest, VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(params[1]), NULL, NULL, params[3]);
+				cell * dest = Utility::getAddrFromParam(amx, params[2]);
+				if (dest == nullptr)
+					return 0;
+
+				amx_SetString(dest, VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL((::Hash)params[1]), NULL, NULL, params[3]);
 
 				return 1;
 			}

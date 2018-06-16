@@ -102,44 +102,44 @@ namespace AmxVHook {
 				if (!arguments(2))
 					return 0;
 
-				cell * addr = nullptr;
-				if (amx_GetAddr(amx, params[1], &addr) != AMX_ERR_NONE || addr == nullptr)
+				cell * dest = Utility::getAddrFromParam(amx, params[1]);
+				if (dest == nullptr)
 					return 0;
 
-				return worldGetAllPeds(addr, params[2]);
+				return worldGetAllPeds(dest, params[2]);
 			}
 
 			MOD_NATIVE(getAllObjects) {
 				if (!arguments(2))
 					return 0;
 
-				cell * addr = nullptr;
-				if (amx_GetAddr(amx, params[1], &addr) != AMX_ERR_NONE || addr == nullptr)
+				cell * dest = Utility::getAddrFromParam(amx, params[1]);
+				if (dest == nullptr)
 					return 0;
 
-				return worldGetAllObjects(addr, params[2]);
+				return worldGetAllObjects(dest, params[2]);
 			}
 
 			MOD_NATIVE(getAllPickups) {
 				if (!arguments(2))
 					return 0;
 
-				cell * addr = nullptr;
-				if (amx_GetAddr(amx, params[1], &addr) != AMX_ERR_NONE || addr == nullptr)
+				cell * dest = Utility::getAddrFromParam(amx, params[1]);
+				if (dest == nullptr)
 					return 0;
 
-				return worldGetAllPickups(addr, params[2]);
+				return worldGetAllPickups(dest, params[2]);
 			}
 
 			MOD_NATIVE(getAllVehicles) {
 				if (!arguments(2))
 					return 0;
 
-				cell * addr = nullptr;
-				if (amx_GetAddr(amx, params[1], &addr) != AMX_ERR_NONE || addr == nullptr)
+				cell * dest = Utility::getAddrFromParam(amx, params[1]);
+				if (dest == nullptr)
 					return 0;
 
-				return worldGetAllVehicles(addr, params[2]);
+				return worldGetAllVehicles(dest, params[2]);
 			}
 
 			MOD_NATIVE(setVersionVisible) {

@@ -24,6 +24,7 @@ native isEntityDamagedByAnyVehicle(entity);
 native isEntityDamagedByEntity(entity, target);
 native isEntityCollidedWithAnything(entity);*/
 
+native getEntityType(entity);
 native getEntityModel(entity);
 native Float:getEntityHealth(entity);
 native getEntityMaxHealth(entity);
@@ -32,8 +33,9 @@ native Float:getEntityPitch(entity);
 native Float:getEntityHeight(entity, Float:coords[@Vector3], bool:atTop, bool:inWorldCoords);
 native Float:getEntityHeightAboveGround(entity);
 //native getEntityForwardVector(entity, Float:vector[3]);
-native getEntityQuaternion(entity, &Float:x, &Float:y, &Float:z, &Float:w);
+native getEntityQuaternion(entity, Float:coords[@Vector3], &Float:w);
 native getEntityPos(entity, Float:coords[@Vector3], bool:alive=true);
+native getEntityMatrix(entity, Float:rightVector[@Vector3], Float:forwardVector[@Vector3], Float:upVector[@Vector3], Float:position[@Vector3]);
 
 native setEntityHealth(entity, health);
 native setEntityMaxHealth(entity, health);

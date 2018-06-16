@@ -573,8 +573,8 @@ namespace AmxVHook {
 				if (!arguments(2))
 					return 0;
 
-				cell * ammo = nullptr;
-				if (amx_GetAddr(amx, params[3], &ammo) != AMX_ERR_NONE || ammo == nullptr)
+				cell * ammo = Utility::getAddrFromParam(amx, params[3]);
+				if (ammo == nullptr)
 					return 0;
 
 				return WEAPON::GET_MAX_AMMO((::Ped)params[1], (Hash)params[2], (int *)ammo);
@@ -584,8 +584,8 @@ namespace AmxVHook {
 				if (!arguments(3))
 					return 0;
 
-				cell * ammo = nullptr;
-				if (amx_GetAddr(amx, params[3], &ammo) != AMX_ERR_NONE || ammo == nullptr)
+				cell * ammo = Utility::getAddrFromParam(amx, params[3]);
+				if (ammo == nullptr)
 					return 0;
 
 				return WEAPON::GET_AMMO_IN_CLIP((::Ped)params[1], (Hash)params[2], (int *)ammo);
@@ -595,8 +595,8 @@ namespace AmxVHook {
 				if (!arguments(2))
 					return 0;
 
-				cell * weapon = nullptr;
-				if (amx_GetAddr(amx, params[2], &weapon) != AMX_ERR_NONE || weapon == nullptr)
+				cell * weapon = Utility::getAddrFromParam(amx, params[2]);
+				if (weapon == nullptr)
 					return 0;
 
 				return WEAPON::GET_CURRENT_PED_WEAPON((::Ped)params[1], (Hash *)weapon, 1);
@@ -606,8 +606,8 @@ namespace AmxVHook {
 				if (!arguments(2))
 					return 0;
 
-				cell * weapon = nullptr;
-				if (amx_GetAddr(amx, params[2], &weapon) != AMX_ERR_NONE || weapon == nullptr)
+				cell * weapon = Utility::getAddrFromParam(amx, params[2]);
+				if (weapon == nullptr)
 					return 0;
 
 				return WEAPON::GET_CURRENT_PED_VEHICLE_WEAPON((::Ped)params[1], (Hash *)weapon);

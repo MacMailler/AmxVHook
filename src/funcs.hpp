@@ -9,7 +9,7 @@ namespace AmxVHook {
 		void drawRect(float x, float y, float width, float height, int r, int b, int g, int a);
 		void drawText(char *text, float x, float y, float scale, int font, int r, int b, int g, int a);
 
-		void drawString(std::string value, float x, float y);
+		void drawString(std::string & data, float x, float y);
 		void drawInt(int value, float x, float y);
 		void drawFloat(float value, DWORD decimal_places, float x, float y);
 	};
@@ -31,7 +31,7 @@ namespace AmxVHook {
 		bool setVector3ToParam(AMX * amx, cell param, Vector3 & vec);
 		bool getVector3FromParam(AMX * amx, cell param, Vector3 & vec);
 
-		cell * getAmxAddrFromParam(AMX * amx, const cell param);
+		cell * getAddrFromParam(AMX * amx, const cell param);
 		bool setArrayToParam(AMX * amx, cell param, cell * arr, int size);
 		bool getArrayFromParam(AMX * amx, cell param, cell * dest, int size);
 		bool getFloatArrayFromParam(AMX * amx, cell param, float * dest, int size);

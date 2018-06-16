@@ -15,7 +15,7 @@ namespace AmxVHook {
 					switch (*f) {
 					case 'i':
 					case 'd': {
-						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
 							sprintf_s(buff, "%i", *ptr);
 							out.append(buff);
@@ -28,7 +28,7 @@ namespace AmxVHook {
 					break;
 
 					case 'c': {
-						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
 							out.push_back(*ptr);
 						}
@@ -41,7 +41,7 @@ namespace AmxVHook {
 
 					case 'H':
 					case 'h': {
-						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
 							sprintf_s(buff, *f == 'h' ? "%x" : "%X", *ptr);
 							out.append(buff);
@@ -55,7 +55,7 @@ namespace AmxVHook {
 
 					#ifdef FLOATPOINT
 					case 'f': {
-						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
 							sprintf_s(buff, "%f", amx_ctof(*ptr));
 							out.append(buff);
@@ -71,7 +71,7 @@ namespace AmxVHook {
 						char fstr[] = { '%', '.', (char)*(++f), 'f', '\0' };
 
 						if (*(++f) == 'f') {
-							ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+							ptr = Utility::getAddrFromParam(amx, params[index++]);
 							if (ptr != nullptr) {
 								sprintf(buff, fstr, amx_ctof(*ptr));
 								out.append(buff);
@@ -81,9 +81,7 @@ namespace AmxVHook {
 							}
 						}
 						else {
-							out.push_back(fstr[0]);
-							out.push_back(fstr[1]);
-							out.push_back(fstr[2]);
+							out.append({ '%', '.', fstr[2] });
 						}
 						f++;
 					}
@@ -91,7 +89,7 @@ namespace AmxVHook {
 					#endif
 
 					case 'b': {
-						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
 							out.append(*ptr == 0 ? "false" : "true");
 						}
@@ -103,7 +101,7 @@ namespace AmxVHook {
 					break;
 
 					case 's': {
-						ptr = Utility::getAmxAddrFromParam(amx, params[index++]);
+						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
 							while (*ptr != '\0') {
 								out.push_back(*ptr);

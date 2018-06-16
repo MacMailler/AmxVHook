@@ -43,9 +43,9 @@ namespace AmxVHook {
 			UI::_DRAW_TEXT(x, y);
 		}
 
-		void drawString(std::string value, float x, float y) {
+		void drawString(std::string & data, float x, float y) {
 			UI::_SET_TEXT_ENTRY("STRING");
-			UI::_ADD_TEXT_COMPONENT_STRING((char *)value.c_str());
+			UI::_ADD_TEXT_COMPONENT_STRING((char *)data.c_str());
 			UI::_DRAW_TEXT(x, y);
 		}
 	};
@@ -110,7 +110,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		cell * getAmxAddrFromParam(AMX * amx, const cell param) {
+		cell * getAddrFromParam(AMX * amx, const cell param) {
 			cell * ptr;
 			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
 				return nullptr;

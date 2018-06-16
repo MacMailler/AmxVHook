@@ -177,11 +177,11 @@ namespace AmxVHook {
 				if (!arguments(4))
 					return 0;
 
-				cell * addr;
-				if (amx_GetAddr(amx, params[2], &addr) != AMX_ERR_NONE || addr == nullptr)
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
 					return 0;
 
-				float height = ENTITY::GET_ENTITY_HEIGHT((::Entity)params[1], amx_ctof(addr[0]), amx_ctof(addr[1]), amx_ctof(addr[2]), params[3], params[4]);
+				float height = ENTITY::GET_ENTITY_HEIGHT((::Entity)params[1], coords[0], coords[1], coords[2], params[3], params[4]);
 
 				return amx_ftoc(height);
 			}
@@ -196,25 +196,20 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getEntityQuaternion) {
-				if (!arguments(5))
+				if (!arguments(3))
 					return 0;
 
-				cell * x = nullptr, *y = nullptr, *z = nullptr, *w = nullptr;
-				if ((amx_GetAddr(amx, params[2], &x) != AMX_ERR_NONE || x == nullptr) ||
-					(amx_GetAddr(amx, params[3], &y) != AMX_ERR_NONE || y == nullptr) ||
-					(amx_GetAddr(amx, params[4], &z) != AMX_ERR_NONE || y == nullptr) ||
-					(amx_GetAddr(amx, params[5], &w) != AMX_ERR_NONE || y == nullptr))
+				cell * w = Utility::getAddrFromParam(amx, params[3]);
+				if (w == nullptr)
 					return 0;
 
-				float xx, yy, zz, ww;
-				ENTITY::GET_ENTITY_QUATERNION((::Entity)params[1], &xx, &yy, &zz, &ww);
+				float ww;
+				Vector3 coords;
+				ENTITY::GET_ENTITY_QUATERNION((::Entity)params[1], &coords.x, &coords.y, &coords.z, &ww);
 
-				*x = amx_ftoc(xx);
-				*y = amx_ftoc(yy);
-				*z = amx_ftoc(zz);
 				*w = amx_ftoc(ww);
-				
-				return 1;
+
+				return Utility::setVector3ToParam(amx, params[2], coords);
 			}
 
 			MOD_NATIVE(getEntityPos) {
