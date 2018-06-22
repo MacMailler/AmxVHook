@@ -6,6 +6,7 @@
 native isEntityAPed(entity);
 native isEntityAVehicle(entity);
 native isEntityAObject(entity);
+native isEntityAMissionEntity(entity);
 native isEntityDead(entity);
 native isEntityInAir(entity);
 native isEntityInWater(entity);
@@ -13,31 +14,43 @@ native isEntityInZone(entity, const zone[]);
 native isEntityOnScreen(entity);
 native isEntityTouchingEntity(entity, target);
 native isEntityTouchingModel(entity, hash);
+native isEntityUpright(entity, Float:angle);
+native isEntityUpsidedown(entity);
+native isEntityOccluded(entity);
 native isEntityVisible(entity);
 native isEntityExist(entity);
+native isEntityAttached(entity);
+native isEntityAttachedToAnyObject(entity);
+native isEntityAttachedToAnyPed(entity);
+native isEntityAttachedToAnyVehicle(entity);
+native isEntityAttachedToEntity(entity, targetEntity);
 native isEntityHaveDrawable(entity);
-native isEntityHavePhysics(entity);/*
+native isEntityHavePhysics(entity);
 native isEntityAnimFinished(entity, const animDict[], const animName[]);
 native isEntityDamagedByAnyObject(entity);
 native isEntityDamagedByAnyPed(entity);
 native isEntityDamagedByAnyVehicle(entity);
 native isEntityDamagedByEntity(entity, target);
-native isEntityCollidedWithAnything(entity);*/
+native isEntityCollidedWithAnything(entity);
 
 native getEntityType(entity);
 native getEntityModel(entity);
-native Float:getEntityHealth(entity);
 native getEntityMaxHealth(entity);
+native Float:getEntityHealth(entity);
 native Float:getEntitySpeed(entity);
 native Float:getEntityPitch(entity);
 native Float:getEntityHeight(entity, Float:coords[@Vector3], bool:atTop, bool:inWorldCoords);
 native Float:getEntityHeightAboveGround(entity);
-//native getEntityForwardVector(entity, Float:vector[3]);
+native Float:getEntityRoll(entity);
+native getEntityForwardVector(entity, Float:vector[@Vector3]);
 native getEntityQuaternion(entity, Float:coords[@Vector3], &Float:w);
 native getEntityPos(entity, Float:coords[@Vector3], bool:alive=true);
-native getEntityMatrix(entity, Float:rightVector[@Vector3], Float:forwardVector[@Vector3], Float:upVector[@Vector3], Float:position[@Vector3]);
+native getEntitySpeedVector(entity, Float:vector[@Vector3], bool:relative);
 
 native setEntityHealth(entity, health);
 native setEntityMaxHealth(entity, health);
-native setEntityInvincible(entity, bool:toggle);
 native setEntityMaxSpeed(entity, Float:speed);
+native setEntityInvincible(entity, bool:toggle);
+
+native deleteEntity(entity);
+native detachEntity(entity);

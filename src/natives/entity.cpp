@@ -7,6 +7,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isEntityAPed)
 				MOD_DEFINE_NATIVE(isEntityAVehicle)
 				MOD_DEFINE_NATIVE(isEntityAObject)
+				MOD_DEFINE_NATIVE(isEntityAMissionEntity)
 				MOD_DEFINE_NATIVE(isEntityDead)
 				MOD_DEFINE_NATIVE(isEntityInAir)
 				MOD_DEFINE_NATIVE(isEntityInWater)
@@ -14,10 +15,25 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isEntityOnScreen)
 				MOD_DEFINE_NATIVE(isEntityTouchingEntity)
 				MOD_DEFINE_NATIVE(isEntityTouchingModel)
+				MOD_DEFINE_NATIVE(isEntityUpright)
+				MOD_DEFINE_NATIVE(isEntityUpsidedown)
+				MOD_DEFINE_NATIVE(isEntityOccluded)
 				MOD_DEFINE_NATIVE(isEntityVisible)
 				MOD_DEFINE_NATIVE(isEntityExist)
+				MOD_DEFINE_NATIVE(isEntityAttached)
+				MOD_DEFINE_NATIVE(isEntityAttachedToAnyObject)
+				MOD_DEFINE_NATIVE(isEntityAttachedToAnyPed)
+				MOD_DEFINE_NATIVE(isEntityAttachedToAnyVehicle)
+				MOD_DEFINE_NATIVE(isEntityAttachedToEntity)
 				MOD_DEFINE_NATIVE(isEntityHaveDrawable)
 				MOD_DEFINE_NATIVE(isEntityHavePhysics)
+				MOD_DEFINE_NATIVE(isEntityAnimFinished)
+				MOD_DEFINE_NATIVE(isEntityDamagedByAnyObject)
+				MOD_DEFINE_NATIVE(isEntityDamagedByAnyPed)
+				MOD_DEFINE_NATIVE(isEntityDamagedByAnyVehicle)
+				MOD_DEFINE_NATIVE(isEntityDamagedByEntity)
+				MOD_DEFINE_NATIVE(isEntityCollidedWithAnything)
+				MOD_DEFINE_NATIVE(getEntityType)
 				MOD_DEFINE_NATIVE(getEntityModel)
 				MOD_DEFINE_NATIVE(getEntityHealth)
 				MOD_DEFINE_NATIVE(getEntityMaxHealth)
@@ -25,12 +41,17 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getEntityPitch)
 				MOD_DEFINE_NATIVE(getEntityHeight)
 				MOD_DEFINE_NATIVE(getEntityHeightAboveGround)
+				MOD_DEFINE_NATIVE(getEntityForwardVector)
+				MOD_DEFINE_NATIVE(getEntityRoll)
 				MOD_DEFINE_NATIVE(getEntityQuaternion)
 				MOD_DEFINE_NATIVE(getEntityPos)
+				MOD_DEFINE_NATIVE(getEntitySpeedVector)
 				MOD_DEFINE_NATIVE(setEntityHealth)
 				MOD_DEFINE_NATIVE(setEntityMaxHealth)
 				MOD_DEFINE_NATIVE(setEntityInvincible)
 				MOD_DEFINE_NATIVE(setEntityMaxSpeed)
+				MOD_DEFINE_NATIVE(deleteEntity)
+				MOD_DEFINE_NATIVE(detachEntity)
 
 				{NULL, NULL}
 			};
@@ -54,6 +75,13 @@ namespace AmxVHook {
 					return 0;
 
 				return ENTITY::IS_ENTITY_AN_OBJECT((::Entity)params[1]);
+			}
+			
+			MOD_NATIVE(isEntityAMissionEntity) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::IS_ENTITY_A_MISSION_ENTITY((::Entity)params[1]);
 			}
 
 
@@ -105,6 +133,27 @@ namespace AmxVHook {
 
 				return ENTITY::IS_ENTITY_TOUCHING_MODEL((::Entity)params[1], params[2]);
 			}
+			
+			MOD_NATIVE(isEntityUpright) {
+				if (!arguments(2))
+					return 0;
+
+				return ENTITY::IS_ENTITY_UPRIGHT((::Entity)params[1], amx_ctof(params[2]));
+			}
+			
+			MOD_NATIVE(isEntityUpsidedown) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::IS_ENTITY_UPSIDEDOWN((::Entity)params[1]);
+			}
+			
+			MOD_NATIVE(isEntityOccluded) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::IS_ENTITY_OCCLUDED((::Entity)params[1]);
+			}
 
 			MOD_NATIVE(isEntityVisible) {
 				if (!arguments(1))
@@ -118,6 +167,41 @@ namespace AmxVHook {
 					return 0;
 
 				return ENTITY::DOES_ENTITY_EXIST((::Entity)params[1]);
+			}
+
+			MOD_NATIVE(isEntityAttached) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::IS_ENTITY_ATTACHED((::Entity)params[1]);
+			}
+
+			MOD_NATIVE(isEntityAttachedToAnyObject) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::IS_ENTITY_ATTACHED_TO_ANY_OBJECT((::Object)params[1]);
+			}
+
+			MOD_NATIVE(isEntityAttachedToAnyPed) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::IS_ENTITY_ATTACHED_TO_ANY_PED((::Ped)params[1]);
+			}
+
+			MOD_NATIVE(isEntityAttachedToAnyVehicle) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::IS_ENTITY_ATTACHED_TO_ANY_VEHICLE((::Vehicle)params[1]);
+			}
+
+			MOD_NATIVE(isEntityAttachedToEntity) {
+				if (!arguments(2))
+					return 0;
+
+				return ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY((::Entity)params[1], (::Entity)params[2]);
 			}
 
 			MOD_NATIVE(isEntityHaveDrawable) {
@@ -134,6 +218,55 @@ namespace AmxVHook {
 				return ENTITY::DOES_ENTITY_HAVE_PHYSICS((::Entity)params[1]);
 			}
 
+			MOD_NATIVE(isEntityAnimFinished) {
+				if (!arguments(3))
+					return 0;
+
+				return ENTITY::HAS_ENTITY_ANIM_FINISHED((::Entity)params[1], (char *)String::get(amx, params[2]).c_str(), (char *)String::get(amx, params[2]).c_str(), 3);
+			}
+
+			MOD_NATIVE(isEntityDamagedByAnyObject) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ANY_OBJECT((::Entity)params[1]);
+			}
+
+			MOD_NATIVE(isEntityDamagedByAnyPed) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED((::Entity)params[1]);
+			}
+
+			MOD_NATIVE(isEntityDamagedByAnyVehicle) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE((::Entity)params[1]);
+			}
+
+			MOD_NATIVE(isEntityDamagedByEntity) {
+				if (!arguments(2))
+					return 0;
+
+				return ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY((::Entity)params[1], (::Entity)params[2], 1);
+			}
+
+			MOD_NATIVE(isEntityCollidedWithAnything) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::HAS_ENTITY_COLLIDED_WITH_ANYTHING((::Entity)params[1]);
+			}
+
+			MOD_NATIVE(getEntityType) {
+				if (!arguments(1))
+					return 0;
+
+				return ENTITY::GET_ENTITY_TYPE((::Entity)params[1]);
+			}
+			
 			MOD_NATIVE(getEntityModel) {
 				if (!arguments(1))
 					return 0;
@@ -194,6 +327,24 @@ namespace AmxVHook {
 
 				return amx_ftoc(height);
 			}
+			
+			MOD_NATIVE(getEntityForwardVector) {
+				if (!arguments(2))
+					return 0;
+
+				Vector3 vector = ENTITY::GET_ENTITY_FORWARD_VECTOR((::Entity)params[1]);
+
+				return Utility::setVector3ToParam(amx, params[2], vector);
+			}
+			
+			MOD_NATIVE(getEntityRoll) {
+				if (!arguments(1))
+					return 0;
+
+				float roll = ENTITY::GET_ENTITY_ROLL((::Entity)params[1]);
+
+				return amx_ftoc(roll);
+			}
 
 			MOD_NATIVE(getEntityQuaternion) {
 				if (!arguments(3))
@@ -220,6 +371,13 @@ namespace AmxVHook {
 				return Utility::setVector3ToParam(amx, params[2], coords);
 			}
 
+			MOD_NATIVE(getEntitySpeedVector) {
+				if (!arguments(3))
+					return 0;
+
+				Vector3 vector = ENTITY::GET_ENTITY_SPEED_VECTOR((::Entity)params[1], params[3]);
+				return Utility::setVector3ToParam(amx, params[2], vector);
+			}
 
 			MOD_NATIVE(setEntityHealth) {
 				if (!arguments(2))
@@ -253,6 +411,25 @@ namespace AmxVHook {
 					return 0;
 
 				ENTITY::SET_ENTITY_MAX_SPEED((::Entity)params[1], amx_ctof(params[2]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(deleteEntity) {
+				if (!arguments(1))
+					return 0;
+
+				::Entity entity = params[1];
+				ENTITY::DELETE_ENTITY(&entity);
+
+				return 1;
+			}
+
+			MOD_NATIVE(detachEntity) {
+				if (!arguments(1))
+					return 0;
+
+				ENTITY::DETACH_ENTITY((::Entity)params[1], FALSE, FALSE);
 
 				return 1;
 			}
