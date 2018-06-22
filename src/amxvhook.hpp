@@ -13,6 +13,7 @@
 #include <boost\thread\thread.hpp>
 #include <boost\thread\mutex.hpp>
 #include <boost\algorithm\string.hpp>
+#include <boost\make_shared.hpp>
 
 #include <sdk\main.h>
 #include <sdk\types.h>

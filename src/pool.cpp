@@ -11,9 +11,9 @@ extern "C" {
 
 
 namespace AmxVHook {
+
 	boost::shared_ptr<Pool> gPool;
 	extern boost::shared_ptr<Debug> gDebug;
-
 
 	Pool::Pool() {
 		this->location = "AmxVHook\\mods";

@@ -14,8 +14,8 @@ namespace AmxVHook {
 			if (!boost::filesystem::exists(".\\AmxVHook"))
 				boost::filesystem::create_directory(".\\AmxVHook");
 
-			gDebug = boost::shared_ptr<Debug>(new Debug(".\\AmxVHook\\amxvhook.log"));
-			gPool = boost::shared_ptr<Pool>(new Pool());
+			gDebug = boost::make_shared<Debug>(".\\AmxVHook\\amxvhook.log");
+			gPool = boost::make_shared<Pool>();
 
 			gPool->setNatives({
 				Natives::Core::list,
@@ -36,7 +36,6 @@ namespace AmxVHook {
 
 			while (true) {
 				static uint32_t timer, frames = 0;
-
 				if (GAMEPLAY::GET_GAME_TIMER() - timer < 1000)
 					frames++;
 				else {
@@ -57,6 +56,8 @@ namespace AmxVHook {
 
 		void cleanup() {
 			gPool->clear();
+			gPool.reset();
+			gDebug.reset();
 		}
 		
 		uint32_t getFps() {
