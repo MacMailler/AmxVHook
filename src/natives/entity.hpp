@@ -50,6 +50,14 @@ namespace AmxVHook {
 			MOD_NATIVE(setEntityMaxHealth);
 			MOD_NATIVE(setEntityInvincible);
 			MOD_NATIVE(setEntityMaxSpeed);
+			MOD_NATIVE(setEntityQuaternion);
+			MOD_NATIVE(setEntityVisible);
+			MOD_NATIVE(setEntityVelocity);
+			MOD_NATIVE(setEntityHasGravity);
+			MOD_NATIVE(setEntityDynamic);
+			MOD_NATIVE(setEntityCanBeDamaged);
+			MOD_NATIVE(setEntityHeading);
+			MOD_NATIVE(setEntityPos);
 			MOD_NATIVE(deleteEntity);
 			MOD_NATIVE(detachEntity);
 

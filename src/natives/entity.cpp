@@ -50,6 +50,14 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setEntityMaxHealth)
 				MOD_DEFINE_NATIVE(setEntityInvincible)
 				MOD_DEFINE_NATIVE(setEntityMaxSpeed)
+				MOD_DEFINE_NATIVE(setEntityQuaternion)
+				MOD_DEFINE_NATIVE(setEntityVisible)
+				MOD_DEFINE_NATIVE(setEntityVelocity)
+				MOD_DEFINE_NATIVE(setEntityHasGravity)
+				MOD_DEFINE_NATIVE(setEntityDynamic)
+				MOD_DEFINE_NATIVE(setEntityCanBeDamaged)
+				MOD_DEFINE_NATIVE(setEntityHeading)
+				MOD_DEFINE_NATIVE(setEntityPos)
 				MOD_DEFINE_NATIVE(deleteEntity)
 				MOD_DEFINE_NATIVE(detachEntity)
 
@@ -411,6 +419,90 @@ namespace AmxVHook {
 					return 0;
 
 				ENTITY::SET_ENTITY_MAX_SPEED((::Entity)params[1], amx_ctof(params[2]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(setEntityQuaternion) {
+				if (!arguments(3))
+					return 0;
+
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
+					return 0;
+
+				ENTITY::SET_ENTITY_QUATERNION((::Entity)params[1], coords[0], coords[1], coords[2], amx_ctof(params[3]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(setEntityVisible) {
+				if (!arguments(2))
+					return 0;
+
+				ENTITY::SET_ENTITY_VISIBLE((::Entity)params[1], params[2], FALSE);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setEntityVelocity) {
+				if (!arguments(2))
+					return 0;
+
+				float velocity[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], velocity, 3))
+					return 0;
+
+				ENTITY::SET_ENTITY_VELOCITY((::Entity)params[1], velocity[0], velocity[1], velocity[2]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setEntityHasGravity) {
+				if (!arguments(2))
+					return 0;
+
+				ENTITY::SET_ENTITY_HAS_GRAVITY((::Entity)params[1], params[2]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setEntityDynamic) {
+				if (!arguments(2))
+					return 0;
+
+				ENTITY::SET_ENTITY_DYNAMIC((::Entity)params[1], params[2]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setEntityCanBeDamaged) {
+				if (!arguments(2))
+					return 0;
+
+				ENTITY::SET_ENTITY_CAN_BE_DAMAGED((::Entity)params[1], params[2]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setEntityHeading) {
+				if (!arguments(2))
+					return 0;
+
+				ENTITY::SET_ENTITY_HEADING((::Entity)params[1], amx_ctof(params[2]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(setEntityPos) {
+				if (!arguments(6))
+					return 0;
+
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
+					return 0;
+
+				ENTITY::SET_ENTITY_COORDS((::Entity)params[1], coords[0], coords[1], coords[2], amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), amx_ctof(params[6]));
 
 				return 1;
 			}

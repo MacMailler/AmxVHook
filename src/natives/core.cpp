@@ -36,8 +36,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(logf) {
-				cell paramsCount = (params[0] / sizeof(cell));
-				if (paramsCount == 1)
+				if ((params[0] / sizeof(cell)) == 1)
 					gDebug->log((char *)String::get(amx, params[1]).c_str());
 				else {
 					cell * f;
@@ -150,12 +149,9 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(callFunc) {
-				cell count = params[0] / sizeof(cell);
-
-				if (count < 3)
+				if ((params[0] / sizeof(cell)) < 3)
 					return 0;
 
-				std::string out;
 				std::stack<boost::variant<cell, std::string>> stk;
 				Utility::convertParamsToStack(amx, params, String::get(amx, params[2]), stk, 4);
 

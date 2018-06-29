@@ -51,6 +51,14 @@ native setEntityHealth(entity, health);
 native setEntityMaxHealth(entity, health);
 native setEntityMaxSpeed(entity, Float:speed);
 native setEntityInvincible(entity, bool:toggle);
+native setEntityQuaternion(entity, Float:coords[@Vector3], &Float:w);
+native setEntityVisible(entity, bool:visible);
+native setEntityVelocity(entity, Float:velocity[@Vector3]);
+native setEntityHasGravity(entity, bool:toggle);
+native setEntityDynamic(entity, bool:toggle);
+native setEntityCanBeDamaged(entity, bool:toggle);
+native setEntityHeading(entity, Float:heading);
+native setEntityPos(entity, Float:coords[@Vector3], bool:xAxis, bool:yAxis, bool:zAxis, bool:clearArea);
 
 native deleteEntity(entity);
 native detachEntity(entity);
