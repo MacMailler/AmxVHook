@@ -6,9 +6,11 @@
 #include <Windows.h>
 
 #include <queue>
+#include <stack>
 #include <string>
 #include <unordered_map>
 
+#include <boost\variant.hpp>
 #include <boost\filesystem.hpp>
 #include <boost\thread\thread.hpp>
 #include <boost\thread\mutex.hpp>

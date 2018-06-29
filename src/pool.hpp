@@ -24,17 +24,18 @@ namespace AmxVHook {
 		void remake();
 
 		std::unordered_map<std::string, Mod>::iterator find(std::string & name);
+		bool contains(std::string & name);
 		size_t size();
 
 		cell loadMod(boost::filesystem::path path);
 		bool unloadMod(std::string & name);
 		bool reloadMod(std::string & name);
 
-		void setLocation(std::string dir);
+		void setLocation(std::string & dir);
 		void setNatives(std::list<AMX_NATIVE_INFO *> n);
 
-		cell exec(AMX * amx, const char * funcname);
-		cell execAll(const char * funcname);
+		cell exec(AMX * amx, const std::string & funcname, std::stack<boost::variant<cell, std::string>> * params = nullptr);
+		void execAll(const std::string & funcname, std::stack<boost::variant<cell, std::string>> * params = nullptr);
 
 		void onModInputText(char * text);
 		void onModInputCommand(char * cmd, cell params);

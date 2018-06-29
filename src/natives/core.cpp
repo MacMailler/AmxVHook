@@ -21,6 +21,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getAllPickups)
 				MOD_DEFINE_NATIVE(getAllVehicles)
 				MOD_DEFINE_NATIVE(setVersionVisible)
+				MOD_DEFINE_NATIVE(callFunc)
 
 				{NULL, NULL} // terminator
 			};
@@ -76,10 +77,7 @@ namespace AmxVHook {
 				if (!arguments(1))
 					return 0;
 
-				if (!gPool->find(String::get(amx, params[1]))->first.empty())
-					return 1;
-
-				return 0;
+				return gPool->contains(String::get(amx, params[1]));
 			}
 
 			MOD_NATIVE(getFps) {
@@ -147,6 +145,24 @@ namespace AmxVHook {
 					return 0;
 
 				AmxVHook::Core::versionVisible = params[1];
+
+				return 1;
+			}
+			
+			MOD_NATIVE(callFunc) {
+				cell count = params[0] / sizeof(cell);
+
+				if (count < 3)
+					return 0;
+
+				std::string out;
+				std::stack<boost::variant<cell, std::string>> stk;
+				Utility::convertParamsToStack(amx, params, String::get(amx, params[2]), stk, 4);
+
+				if (params[3] == 1)
+					gPool->execAll(String::get(amx, params[1]).c_str(), &stk);
+				else
+					return gPool->exec(amx, String::get(amx, params[1]).c_str(), &stk);
 
 				return 1;
 			}

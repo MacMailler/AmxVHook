@@ -99,6 +99,10 @@ namespace AmxVHook {
 		return pool.find(name);
 	}
 
+	bool Pool::contains(std::string & name) {
+		return pool.find(name) != pool.end();
+	}
+
 	size_t Pool::size() {
 		return this->pool.size();
 	}
@@ -120,45 +124,45 @@ namespace AmxVHook {
 	bool Pool::unloadMod(std::string & name) {
 		gDebug->log("Unloading mod '%s.amx'...", name.c_str());
 
-		std::unordered_map<std::string, Mod>::iterator i = pool.find(name);
-		if (!i->first.empty()) {
-			this->exec(i->second.amx, "onModUnload");
+		if (!this->contains(name))
+			return false;
 
-			amx_StringCleanup(i->second.amx);
-			amx_FloatCleanup(i->second.amx);
-			amx_CoreCleanup(i->second.amx);
-			aux_FreeProgram(i->second.amx);
+		this->exec(pool[name].amx, "onModUnload");
 
-			delete i->second.amx;
+		amx_StringCleanup(pool[name].amx);
+		amx_FloatCleanup(pool[name].amx);
+		amx_CoreCleanup(pool[name].amx);
+		aux_FreeProgram(pool[name].amx);
 
-			pool.erase(name);
+		delete pool[name].amx;
 
-			return true;
-		}
-		return false;
+		pool.erase(name);
+
+		return true;
 	}
 
 	bool Pool::reloadMod(std::string & name) {
 		gDebug->log("Unloading mod '%s.amx'...", name.c_str());
 	
-		std::unordered_map<std::string, Mod>::iterator i = pool.find(name);
-		if (!i->first.empty()) {
-			this->exec(i->second.amx, "onModUnload");
+		if (!this->contains(name))
+			return false;
 
-			amx_StringCleanup(i->second.amx);
-			amx_FloatCleanup(i->second.amx);
-			amx_CoreCleanup(i->second.amx);
-			aux_FreeProgram(i->second.amx);
+		this->exec(pool[name].amx, "onModUnload");
 
-			gDebug->log("Mod '%s.amx' unloaded!", name.c_str());
+		amx_StringCleanup(pool[name].amx);
+		amx_FloatCleanup(pool[name].amx);
+		amx_CoreCleanup(pool[name].amx);
+		aux_FreeProgram(pool[name].amx);
 
-			if (this->loadAmx(i->second.amx, (char *)i->second.path.string().c_str(), i->second.path.filename().string().c_str()) == AMX_ERR_NONE)
-				return true;
-		}
+		gDebug->log("Mod '%s.amx' unloaded!", name.c_str());
+
+		if (this->loadAmx(pool[name].amx, (char *)pool[name].path.string().c_str(), pool[name].path.filename().string().c_str()) == AMX_ERR_NONE)
+			return true;
+
 		return false;
 	}
 
-	void Pool::setLocation(std::string dir) {
+	void Pool::setLocation(std::string & dir) {
 		this->location = dir;
 	}
 
@@ -166,26 +170,38 @@ namespace AmxVHook {
 		this->natives = n;
 	}
 
-	cell Pool::exec(AMX * amx, const char * funcname) {
-		cell ret;
+	cell Pool::exec(AMX * amx, const std::string & funcname, std::stack<boost::variant<cell, std::string>> * params) {
 		int index;
-		if (amx_FindPublic(amx, funcname, &index) == AMX_ERR_NONE)
-			amx_Exec(amx, &ret, index);
-
+		cell ret;
+		if (amx_FindPublic(amx, funcname.c_str(), &index) == AMX_ERR_NONE) {
+			if (params != nullptr) {
+				std::queue<cell> amxAddr;
+				while (!params->empty()) {
+					boost::variant<cell, std::string> value = std::move(params->top());
+					if (value.type() == typeid(cell)) {
+						amx_Push(amx, boost::get<cell>(value));
+					}
+					else {
+						cell tempAddr;
+						amx_PushString(amx, &tempAddr, NULL, boost::get<std::string>(value).c_str(), 0, 0);
+						amxAddr.push(tempAddr);
+					}
+					params->pop();
+				}
+				amx_Exec(amx, &ret, index);
+				while (!amxAddr.empty())
+					amx_Release(amx, amxAddr.front()), amxAddr.pop();
+			}
+			else {
+				amx_Exec(amx, &ret, index);
+			}
+		}
 		return ret;
 	}
 
-	cell Pool::execAll(const char * funcname) {
-		cell count = 0;
-		for (const auto& i : pool) {
-			cell ret;
-			int index;
-			if (amx_FindPublic(i.second.amx, funcname, &index) == AMX_ERR_NONE) {
-				count++;
-				amx_Exec(i.second.amx, &ret, index);
-			}
-		}
-		return count;
+	void Pool::execAll(const std::string & funcname, std::stack<boost::variant<cell, std::string>> * params) {
+		for (const auto& i : pool)
+			this->exec(i.second.amx, funcname, params);
 	}
 
 	void Pool::onModInputText(char *text) {
@@ -214,6 +230,5 @@ namespace AmxVHook {
 					break;
 			}
 		}
-
 	}
 };

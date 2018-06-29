@@ -17,6 +17,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getAllObjects);
 			MOD_NATIVE(getAllPickups);
 			MOD_NATIVE(getAllVehicles);
+			MOD_NATIVE(callFunc);
 
 			AMX_NATIVE_INFO list[];
 		};

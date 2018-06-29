@@ -39,6 +39,6 @@ native getAllVehicles(dest[], len = sizeof dest);
 
 native setVersionVisible(bool:visible);
 
-// native callFunction(const funcname[], const f[]="", bool:local=true, {Float,_}:...});
+native callFunc(const funcname[], const f[]="", bool:remote=false, {Float,_}:...);
 
 native format(dest[], size=sizeof dest, const format[], {Float, _}:...);
