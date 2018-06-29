@@ -2,16 +2,23 @@
 #include <string>
 
 
+new bool:tracker = false;
 new temp[128];
 
 new peds[1024];
 new vehicles[1024];
 
-new colorAlive[@RGBA] = {101, 101, 101, 75};
-new colorDead[@RGBA] = {200, 75, 75, 160};
+new colorAlive = toRGBA(101, 101, 101, 75);
+new colorDead = toRGBA(200, 75, 75, 160);
 
 
 public onModUpdate() {
+	if (isKeyJustUp(VK_NUMPAD0))
+		tracker = !tracker;
+		
+	if (!tracker)
+		return 1;
+		
 	if (isMissionFlag())
 		return 1;
 		
@@ -21,7 +28,6 @@ public onModUpdate() {
 	
 	new	Float:pc[@Vector3];
 	getEntityPos(playerPed, pc);
-			
 	for (new i = 0, count = getAllVehicles(vehicles); i < count; i++) {	
 		new	Float:vc[@Vector3], Float:sx, Float:sy;
 		getEntityPos(vehicles[i], vc);
@@ -34,12 +40,12 @@ public onModUpdate() {
 				getDisplayNameFromVehicleModel(model, name);
 				
 				format(
-					temp, sizeof temp, false,
-					"^\n%s\n| Distance %.02f\n| Health %d\n| Speed %.1f km'h\n| %.1f %.1f %.1f",
+					temp, sizeof temp,
+					"^\n%s\n| Distance %.2f\n| Health %.2f\n| Speed %.1f km'h\n| %.1f %.1f %.1f",
 					name, dist, getEntityHealth(vehicles[i]), getEntitySpeed(vehicles[i]) * 3.6, vc[@X], vc[@Y], vc[@Z]
 				);
 				drawText(temp, sx, sy, 0.2);
-				drawRect(sx + 0.027, sy + 0.043, 0.058, 0.086, isEntityDead(vehicles[i]) ? colorDead : colorAlive);
+				drawRect(sx, sy, 0.058, 0.086, isEntityDead(vehicles[i]) ? colorDead : colorAlive);
 			}
 		}
 	}
@@ -58,12 +64,12 @@ public onModUpdate() {
 			new Float:dist = getDistanceBetweenPos(pos, pc);
 			if (dist < 20.0) {				
 				format(
-					temp, sizeof temp, false,
-					"^\n%d\n| Distance %.02f\n| Health %d\n| %.1f %.1f %.1f",
-					peds[i], dist, getEntityMaxHealth(vehicles[i]), pos[@X], pos[@Y], pos[@Z]
+					temp, sizeof temp,
+					"^\n%d\n| Distance %.2f\n| %.1f %.1f %.1f",
+					peds[i], dist, pos[@X], pos[@Y], pos[@Z]
 				);
 				drawText(temp, sx, sy, 0.2);
-				drawRect(sx + 0.027, sy + 0.043, 0.058, 0.056, isEntityDead(peds[i]) ? colorDead : colorAlive);
+				drawRect(sx, sy, 0.058, 0.056, isEntityDead(peds[i]) ? colorDead : colorAlive);
 			}
 		}
 	}

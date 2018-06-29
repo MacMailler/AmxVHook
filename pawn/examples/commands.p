@@ -14,7 +14,7 @@ public onModInputCommand(cmd[], params) {
 		new p3[32];
 		getCommandParams(3, p3);
 		
-		format(temp, sizeof temp, false, "%d, %d, %f, %s", params, getCommandParamsInt(1), getCommandParamsFloat(2), p3);
+		format(temp, sizeof temp, false, "%d, %d, %f, %s, %H", params, getCommandParamsInt(1), getCommandParamsFloat(2), p3, getCommandParamsHash(4));
 		showSubtitle(temp);
 	}
 	else if (strcmp(cmd, "!cp") == 0) {
@@ -41,11 +41,10 @@ public onModInputCommand(cmd[], params) {
 		if (params != 1) return 1;
 		if (vehicle != -1) deleteVehicle(vehicle);
 	
-		new Float:pc[@Vector3], modelName[32];
-		
+		new Float:pc[@Vector3];
 		getPlayerPos(pc);
-		getCommandParams(1, modelName);
-		vehicle = createVehicle(getHashKey(modelName), pc, 0);
+		
+		vehicle = createVehicle(getCommandParamsHash(1), pc, 0);
 		
 		format(temp, sizeof temp, false, "vehicle: %d", vehicle);
 		showSubtitle(temp, 4000);
@@ -56,15 +55,11 @@ public onModInputCommand(cmd[], params) {
 	}
 	else if (strcmp(cmd, "!gw") == 0) {
 		if (params != 2) return 1;
-		new weapon[24];
-		getCommandParams(1, weapon);
-		givePedWeapon(getPlayerPed(), getHashKey(weapon), getCommandParamsInt(2), true);
+		givePedWeapon(getPlayerPed(), getCommandParamsHash(1), getCommandParamsInt(2), true);
 	}
 	else if (strcmp(cmd, "!rw") == 0) {
 		if (params != 1) return 1;
-		new weapon[24];
-		getCommandParams(1, weapon);
-		removePedWeapon(getPlayerPed(), getHashKey(weapon));
+		removePedWeapon(getPlayerPed(), getCommandParamsHash(1));
 	}
 	else if (strcmp(cmd, "!wl") == 0) {
 		if (params != 1) return 1;
