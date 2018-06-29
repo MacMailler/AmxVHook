@@ -139,5 +139,33 @@ namespace AmxVHook {
 
 			return true;
 		}
+
+		void convertParamsToStack(AMX * amx, const cell * params, std::string & format, std::stack<boost::variant<cell, std::string>> & stk, int index) {
+			for (const auto& i : format) {
+				cell * ptr = nullptr;
+
+				switch (i) {
+				case 'i':
+				case 'd':
+				case 'f': {
+					ptr = Utility::getAddrFromParam(amx, params[index++]);
+					if (ptr != nullptr)
+						stk.push(*ptr);
+					else
+						stk.push(0);
+				}
+				break;
+
+				case 's':
+				case 'z': {
+					stk.push(String::get(amx, params[index++]));
+				}
+				break;
+
+				default:
+					stk.push(std::string("NULL"));
+				}
+			}
+		}
 	};
 };

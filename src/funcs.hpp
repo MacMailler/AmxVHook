@@ -35,5 +35,6 @@ namespace AmxVHook {
 		bool setArrayToParam(AMX * amx, cell param, cell * arr, int size);
 		bool getArrayFromParam(AMX * amx, cell param, cell * dest, int size);
 		bool getFloatArrayFromParam(AMX * amx, cell param, float * dest, int size);
+		void convertParamsToStack(AMX * amx, const cell * params, std::string & format, std::stack<boost::variant<cell, std::string>> & stk, int index = 0);
 	};
 };
