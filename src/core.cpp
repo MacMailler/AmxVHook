@@ -7,7 +7,7 @@ namespace AmxVHook {
 
 	namespace Core {
 
-		uint32_t lastFrames = 0;
+		cell lastFrames = 0;
 		bool versionVisible = true;
 
 		void init() {
@@ -29,13 +29,14 @@ namespace AmxVHook {
 				Natives::Input::list,
 				Natives::Entity::list,
 				Natives::Camera::list,
-				Natives::Time::list
+				Natives::Time::list,
+				Natives::Weapon::list
 			});
 
 			gPool->make();
 
 			while (true) {
-				static uint32_t timer, frames = 0;
+				static cell timer, frames = 0;
 				if (GAMEPLAY::GET_GAME_TIMER() - timer < 1000)
 					frames++;
 				else {
@@ -60,7 +61,7 @@ namespace AmxVHook {
 			gDebug.reset();
 		}
 		
-		uint32_t getFps() {
+		cell getFps() {
 			return lastFrames;
 		}
 	};

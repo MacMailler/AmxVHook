@@ -10,6 +10,6 @@ namespace AmxVHook {
 		void init();
 		void cleanup();
 
-		uint32_t getFps();
+		cell getFps();
 	};
 };

@@ -16,11 +16,10 @@ namespace AmxVHook {
 	extern boost::shared_ptr<Debug> gDebug;
 
 	Pool::Pool() {
-		this->location = "AmxVHook\\mods";
+		this->location = boost::filesystem::system_complete("AmxVHook\\mods");
 
-		boost::filesystem::path path = boost::filesystem::system_complete(boost::filesystem::path(this->location, boost::filesystem::native));
-		if (!boost::filesystem::exists(path))
-			boost::filesystem::create_directory(path);
+		if (!boost::filesystem::exists(this->location))
+			boost::filesystem::create_directory(this->location);
 	}
 
 	Pool::~Pool() {
@@ -30,30 +29,30 @@ namespace AmxVHook {
 	void Pool::make() {
 		gDebug->log("Pool initing...");
 
-		boost::filesystem::path mods = boost::filesystem::system_complete(boost::filesystem::path(this->location, boost::filesystem::native));
-		if (!boost::filesystem::exists(mods) || !boost::filesystem::is_directory(mods)) {
+		if (!boost::filesystem::exists(this->location) || !boost::filesystem::is_directory(this->location)) {
 			gDebug->log("Mods directory not found!");
 			return;
 		}
 
-		gDebug->log("Loading mods from '%s'", mods.string().c_str());
+		gDebug->log("Loading mods from '%s'", this->location.string().c_str());
 
 		boost::filesystem::directory_iterator end;
-		for (boost::filesystem::directory_iterator it(mods); it != end; ++it) {
+		for (boost::filesystem::directory_iterator it(this->location); it != end; ++it) {
 			if (it->path().extension() == ".amx") {
-				this->loadMod(it->path());
+				this->loadMod((boost::filesystem::path)it->path());
 			}
 		}
 
 		gDebug->log("Loaded %d mods!", pool.size());
 	}
 
-	cell Pool::loadAmx(AMX * amx, char * path, const char * name) {
+	cell Pool::loadAmx(AMX * amx, boost::filesystem::path & path) {
 		cell err = AMX_ERR_NONE;
+		std::string name = path.filename().string();
 
 		gDebug->log("Loading mod '%s'...", name);
 
-		if ((err = aux_LoadProgram(amx, path, NULL)) == AMX_ERR_NONE) {
+		if ((err = Utility::Amx::load(amx, (std::string)path.string())) == AMX_ERR_NONE) {
 			amx_CoreInit(amx);
 			amx_FloatInit(amx);
 			amx_StringInit(amx);
@@ -62,17 +61,15 @@ namespace AmxVHook {
 				err = amx_Register(amx, list, -1);
 
 			if (err == AMX_ERR_NONE) {
-				int num;
-				amx_NumNatives(amx, &num);
-				gDebug->log("Mod '%s' loaded! Registred natives: %d", name, num);
+				gDebug->log("Mod '%s' loaded! Registred natives: %d", name, Utility::Amx::getNumNatives(amx));
 				this->exec(amx, "onModLoad");
 			}
 			else {
-				gDebug->log("Failed to load '%s' mod! %s", name, aux_StrError(err));
-				aux_FreeProgram(amx);
+				gDebug->log("Failed to load '%s' mod! %s", name, Utility::Amx::errorToString(err));
+				Utility::Amx::cleanup(amx);
 			}
 		}
-		else gDebug->log("Failed to load '%s' mod. %s!", name, aux_StrError(err));
+		else gDebug->log("Failed to load '%s' mod. %s!", name, Utility::Amx::errorToString(err));
 
 		return err;
 	}
@@ -82,7 +79,7 @@ namespace AmxVHook {
 			amx_StringCleanup(i.second.amx);
 			amx_FloatCleanup(i.second.amx);
 			amx_CoreCleanup(i.second.amx);
-			aux_FreeProgram(i.second.amx);
+			Utility::Amx::cleanup(i.second.amx);
 			delete i.second.amx;
 		}
 		pool.clear();
@@ -107,14 +104,14 @@ namespace AmxVHook {
 		return this->pool.size();
 	}
 
-	cell Pool::loadMod(boost::filesystem::path path) {
+	cell Pool::loadMod(boost::filesystem::path & path) {
 		Mod mod;
 		cell err;
 
 		mod.amx = new AMX;
 		mod.path = path;
 
-		err = this->loadAmx(mod.amx, (char *)path.string().c_str(), path.filename().string().c_str());
+		err = this->loadAmx(mod.amx, path);
 		if (err == AMX_ERR_NONE)
 			pool.insert({ path.stem().string(), mod });
 
@@ -132,7 +129,7 @@ namespace AmxVHook {
 		amx_StringCleanup(pool[name].amx);
 		amx_FloatCleanup(pool[name].amx);
 		amx_CoreCleanup(pool[name].amx);
-		aux_FreeProgram(pool[name].amx);
+		Utility::Amx::cleanup(pool[name].amx);
 
 		delete pool[name].amx;
 
@@ -152,22 +149,26 @@ namespace AmxVHook {
 		amx_StringCleanup(pool[name].amx);
 		amx_FloatCleanup(pool[name].amx);
 		amx_CoreCleanup(pool[name].amx);
-		aux_FreeProgram(pool[name].amx);
+		Utility::Amx::cleanup(pool[name].amx);
 
 		gDebug->log("Mod '%s.amx' unloaded!", name.c_str());
 
-		if (this->loadAmx(pool[name].amx, (char *)pool[name].path.string().c_str(), pool[name].path.filename().string().c_str()) == AMX_ERR_NONE)
+		if (this->loadAmx(pool[name].amx, pool[name].path) == AMX_ERR_NONE)
 			return true;
 
 		return false;
 	}
 
-	void Pool::setLocation(std::string & dir) {
+	void Pool::setLocation(boost::filesystem::path & dir) {
 		this->location = dir;
 	}
 
 	void Pool::setNatives(std::list<AMX_NATIVE_INFO *> n) {
 		this->natives = n;
+	}
+
+	boost::filesystem::path Pool::getLocation() {
+		return this->location;
 	}
 
 	cell Pool::exec(AMX * amx, const std::string & funcname, std::stack<boost::variant<cell, std::string>> * params) {
