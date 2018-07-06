@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\amx\amx.h" />
-    <ClInclude Include="src\amx\amxaux.h" />
     <ClInclude Include="src\amx\amx_internal.h" />
     <ClInclude Include="src\amx\amx_opcodes.h" />
     <ClInclude Include="src\amx\osdefs.h" />
@@ -41,13 +40,13 @@
     <ClInclude Include="src\natives\player.hpp" />
     <ClInclude Include="src\natives\time.hpp" />
     <ClInclude Include="src\natives\vehicle.hpp" />
+    <ClInclude Include="src\natives\weapon.hpp" />
     <ClInclude Include="src\pool.hpp" />
     <ClInclude Include="src\string.hpp" />
     <ClInclude Include="src\amxvhook.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\amx\amx.c" />
-    <ClCompile Include="src\amx\amxaux.c" />
     <ClCompile Include="src\amx\amxcore.c" />
     <ClCompile Include="src\amx\amxstring.c" />
     <ClCompile Include="src\amx\amx_exec.c" />
@@ -69,6 +68,7 @@
     <ClCompile Include="src\natives\player.cpp" />
     <ClCompile Include="src\natives\time.cpp" />
     <ClCompile Include="src\natives\vehicle.cpp" />
+    <ClCompile Include="src\natives\weapon.cpp" />
     <ClCompile Include="src\pool.cpp" />
     <ClCompile Include="src\string.cpp" />
     <ClCompile Include="src\amxvhook.cpp" />

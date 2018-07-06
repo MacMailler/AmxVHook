@@ -30,9 +30,6 @@
     <ClInclude Include="src\amx\amx_opcodes.h">
       <Filter>Headers Files\amx</Filter>
     </ClInclude>
-    <ClInclude Include="src\amx\amxaux.h">
-      <Filter>Headers Files\amx</Filter>
-    </ClInclude>
     <ClInclude Include="src\amx\osdefs.h">
       <Filter>Headers Files\amx</Filter>
     </ClInclude>
@@ -96,6 +93,9 @@
     <ClInclude Include="src\natives\time.hpp">
       <Filter>Headers Files\natives</Filter>
     </ClInclude>
+    <ClInclude Include="src\natives\weapon.hpp">
+      <Filter>Headers Files\natives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\amx\amx.c">
@@ -105,9 +105,6 @@
       <Filter>Source Files\amx</Filter>
     </ClCompile>
     <ClCompile Include="src\amx\amx_verifier.c">
-      <Filter>Source Files\amx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\amx\amxaux.c">
       <Filter>Source Files\amx</Filter>
     </ClCompile>
     <ClCompile Include="src\amx\amxcore.c">
@@ -174,6 +171,9 @@
       <Filter>Source Files\natives</Filter>
     </ClCompile>
     <ClCompile Include="src\natives\time.cpp">
+      <Filter>Source Files\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\natives\weapon.cpp">
       <Filter>Source Files\natives</Filter>
     </ClCompile>
   </ItemGroup>

@@ -25,7 +25,6 @@
 
 #define HAVE_STDINT_H
 #include "amx\amx.h"
-#include "amx\amxaux.h"
 
 #include "pool.hpp"
 #include "core.hpp"
