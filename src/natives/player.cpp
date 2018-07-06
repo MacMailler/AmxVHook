@@ -15,16 +15,17 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isPlayerTargettingEntity)
 				MOD_DEFINE_NATIVE(isPlayerTargettingAnything)
 				MOD_DEFINE_NATIVE(isPlayerControlOn)
+				MOD_DEFINE_NATIVE(isPlayerInvincible)
 				MOD_DEFINE_NATIVE(reportPlayerCrime)
 				MOD_DEFINE_NATIVE(setPlayerWantedLevel)
 				MOD_DEFINE_NATIVE(setPlayerWantedLevelNoDrop)
 				MOD_DEFINE_NATIVE(getPlayerWantedLevel)
 				MOD_DEFINE_NATIVE(getPlayerWantedLevelThreshold)
+				MOD_DEFINE_NATIVE(clearPlayerWantedLevel)
 				MOD_DEFINE_NATIVE(getPlayerPos)
 				MOD_DEFINE_NATIVE(getPlayerMaxArmor)
 				MOD_DEFINE_NATIVE(getPlayerStealthNoise)
 				MOD_DEFINE_NATIVE(setPlayerInvincible)
-				MOD_DEFINE_NATIVE(getPlayerInvincible)
 				MOD_DEFINE_NATIVE(getTimeSincePlayerLastArrest)
 				MOD_DEFINE_NATIVE(getTimeSincePlayerLastDeath)
 				MOD_DEFINE_NATIVE(getTimeSincePlayerHitVehicle)
@@ -146,15 +147,17 @@ namespace AmxVHook {
 				return 1;
 			}
 
+			MOD_NATIVE(getPlayerWantedLevelThreshold) {
+				return PLAYER::GET_WANTED_LEVEL_THRESHOLD(PLAYER::PLAYER_ID());
+			}
+
 			MOD_NATIVE(getPlayerWantedLevel) {
 				return PLAYER::GET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID());
 			}
-
-			MOD_NATIVE(getPlayerWantedLevelThreshold) {
-				if (!arguments(1))
-					return -1;
-
-				return PLAYER::GET_WANTED_LEVEL_THRESHOLD(params[1]);
+			
+			MOD_NATIVE(clearPlayerWantedLevel) {
+				PLAYER::CLEAR_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID());
+				return 1;
 			}
 
 			MOD_NATIVE(getPlayerMaxArmor) {
@@ -210,19 +213,23 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPlayerInvincible) {
-				if (!arguments(2))
+				if (!arguments(1))
 					return 0;
 
-				PLAYER::SET_PLAYER_INVINCIBLE(params[1], params[2]);
+				ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::GET_PLAYER_PED(PLAYER::PLAYER_ID()), params[1]);
 
 				return 1;
 			}
 
-			MOD_NATIVE(getPlayerInvincible) {
-				if (!arguments(1))
-					return 0;
+			MOD_NATIVE(isPlayerInvincible) {
+				auto addr = getScriptHandleBaseAddress(PLAYER::GET_PLAYER_PED(PLAYER::PLAYER_ID()));
 
-				return PLAYER::GET_PLAYER_INVINCIBLE(params[1]);
+				if (addr) {
+					DWORD flag = *(DWORD *)(addr + 0x188);
+					return ((flag & (1 << 8)) != 0) || ((flag & (1 << 9)) != 0);
+				}
+
+				return false;
 			}
 
 			MOD_NATIVE(setPlayerMaxArmor) {

@@ -18,6 +18,7 @@
 #include <amxvhook\entity>
 #include <amxvhook\camera>
 #include <amxvhook\time>
+#include <amxvhook\weapon>
 
 forward onModLoad();
 forward onModUnload();

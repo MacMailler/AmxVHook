@@ -33,6 +33,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isEntityDamagedByAnyVehicle)
 				MOD_DEFINE_NATIVE(isEntityDamagedByEntity)
 				MOD_DEFINE_NATIVE(isEntityCollidedWithAnything)
+				MOD_DEFINE_NATIVE(isEntityBeenDamagedByWeapon)
 				MOD_DEFINE_NATIVE(getEntityType)
 				MOD_DEFINE_NATIVE(getEntityModel)
 				MOD_DEFINE_NATIVE(getEntityHealth)
@@ -60,6 +61,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setEntityPos)
 				MOD_DEFINE_NATIVE(deleteEntity)
 				MOD_DEFINE_NATIVE(detachEntity)
+				MOD_DEFINE_NATIVE(clearEntityLastWeaponDamage)
 
 				{NULL, NULL}
 			};
@@ -266,6 +268,13 @@ namespace AmxVHook {
 					return 0;
 
 				return ENTITY::HAS_ENTITY_COLLIDED_WITH_ANYTHING((::Entity)params[1]);
+			}
+			
+			MOD_NATIVE(isEntityBeenDamagedByWeapon) {
+				if (!arguments(3))
+					return 0;
+
+				return WEAPON::HAS_ENTITY_BEEN_DAMAGED_BY_WEAPON((::Entity)params[1], params[2], params[3]);
 			}
 
 			MOD_NATIVE(getEntityType) {
@@ -522,6 +531,15 @@ namespace AmxVHook {
 					return 0;
 
 				ENTITY::DETACH_ENTITY((::Entity)params[1], FALSE, FALSE);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(clearEntityLastWeaponDamage) {
+				if (!arguments(1))
+					return 0;
+
+				WEAPON::CLEAR_ENTITY_LAST_WEAPON_DAMAGE((::Entity)params[1]);
 
 				return 1;
 			}

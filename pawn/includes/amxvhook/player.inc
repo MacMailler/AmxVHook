@@ -15,11 +15,11 @@ native isPlayerBusted(bool:atArresting);
 native isPlayerTargettingEntity(entity);
 native isPlayerTargettingAnything();
 native isPlayerControlOn();
+native isPlayerInvincible();
 
 native setPlayerSprint(bool:toggle);
 native setPlayerLockOn(bool:toggle);
-native setPlayerInvincible(player, bool:invincible);
-native getPlayerInvincible(player);
+native setPlayerInvincible(bool:toggle);
 
 native getTimeSincePlayerLastArrest();
 native getTimeSincePlayerLastDeath();
@@ -32,6 +32,7 @@ native getPlayerWantedLevel();
 native getPlayerWantedLevelThreshold(level);
 native setPlayerWantedLevel(level);
 native setPlayerWantedLevelNoDrop(level);
+native clearPlayerWantedLevel();
 
 native reportPlayerCrime(crimeType, wantedLvlThresh);
 

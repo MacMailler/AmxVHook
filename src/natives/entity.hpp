@@ -33,6 +33,7 @@ namespace AmxVHook {
 			MOD_NATIVE(isEntityDamagedByAnyVehicle);
 			MOD_NATIVE(isEntityDamagedByEntity);
 			MOD_NATIVE(isEntityCollidedWithAnything);
+			MOD_NATIVE(isEntityBeenDamagedByWeapon);
 			MOD_NATIVE(getEntityType);
 			MOD_NATIVE(getEntityModel);
 			MOD_NATIVE(getEntityHealth);
@@ -60,6 +61,7 @@ namespace AmxVHook {
 			MOD_NATIVE(setEntityPos);
 			MOD_NATIVE(deleteEntity);
 			MOD_NATIVE(detachEntity);
+			MOD_NATIVE(clearEntityLastWeaponDamage);
 
 			AMX_NATIVE_INFO list[];
 		};

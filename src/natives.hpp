@@ -17,3 +17,4 @@
 #include "natives\entity.hpp"
 #include "natives\camera.hpp"
 #include "natives\time.hpp"
+#include "natives\weapon.hpp"

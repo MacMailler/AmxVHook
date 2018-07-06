@@ -55,6 +55,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isPedModel)
 				MOD_DEFINE_NATIVE(isPedCurrentWeaponSilenced)
 				MOD_DEFINE_NATIVE(isPedWeaponReadyToShoot)
+				MOD_DEFINE_NATIVE(isPedBeenDamagedByWeapon)
 				MOD_DEFINE_NATIVE(getPedType)
 				MOD_DEFINE_NATIVE(getPedKiller)
 				MOD_DEFINE_NATIVE(getPedCauseOfDeath)
@@ -71,9 +72,13 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getPedCurrentVehicleWeapon)
 				MOD_DEFINE_NATIVE(getPedMaxAmmo)
 				MOD_DEFINE_NATIVE(getPedAmmoInClip)
+				MOD_DEFINE_NATIVE(getPedMaxAmmoInClip)
 				MOD_DEFINE_NATIVE(getPedAmmoInWeapon)
 				MOD_DEFINE_NATIVE(getPedSelectedWeapon)
 				MOD_DEFINE_NATIVE(getPedBestWeapon)
+				MOD_DEFINE_NATIVE(getCurrentPedWeaponEntityIndex)
+				MOD_DEFINE_NATIVE(getPedWeaponTypeInSlot)
+				MOD_DEFINE_NATIVE(getPedMaxRangeOfCurrentWeapon)
 				MOD_DEFINE_NATIVE(setPedArmor)
 				MOD_DEFINE_NATIVE(setPedAsCop)
 				MOD_DEFINE_NATIVE(setPedAsEnemy)
@@ -90,15 +95,22 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setPedInfiniteAmmoInClip)
 				MOD_DEFINE_NATIVE(setPedCurrentWeapon)
 				MOD_DEFINE_NATIVE(setPedCurrentVehicleWeapon)
+				MOD_DEFINE_NATIVE(setPedCurrentWeaponVisible)
+				MOD_DEFINE_NATIVE(setPedDropsWeaponsWhenDead)
 				MOD_DEFINE_NATIVE(setPedHearingRange)
 				MOD_DEFINE_NATIVE(setPedSeeingRange)
 				MOD_DEFINE_NATIVE(setPedGravity)
+				MOD_DEFINE_NATIVE(setPedDropsWeapon)
+				MOD_DEFINE_NATIVE(setPedDropsInventoryWeapon)
 				MOD_DEFINE_NATIVE(addPedAmmo)
 				MOD_DEFINE_NATIVE(addPedArmor)
 				MOD_DEFINE_NATIVE(givePedWeapon)
+				MOD_DEFINE_NATIVE(givePedDelayedWeapon)
 				MOD_DEFINE_NATIVE(givePedDamage)
 				MOD_DEFINE_NATIVE(removePedWeapon)
 				MOD_DEFINE_NATIVE(removePedWeapons)
+				MOD_DEFINE_NATIVE(clearPedLastWeaponDamage)
+				MOD_DEFINE_NATIVE(hidePedWeaponForCutscene)
 
 				{NULL, NULL} // terminator
 			};
@@ -470,6 +482,13 @@ namespace AmxVHook {
 
 				return WEAPON::IS_PED_WEAPON_READY_TO_SHOOT((::Ped)params[1]);
 			}
+			
+			MOD_NATIVE(isPedBeenDamagedByWeapon) {
+				if (!arguments(3))
+					return 0;
+
+				return WEAPON::HAS_PED_BEEN_DAMAGED_BY_WEAPON((::Ped)params[1], params[2], params[3]);
+			}
 
 			MOD_NATIVE(getPedType) {
 				if (!arguments(1))
@@ -590,6 +609,13 @@ namespace AmxVHook {
 
 				return WEAPON::GET_AMMO_IN_CLIP((::Ped)params[1], (Hash)params[2], (int *)ammo);
 			}
+			
+			MOD_NATIVE(getPedMaxAmmoInClip) {
+				if (!arguments(2))
+					return 0;
+
+				return WEAPON::GET_MAX_AMMO_IN_CLIP((::Ped)params[1], (Hash)params[2], TRUE);
+			}
 
 			MOD_NATIVE(getPedCurrentWeapon) {
 				if (!arguments(2))
@@ -632,6 +658,29 @@ namespace AmxVHook {
 					return 0;
 
 				return WEAPON::GET_BEST_PED_WEAPON((::Ped)params[1], FALSE);
+			}
+			
+			MOD_NATIVE(getCurrentPedWeaponEntityIndex) {
+				if (!arguments(1))
+					return 0;
+
+				return WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX((::Ped)params[1]);
+			}
+			
+			MOD_NATIVE(getPedWeaponTypeInSlot) {
+				if (!arguments(2))
+					return 0;
+
+				return WEAPON::GET_PED_WEAPONTYPE_IN_SLOT((::Ped)params[1], params[2]);
+			}
+			
+			MOD_NATIVE(getPedMaxRangeOfCurrentWeapon) {
+				if (!arguments(1))
+					return 0;
+
+				float range = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON((::Ped)params[1]);
+
+				return amx_ftoc(range);
 			}
 
 			MOD_NATIVE(setPedArmor) {
@@ -771,6 +820,24 @@ namespace AmxVHook {
 				return WEAPON::SET_CURRENT_PED_VEHICLE_WEAPON((::Ped)params[1], (Hash)params[2]);
 			}
 
+			MOD_NATIVE(setPedCurrentWeaponVisible) {
+				if (!arguments(5))
+					return 0;
+
+				WEAPON::SET_PED_CURRENT_WEAPON_VISIBLE((::Ped)params[1], params[2], params[3], params[4], params[5]);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setPedDropsWeaponsWhenDead) {
+				if (!arguments(2))
+					return 0;
+
+				WEAPON::SET_PED_DROPS_WEAPONS_WHEN_DEAD((::Ped)params[1], params[2]);
+
+				return 1;
+			}
+
 			MOD_NATIVE(setPedHearingRange) {
 				if (!arguments(2))
 					return 0;
@@ -794,6 +861,28 @@ namespace AmxVHook {
 					return 0;
 
 				PED::SET_PED_GRAVITY((::Ped)params[1], params[2]);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setPedDropsWeapon) {
+				if (!arguments(1))
+					return 0;
+
+				WEAPON::SET_PED_DROPS_WEAPON((::Ped)params[1]);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setPedDropsInventoryWeapon) {
+				if (!arguments(4))
+					return 0;
+
+				float offset[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[3], offset, 3))
+					return 0;
+
+				WEAPON::SET_PED_DROPS_INVENTORY_WEAPON((::Ped)params[1], params[2], offset[0], offset[1], offset[2], params[3]);
 
 				return 1;
 			}
@@ -825,7 +914,15 @@ namespace AmxVHook {
 
 				return 1;
 			}
+			
+			MOD_NATIVE(givePedDelayedWeapon) {
+				if (!arguments(4))
+					return 0;
 
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED((::Ped)params[1], params[2], params[3], params[4]);
+
+				return 1;
+			}
 
 			MOD_NATIVE(givePedDamage) {
 				if (!arguments(3))
@@ -850,6 +947,24 @@ namespace AmxVHook {
 					return 0;
 
 				WEAPON::REMOVE_ALL_PED_WEAPONS((::Ped)params[1], FALSE);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(clearPedLastWeaponDamage) {
+				if (!arguments(1))
+					return 0;
+
+				WEAPON::CLEAR_PED_LAST_WEAPON_DAMAGE((::Ped)params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(hidePedWeaponForCutscene) {
+				if (!arguments(2))
+					return 0;
+
+				WEAPON::HIDE_PED_WEAPON_FOR_SCRIPTED_CUTSCENE((::Ped)params[1], params[2]);
 
 				return 1;
 			}

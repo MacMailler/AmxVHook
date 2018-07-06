@@ -32,6 +32,7 @@ native isEntityDamagedByAnyPed(entity);
 native isEntityDamagedByAnyVehicle(entity);
 native isEntityDamagedByEntity(entity, target);
 native isEntityCollidedWithAnything(entity);
+native isEntityBeenDamagedByWeapon(entity, weaponHash, weaponType);
 
 native getEntityType(entity);
 native getEntityModel(entity);
@@ -62,3 +63,5 @@ native setEntityPos(entity, Float:coords[@Vector3], bool:xAxis, bool:yAxis, bool
 
 native deleteEntity(entity);
 native detachEntity(entity);
+
+native clearEntityLastWeaponDamage(entity);

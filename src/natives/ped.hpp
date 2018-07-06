@@ -55,6 +55,7 @@ namespace AmxVHook {
 			MOD_NATIVE(isPedModel);
 			MOD_NATIVE(isPedCurrentWeaponSilenced);
 			MOD_NATIVE(isPedWeaponReadyToShoot);
+			MOD_NATIVE(isPedBeenDamagedByWeapon);
 			MOD_NATIVE(getPedType);
 			MOD_NATIVE(getPedKiller);
 			MOD_NATIVE(getPedCauseOfDeath);
@@ -75,9 +76,13 @@ namespace AmxVHook {
 			MOD_NATIVE(getPedCurrentVehicleWeapon);
 			MOD_NATIVE(getPedMaxAmmo);
 			MOD_NATIVE(getPedAmmoInClip);
+			MOD_NATIVE(getPedMaxAmmoInClip);
 			MOD_NATIVE(getPedAmmoInWeapon);
 			MOD_NATIVE(getPedSelectedWeapon);
 			MOD_NATIVE(getPedBestWeapon);
+			MOD_NATIVE(getCurrentPedWeaponEntityIndex);
+			MOD_NATIVE(getPedWeaponTypeInSlot);
+			MOD_NATIVE(getPedMaxRangeOfCurrentWeapon);
 			MOD_NATIVE(setPedArmor);
 			MOD_NATIVE(setPedAsCop);
 			MOD_NATIVE(setPedAsEnemy);
@@ -94,15 +99,22 @@ namespace AmxVHook {
 			MOD_NATIVE(setPedInfiniteAmmoInClip);
 			MOD_NATIVE(setPedCurrentWeapon);
 			MOD_NATIVE(setPedCurrentVehicleWeapon);
+			MOD_NATIVE(setPedCurrentWeaponVisible);
+			MOD_NATIVE(setPedDropsWeaponsWhenDead);
 			MOD_NATIVE(setPedHearingRange);
 			MOD_NATIVE(setPedSeeingRange);
 			MOD_NATIVE(setPedGravity);
+			MOD_NATIVE(setPedDropsWeapon);
+			MOD_NATIVE(setPedDropsInventoryWeapon);
 			MOD_NATIVE(addPedAmmo);
 			MOD_NATIVE(addPedArmor);
 			MOD_NATIVE(givePedWeapon);
+			MOD_NATIVE(givePedDelayedWeapon);
 			MOD_NATIVE(givePedDamage);
 			MOD_NATIVE(removePedWeapon);
 			MOD_NATIVE(removePedWeapons);
+			MOD_NATIVE(clearPedLastWeaponDamage);
+			MOD_NATIVE(hidePedWeaponForCutscene);
 
 			AMX_NATIVE_INFO list[];
 		};

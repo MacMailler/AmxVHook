@@ -90,6 +90,7 @@ native isPedFacingPed(ped, otherPed, Float:angle);
 native isPedModel(ped, hash);
 native isPedCurrentWeaponSilenced(ped);
 native isPedWeaponReadyToShoot(ped);
+native isPedBeenDamagedByWeapon(ped, weaponHash, weaponType);
 
 native getPedType(ped);
 native getPedKiller(ped);
@@ -105,11 +106,15 @@ native getPedMaxHealth(ped, health);
 native getPedVehicle(ped, bool:last=false);
 native getPedCurrentWeapon(ped, &hash);
 native getPedCurrentVehicleWeapon(ped, &hash);
-native getPedMaxAmmo(ped, weaponHash);
+native getPedMaxAmmo(ped, weaponHash, &ammo);
 native getPedAmmoInClip(ped, weaponHash, &ammo);
+native getPedMaxAmmoInClip(ped, weaponHash);
 native getPedAmmoInWeapon(ped, weaponHash);
 native getPedSelectedWeapon(ped);
 native getPedBestWeapon(ped);
+native getCurrentPedWeaponEntityIndex(ped);
+native getPedWeaponTypeInSlot(ped, slotHash);
+native Float:getPedMaxRangeOfCurrentWeapon(ped);
 
 native setPedAsCop(ped, bool:toggle);
 native setPedAsEnemy(ped, bool:toggle);
@@ -127,14 +132,23 @@ native setPedInfiniteAmmo(ped, weaponHash, bool:toggle);
 native setPedInfiniteAmmoInClip(ped, bool:toggle);
 native setPedCurrentWeapon(ped, weaponHash, bool:equip);
 native setPedCurrentVehicleWeapon(ped, weaponHash);
+native setPedCurrentWeaponVisible(ped, bool:visible, bool:deselectWeapon, bool:p3, bool:p4);
+native setPedDropsWeaponsWhenDead(ped, bool:toggle);
 native setPedHearingRange(ped, Float:range);
 native setPedSeeingRange(ped, Float:range);
 native setPedGravity(ped, bool:gravity);
+native setPedDropsWeapon(ped);
+native setPedDropsInventoryWeapon(ped, weaponHash, Float:offset[@Vector3], ammoCount);
 
 native addPedAmmo(ped, weaponHash, ammo);
 native addPedArmor(ped, armor);
 
 native givePedDamage(ped, amount, bool:armorFirst);
 native givePedWeapon(ped, weaponHash, ammo, bool:equip=false);
+native givePedDelayedWeapon(ped, weaponHash, time, bool:equip=false);
 native removePedWeapon(ped, weaponHash);
 native removePedWeapons(ped);
+
+native clearPedLastWeaponDamage(ped);
+
+native hidePedWeaponForCutscene(ped, bool:toggle);
