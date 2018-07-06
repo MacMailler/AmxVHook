@@ -167,5 +167,130 @@ namespace AmxVHook {
 				}
 			}
 		}
+
+		namespace Amx {
+			int load(AMX * amx, std::string & path, void * memblock) {
+				std::ifstream file(path, std::ios::binary);
+
+				if (!file.is_open())
+					return AMX_ERR_NOTFOUND;
+
+				AMX_HEADER hdr;
+				file.read((char *)&hdr, sizeof hdr);
+
+				amx_Align16(&hdr.magic);
+				amx_Align32((uint32_t *)&hdr.size);
+				amx_Align32((uint32_t *)&hdr.stp);
+
+				if (hdr.magic != AMX_MAGIC) {
+					file.close();
+					return AMX_ERR_FORMAT;
+				}
+
+				bool didalloc = false;
+				if (memblock == NULL) {
+					if ((memblock = malloc(hdr.stp)) == NULL) {
+						file.close();
+						return AMX_ERR_MEMORY;
+					}
+					didalloc = true;
+				}
+
+				file.seekg(0);
+				file.read((char *)memblock, (size_t)hdr.size);
+				file.close();
+
+				memset(amx, 0, sizeof *amx);
+				int result = amx_Init(amx, memblock);
+
+				if (result != AMX_ERR_NONE && didalloc) {
+					free(memblock);
+					amx->base = NULL;
+				}
+
+				return result;
+			}
+
+			int cleanup(AMX * amx) {
+				if (amx->base != NULL) {
+					amx_Cleanup(amx);
+					free(amx->base);
+
+					memset(amx, 0, sizeof AMX);
+				}
+
+				return AMX_ERR_NONE;
+			}
+
+			size_t getSize(std::string & path) {
+				std::ifstream file(path, std::ios::binary);
+
+				if (!file.is_open())
+					return 0;
+
+				AMX_HEADER hdr;
+				file.read((char *)&hdr, sizeof hdr);
+				file.close();
+
+				amx_Align16(&hdr.magic);
+				amx_Align32((uint32_t *)&hdr.stp);
+
+				return (hdr.magic == AMX_MAGIC) ? (size_t)hdr.stp : 0;
+			}
+
+			char * errorToString(int err) {
+				static char * errstr[] = {
+					/* AMX_ERR_NONE      */ "(none)",
+					/* AMX_ERR_EXIT      */ "Forced exit",
+					/* AMX_ERR_ASSERT    */ "Assertion failed",
+					/* AMX_ERR_STACKERR  */ "Stack/heap collision (insufficient stack size)",
+					/* AMX_ERR_BOUNDS    */ "Array index out of bounds",
+					/* AMX_ERR_MEMACCESS */ "Invalid memory access",
+					/* AMX_ERR_INVINSTR  */ "Invalid instruction",
+					/* AMX_ERR_STACKLOW  */ "Stack underflow",
+					/* AMX_ERR_HEAPLOW   */ "Heap underflow",
+					/* AMX_ERR_CALLBACK  */ "No (valid) native function callback",
+					/* AMX_ERR_NATIVE    */ "Native function failed",
+					/* AMX_ERR_DIVIDE    */ "Divide by zero",
+					/* AMX_ERR_SLEEP     */ "(sleep mode)",
+					/* 13 */                "(reserved)",
+					/* 14 */                "(reserved)",
+					/* 15 */                "(reserved)",
+					/* AMX_ERR_MEMORY    */ "Out of memory",
+					/* AMX_ERR_FORMAT    */ "Invalid/unsupported P-code file format",
+					/* AMX_ERR_VERSION   */ "File is for a newer version of the AMX",
+					/* AMX_ERR_NOTFOUND  */ "File or function is not found",
+					/* AMX_ERR_INDEX     */ "Invalid index parameter (bad entry point)",
+					/* AMX_ERR_DEBUG     */ "Debugger cannot run",
+					/* AMX_ERR_INIT      */ "AMX not initialized (or doubly initialized)",
+					/* AMX_ERR_USERDATA  */ "Unable to set user data field (table full)",
+					/* AMX_ERR_INIT_JIT  */ "Cannot initialize the JIT",
+					/* AMX_ERR_PARAMS    */ "Parameter error",
+					/* AMX_ERR_DOMAIN    */ "Domain error, expression result does not fit in range",
+					/* AMX_ERR_GENERAL   */ "General error (unknown or unspecific error)",
+				};
+				if (err < 0 || err >= sizeof errstr / sizeof errstr[0])
+					return "(unknown)";
+
+				return errstr[err];
+			}
+
+			const AMX_HEADER * getHeader(AMX * amx) {
+				return reinterpret_cast<AMX_HEADER *>(amx->base);
+			}
+
+			const AMX_FUNCSTUBNT * getNatives(AMX * amx) {
+				return reinterpret_cast<AMX_FUNCSTUBNT *>(getHeader(amx)->natives + amx->base);
+			}
+
+			const int getNumNatives(AMX * amx) {
+				const AMX_HEADER * hdr = getHeader(amx);
+				return (hdr->libraries - hdr->natives) / hdr->defsize;
+			}
+			
+			const char * getNativeName(AMX * amx, cell offset) {
+				return reinterpret_cast<char *>(amx->base + offset);
+			}
+		};
 	};
 };

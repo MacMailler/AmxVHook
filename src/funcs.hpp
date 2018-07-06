@@ -36,5 +36,17 @@ namespace AmxVHook {
 		bool getArrayFromParam(AMX * amx, cell param, cell * dest, int size);
 		bool getFloatArrayFromParam(AMX * amx, cell param, float * dest, int size);
 		void convertParamsToStack(AMX * amx, const cell * params, std::string & format, std::stack<boost::variant<cell, std::string>> & stk, int index = 0);
+
+		namespace Amx {
+			int load(AMX * amx, std::string & path, void * memblock = NULL);
+			int cleanup(AMX * amx);
+			size_t getSize(std::string & path);
+			char * errorToString(int err);
+
+			const AMX_HEADER * getHeader(AMX * amx);
+			const AMX_FUNCSTUBNT * getNatives(AMX * amx);
+			const int getNumNatives(AMX * amx);
+			const char * getNativeName(AMX * amx, cell offset);
+		};
 	};
 };
