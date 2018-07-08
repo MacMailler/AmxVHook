@@ -100,7 +100,7 @@ namespace AmxVHook {
 						else if (!params[0].compare("!l") && params.size() > 1) {
 							for (int i = 1; i < params.size(); i++)
 								if (!params[i].empty())
-									gPool->loadMod(boost::filesystem::path(gPool->getLocation().string() + params[i] + ".amx"));
+									gPool->loadMod(boost::filesystem::path(gPool->getLocation().string()+ "\\" + params[i] + ".amx"));
 						}
 						else {
 							gPool->onModInputCommand((char *)params[0].c_str(), static_cast<cell>(params.size()) - 1);

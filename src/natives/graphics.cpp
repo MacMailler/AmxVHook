@@ -187,7 +187,12 @@ namespace AmxVHook {
 					return 0;
 
 				Utility::Color color(params[3]);
-				GRAPHICS::DRAW_POLY(point1[0], point1[1], point1[2], point2[0], point2[1], point2[2], point3[0], point3[1], point3[2], color.R, color.G, color.B, color.A);
+				GRAPHICS::DRAW_POLY(
+					point1[0], point1[1], point1[2],
+					point2[0], point2[1], point2[2],
+					point3[0], point3[1], point3[2],
+					color.R, color.G, color.B, color.A
+				);
 
 				return 1;
 			}

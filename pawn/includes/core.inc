@@ -26,9 +26,3 @@ native random(max);
 native min(value1, value2);
 native max(value1, value2);
 native clamp(value, min=cellmin, max=cellmax);
-
-native getproperty(id=0, const name[]="", value=cellmin, string[]="");
-native setproperty(id=0, const name[]="", value=cellmin, const string[]="");
-native deleteproperty(id=0, const name[]="", value=cellmin);
-native existproperty(id=0, const name[]="", value=cellmin);
-

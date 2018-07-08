@@ -6,8 +6,8 @@ namespace AmxVHook {
 		int showNotify(std::string text, BOOL blink, BOOL showInBrief);
 		void showSubtitle(std::string text, int duration, BOOL drawImmediately);
 
-		void drawRect(float x, float y, float width, float height, int r, int b, int g, int a);
-		void drawText(char *text, float x, float y, float scale, int font, int r, int b, int g, int a);
+		void drawRect(float x, float y, float width, float height, int r, int g, int b, int a);
+		void drawText(char *text, float x, float y, float scale, int font, int r, int g, int b, int a);
 
 		void drawString(std::string & data, float x, float y);
 		void drawInt(int value, float x, float y);

@@ -14,7 +14,7 @@ namespace AmxVHook {
 			UI::_DRAW_SUBTITLE_TIMED(duration, drawImmediately);
 		}
 
-		void drawText(char *text, float x, float y, float scale, int font, int r, int b, int g, int a) {
+		void drawText(char *text, float x, float y, float scale, int font, int r, int g, int b, int a) {
 			UI::SET_TEXT_FONT(font);
 			UI::SET_TEXT_SCALE(scale, scale);
 			UI::SET_TEXT_COLOUR(r, g, b, a);
@@ -27,7 +27,7 @@ namespace AmxVHook {
 			UI::_DRAW_TEXT(x, y);
 		}
 
-		void drawRect(float x, float y, float width, float height, int r, int b, int g, int a) {
+		void drawRect(float x, float y, float width, float height, int r, int g, int b, int a) {
 			GRAPHICS::DRAW_RECT((x + (width * 0.5f)), (y + (height * 0.5f)), width, height, r, g, b, a);
 		}
 
@@ -52,27 +52,22 @@ namespace AmxVHook {
 
 	namespace Utility {
 		Color::Color() {
-			this->R = 255;
-			this->G = 255;
-			this->B = 255;
-			this->A = 255;
-			this->RGBA = 0xFFFFFFFF;
 		}
 
-		Color::Color(uint32_t color) {
-			this->R = ((color & 0xFF000000) >> 24);
-			this->G = ((color & 0xFF0000) >> 16);
-			this->B = ((color & 0xFF00) >> 8);
-			this->A = (color & 0xFF);
-			this->RGBA = color;
+		Color::Color(uint32_t color) :
+			R(((color & 0xFF000000) >> 24)),
+			G(((color & 0xFF0000) >> 16)),
+			B(((color & 0xFF00) >> 8)),
+			A((color & 0xFF)),
+			RGBA(color) {
 		}
 
-		Color::Color(uint16_t r, uint16_t g, uint16_t b, uint16_t a) {
-			this->R = r;
-			this->G = g;
-			this->B = b;
-			this->A = a;
-			this->RGBA = ((r << 24) | (g << 16) | (b << 8) | a);
+		Color::Color(uint16_t r, uint16_t g, uint16_t b, uint16_t a) :
+			R(r),
+			G(g),
+			B(b),
+			A(a),
+			RGBA((r << 24) | (g << 16) | (b << 8) | a) {
 		}
 
 		bool setVector3ToParam(AMX * amx, cell param, Vector3 & vec) {
