@@ -18,3 +18,4 @@
 #include "natives\camera.hpp"
 #include "natives\time.hpp"
 #include "natives\weapon.hpp"
+#include "natives\streaming.hpp"

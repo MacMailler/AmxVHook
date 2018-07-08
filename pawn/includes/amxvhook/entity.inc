@@ -43,10 +43,12 @@ native Float:getEntityPitch(entity);
 native Float:getEntityHeight(entity, Float:coords[@Vector3], bool:atTop, bool:inWorldCoords);
 native Float:getEntityHeightAboveGround(entity);
 native Float:getEntityRoll(entity);
+native Float:getEntityHeading(entity);
 native getEntityForwardVector(entity, Float:vector[@Vector3]);
 native getEntityQuaternion(entity, Float:coords[@Vector3], &Float:w);
 native getEntityPos(entity, Float:coords[@Vector3], bool:alive=true);
 native getEntitySpeedVector(entity, Float:vector[@Vector3], bool:relative);
+native getOffsetFromEntityInWorldPos(entity, Float:offset[@Vector3], Float:coords[@Vector3]);
 
 native setEntityHealth(entity, health);
 native setEntityMaxHealth(entity, health);

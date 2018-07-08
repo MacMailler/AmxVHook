@@ -20,6 +20,9 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setPoliceRadarBlips)
 				MOD_DEFINE_NATIVE(setPoliceIgnorePlayer)
 				MOD_DEFINE_NATIVE(setEveryoneIgnorePlayer)
+				MOD_DEFINE_NATIVE(setExplosiveAmmoThisFrame)
+				MOD_DEFINE_NATIVE(setFireAmmoThisFrame)
+				MOD_DEFINE_NATIVE(setExplosiveMeleeThisFrame)
 
 				{NULL, NULL} // terminator
 			};
@@ -140,6 +143,24 @@ namespace AmxVHook {
 					return 0;
 
 				PLAYER::SET_EVERYONE_IGNORE_PLAYER(PLAYER::PLAYER_ID(), (BOOL)params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setExplosiveAmmoThisFrame) {
+				GAMEPLAY::SET_EXPLOSIVE_AMMO_THIS_FRAME(PLAYER::PLAYER_ID());
+
+				return 1;
+			}
+
+			MOD_NATIVE(setFireAmmoThisFrame) {
+				GAMEPLAY::SET_FIRE_AMMO_THIS_FRAME(PLAYER::PLAYER_ID());
+
+				return 1;
+			}
+
+			MOD_NATIVE(setExplosiveMeleeThisFrame) {
+				GAMEPLAY::SET_EXPLOSIVE_MELEE_THIS_FRAME(PLAYER::PLAYER_ID());
 
 				return 1;
 			}

@@ -20,6 +20,9 @@ namespace AmxVHook {
 			MOD_NATIVE(setPoliceRadarBlips);
 			MOD_NATIVE(setPoliceIgnorePlayer);
 			MOD_NATIVE(setEveryoneIgnorePlayer);
+			MOD_NATIVE(setExplosiveAmmoThisFrame);
+			MOD_NATIVE(setFireAmmoThisFrame);
+			MOD_NATIVE(setExplosiveMeleeThisFrame);
 			
 			AMX_NATIVE_INFO list[];
 		};

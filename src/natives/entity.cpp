@@ -44,9 +44,11 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getEntityHeightAboveGround)
 				MOD_DEFINE_NATIVE(getEntityForwardVector)
 				MOD_DEFINE_NATIVE(getEntityRoll)
+				MOD_DEFINE_NATIVE(getEntityHeading)
 				MOD_DEFINE_NATIVE(getEntityQuaternion)
 				MOD_DEFINE_NATIVE(getEntityPos)
 				MOD_DEFINE_NATIVE(getEntitySpeedVector)
+				MOD_DEFINE_NATIVE(getOffsetFromEntityInWorldPos)
 				MOD_DEFINE_NATIVE(setEntityHealth)
 				MOD_DEFINE_NATIVE(setEntityMaxHealth)
 				MOD_DEFINE_NATIVE(setEntityInvincible)
@@ -362,6 +364,15 @@ namespace AmxVHook {
 
 				return amx_ftoc(roll);
 			}
+			
+			MOD_NATIVE(getEntityHeading) {
+				if (!arguments(1))
+					return 0;
+
+				float roll = ENTITY::GET_ENTITY_HEADING((::Entity)params[1]);
+
+				return amx_ftoc(roll);
+			}
 
 			MOD_NATIVE(getEntityQuaternion) {
 				if (!arguments(3))
@@ -394,6 +405,18 @@ namespace AmxVHook {
 
 				Vector3 vector = ENTITY::GET_ENTITY_SPEED_VECTOR((::Entity)params[1], params[3]);
 				return Utility::setVector3ToParam(amx, params[2], vector);
+			}
+			
+			MOD_NATIVE(getOffsetFromEntityInWorldPos) {
+				if (!arguments(3))
+					return 0;
+
+				float offset[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], offset, 3))
+					return 0;
+
+				Vector3 coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS((::Entity)params[1], offset[0], offset[1], offset[2]);
+				return Utility::setVector3ToParam(amx, params[3], coords);
 			}
 
 			MOD_NATIVE(setEntityHealth) {

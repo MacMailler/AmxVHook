@@ -44,9 +44,11 @@ namespace AmxVHook {
 			MOD_NATIVE(getEntityHeightAboveGround);
 			MOD_NATIVE(getEntityForwardVector);
 			MOD_NATIVE(getEntityRoll);
+			MOD_NATIVE(getEntityHeading);
 			MOD_NATIVE(getEntityQuaternion);
 			MOD_NATIVE(getEntityPos);
 			MOD_NATIVE(getEntitySpeedVector);
+			MOD_NATIVE(getOffsetFromEntityInWorldPos);
 			MOD_NATIVE(setEntityHealth);
 			MOD_NATIVE(setEntityMaxHealth);
 			MOD_NATIVE(setEntityInvincible);

@@ -37,3 +37,6 @@ native createLightningThunder();
 native setPoliceRadarBlips(bool:toggle);
 native setPoliceIgnorePlayer(bool:toggle);
 native setEveryoneIgnorePlayer(bool:toggle);
+native setExplosiveAmmoThisFrame();
+native setFireAmmoThisFrame();
+native setExplosiveMeleeThisFrame();
