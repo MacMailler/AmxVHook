@@ -16,6 +16,8 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getFrameTime)
 				MOD_DEFINE_NATIVE(getFrameCount)
 				MOD_DEFINE_NATIVE(getHashKey)
+				MOD_DEFINE_NATIVE(getRandomInt)
+				MOD_DEFINE_NATIVE(getRandomFloat)
 				MOD_DEFINE_NATIVE(getDistanceBetweenPos)
 				MOD_DEFINE_NATIVE(setPoliceRadarBlips)
 				MOD_DEFINE_NATIVE(setPoliceIgnorePlayer)
@@ -23,6 +25,20 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setExplosiveAmmoThisFrame)
 				MOD_DEFINE_NATIVE(setFireAmmoThisFrame)
 				MOD_DEFINE_NATIVE(setExplosiveMeleeThisFrame)
+				MOD_DEFINE_NATIVE(isPrevWeather)
+				MOD_DEFINE_NATIVE(isNextWeather)
+				MOD_DEFINE_NATIVE(setWeatherPersist)
+				MOD_DEFINE_NATIVE(setWeatherNowPersist)
+				MOD_DEFINE_NATIVE(setWeatherNow)
+				MOD_DEFINE_NATIVE(setWeatherOverTime)
+				MOD_DEFINE_NATIVE(setWeatherTransition)
+				MOD_DEFINE_NATIVE(setOverrideWeather)
+				MOD_DEFINE_NATIVE(setRandomWeather)
+				MOD_DEFINE_NATIVE(getCurrWeather)
+				MOD_DEFINE_NATIVE(getNextWeather)
+				MOD_DEFINE_NATIVE(getWeatherTransition)
+				MOD_DEFINE_NATIVE(clearWeatherPersist)
+				MOD_DEFINE_NATIVE(clearOverrideWeather)
 
 				{NULL, NULL} // terminator
 			};
@@ -101,6 +117,22 @@ namespace AmxVHook {
 
 				return GAMEPLAY::GET_HASH_KEY((char *)String::get(amx, params[1]).c_str());
 			}
+			
+			MOD_NATIVE(getRandomInt) {
+				if (!arguments(2))
+					return 0;
+
+				return GAMEPLAY::GET_RANDOM_INT_IN_RANGE(params[1], params[2]);
+			}
+			
+			MOD_NATIVE(getRandomFloat) {
+				if (!arguments(2))
+					return 0;
+
+				float value = GAMEPLAY::GET_RANDOM_FLOAT_IN_RANGE(amx_ctof(params[1]), amx_ctof(params[2]));
+
+				return amx_ftoc(value);
+			}
 
 			MOD_NATIVE(getDistanceBetweenPos) {
 				if (!arguments(3))
@@ -116,6 +148,29 @@ namespace AmxVHook {
 					coords2[0], coords2[1], coords2[2],
 					params[3]
 				);
+				
+				return amx_ftoc(dist);
+			}
+			
+			MOD_NATIVE(getAngleBetween2dVectors) {
+				if (!arguments(2))
+					return 0;
+
+				float vec1[2], vec2[2];
+				if (!Utility::getFloatArrayFromParam(amx, params[1], vec1, 2) ||
+					!Utility::getFloatArrayFromParam(amx, params[2], vec2, 2))
+					return 0;
+
+				float dist = GAMEPLAY::GET_ANGLE_BETWEEN_2D_VECTORS(vec1[0], vec1[1], vec2[0], vec2[1]);
+				
+				return amx_ftoc(dist);
+			}
+			
+			MOD_NATIVE(getHeadingFromVector2d) {
+				if (!arguments(2))
+					return 0;
+
+				float dist = GAMEPLAY::GET_HEADING_FROM_VECTOR_2D(amx_ctof(params[1]), amx_ctof(params[2]));
 				
 				return amx_ftoc(dist);
 			}
@@ -161,6 +216,123 @@ namespace AmxVHook {
 
 			MOD_NATIVE(setExplosiveMeleeThisFrame) {
 				GAMEPLAY::SET_EXPLOSIVE_MELEE_THIS_FRAME(PLAYER::PLAYER_ID());
+
+				return 1;
+			}
+
+			MOD_NATIVE(isPrevWeather) {
+				if (!arguments(1))
+					return 0;
+
+				return GAMEPLAY::IS_PREV_WEATHER_TYPE((char *)String::get(amx, params[1]).c_str());
+			}
+
+			MOD_NATIVE(isNextWeather) {
+				if (!arguments(1))
+					return 0;
+
+				return GAMEPLAY::IS_NEXT_WEATHER_TYPE((char *)String::get(amx, params[1]).c_str());
+			}
+
+			MOD_NATIVE(setWeatherPersist) {
+				if (!arguments(1))
+					return 0;
+
+				GAMEPLAY::SET_WEATHER_TYPE_PERSIST((char *)String::get(amx, params[1]).c_str());
+
+				return 1;
+			}
+
+			MOD_NATIVE(setWeatherNowPersist) {
+				if (!arguments(1))
+					return 0;
+
+				GAMEPLAY::SET_WEATHER_TYPE_NOW_PERSIST((char *)String::get(amx, params[1]).c_str());
+
+				return 1;
+			}
+
+			MOD_NATIVE(setWeatherNow) {
+				if (!arguments(1))
+					return 0;
+
+				GAMEPLAY::SET_WEATHER_TYPE_NOW((char *)String::get(amx, params[1]).c_str());
+
+				return 1;
+			}
+
+			MOD_NATIVE(setWeatherOverTime) {
+				if (!arguments(2))
+					return 0;
+
+				GAMEPLAY::_SET_WEATHER_TYPE_OVER_TIME((char *)String::get(amx, params[1]).c_str(), amx_ctof(params[2]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(setWeatherTransition) {
+				if (!arguments(3))
+					return 0;
+
+				GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(params[1], params[2], amx_ctof(params[2]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(setOverrideWeather) {
+				if (!arguments(1))
+					return 0;
+
+				GAMEPLAY::SET_OVERRIDE_WEATHER((char *)String::get(amx, params[1]).c_str());
+
+				return 1;
+			}
+
+			MOD_NATIVE(setRandomWeather) {
+				GAMEPLAY::SET_RANDOM_WEATHER_TYPE();
+
+				return 1;
+			}
+
+			MOD_NATIVE(getCurrWeather) {
+				GAMEPLAY::_GET_CURRENT_WEATHER_TYPE();
+
+				return 1;
+			}
+
+			MOD_NATIVE(getNextWeather) {
+				GAMEPLAY::_GET_NEXT_WEATHER_TYPE();
+
+				return 1;
+			}
+
+			MOD_NATIVE(getWeatherTransition) {
+				if (!arguments(3))
+					return 0;
+				
+				cell * sourceWeather = Utility::getAddrFromParam(amx, params[1]),
+					 * targetWeather = Utility::getAddrFromParam(amx, params[2]),
+					 * transitionTime = Utility::getAddrFromParam(amx, params[3]);
+
+				if (sourceWeather == nullptr || targetWeather == nullptr || transitionTime == nullptr)
+					return 0;
+				
+				float time;
+				GAMEPLAY::_GET_WEATHER_TYPE_TRANSITION((Any *)sourceWeather, (Any *)targetWeather, &time);
+
+				*transitionTime = amx_ftoc(time);
+
+				return 1;
+			}
+
+			MOD_NATIVE(clearWeatherPersist) {
+				GAMEPLAY::CLEAR_WEATHER_TYPE_PERSIST();
+
+				return 1;
+			}
+
+			MOD_NATIVE(clearOverrideWeather) {
+				GAMEPLAY::CLEAR_OVERRIDE_WEATHER();
 
 				return 1;
 			}
