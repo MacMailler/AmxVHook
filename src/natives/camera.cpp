@@ -14,6 +14,10 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isCamInterpolating)
 				MOD_DEFINE_NATIVE(isCamPlayingAnim)
 				MOD_DEFINE_NATIVE(isCamRendering)
+				MOD_DEFINE_NATIVE(isGameplayCamRendering)
+				MOD_DEFINE_NATIVE(isGameplayCamShaking)
+				MOD_DEFINE_NATIVE(isGameplayCamLookingBehind)
+				MOD_DEFINE_NATIVE(isCinematicCamRendering)
 				MOD_DEFINE_NATIVE(getCamPos)
 				MOD_DEFINE_NATIVE(getCamRot)
 				MOD_DEFINE_NATIVE(getCamFov)
@@ -21,6 +25,10 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getCamFarClip)
 				MOD_DEFINE_NATIVE(getCamFarDof)
 				MOD_DEFINE_NATIVE(getRenderingCam)
+				MOD_DEFINE_NATIVE(getGameplayCamPos)
+				MOD_DEFINE_NATIVE(getGameplayCamRot)
+				MOD_DEFINE_NATIVE(getGameplayCamFov)
+				MOD_DEFINE_NATIVE(getGameplayCamZoom)
 				MOD_DEFINE_NATIVE(setCamActive)
 				MOD_DEFINE_NATIVE(setCamFov)
 				MOD_DEFINE_NATIVE(setCamPos)
@@ -33,6 +41,23 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setCamDofStrength)
 				MOD_DEFINE_NATIVE(setCamUseShallowDofMode)
 				MOD_DEFINE_NATIVE(setCamParams)
+				MOD_DEFINE_NATIVE(setCamShakeAmplitude)
+				MOD_DEFINE_NATIVE(setGameplayCamShakeAmplitude)
+				MOD_DEFINE_NATIVE(setCinematicCamShakeAmplitude)
+				MOD_DEFINE_NATIVE(setScreenFadeIn)
+				MOD_DEFINE_NATIVE(setScreenFadeOut)
+				MOD_DEFINE_NATIVE(setCinematicButtonActive)
+				MOD_DEFINE_NATIVE(setCamPoint)
+				MOD_DEFINE_NATIVE(setCamPointAtEntity)
+				MOD_DEFINE_NATIVE(setCamPointAtPedBone)
+				MOD_DEFINE_NATIVE(shakeCam)
+				MOD_DEFINE_NATIVE(shakeGameplayCam)
+				MOD_DEFINE_NATIVE(shakeCinematicCam)
+				MOD_DEFINE_NATIVE(stopCamShaking)
+				MOD_DEFINE_NATIVE(stopGameplayCamShaking)
+				MOD_DEFINE_NATIVE(stopCinematicCamShaking)
+				MOD_DEFINE_NATIVE(stopCamPointing)
+				MOD_DEFINE_NATIVE(showCrosshairThisFrame)
 				MOD_DEFINE_NATIVE(attachCamToEntity)
 				MOD_DEFINE_NATIVE(attachCamToPedBone)
 				MOD_DEFINE_NATIVE(detachCam)
@@ -118,6 +143,22 @@ namespace AmxVHook {
 				return CAM::IS_CAM_RENDERING((::Cam)params[1]);
 			}
 
+			MOD_NATIVE(isGameplayCamRendering) {
+				return CAM::IS_GAMEPLAY_CAM_RENDERING();
+			}
+
+			MOD_NATIVE(isGameplayCamShaking) {
+				return CAM::IS_GAMEPLAY_CAM_SHAKING();
+			}
+
+			MOD_NATIVE(isGameplayCamLookingBehind) {
+				return CAM::IS_GAMEPLAY_CAM_LOOKING_BEHIND();
+			}
+
+			MOD_NATIVE(isCinematicCamRendering) {
+				return CAM::IS_CINEMATIC_CAM_RENDERING();
+			}
+
 			MOD_NATIVE(getCamPos) {
 				if (!arguments(2))
 					return 0;
@@ -171,6 +212,34 @@ namespace AmxVHook {
 
 			MOD_NATIVE(getRenderingCam) {
 				return CAM::GET_RENDERING_CAM();
+			}
+
+			MOD_NATIVE(getGameplayCamPos) {
+				if (!arguments(1))
+					return 0;
+
+				Vector3 coords = CAM::GET_GAMEPLAY_CAM_COORD();
+
+				return Utility::setVector3ToParam(amx, params[1], coords);
+			}
+
+			MOD_NATIVE(getGameplayCamRot) {
+				if (!arguments(1))
+					return 0;
+
+				Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(params[2]);
+
+				return Utility::setVector3ToParam(amx, params[1], rot);
+			}
+
+			MOD_NATIVE(getGameplayCamFov) {
+				float fov = CAM::GET_GAMEPLAY_CAM_FOV();
+				return amx_ftoc(fov);
+			}
+
+			MOD_NATIVE(getGameplayCamZoom) {
+				float fov = CAM::_GET_GAMEPLAY_CAM_ZOOM();
+				return amx_ftoc(fov);
 			}
 
 			MOD_NATIVE(setCamActive) {
@@ -299,6 +368,169 @@ namespace AmxVHook {
 
 				return 1;
 			}
+
+			MOD_NATIVE(setCamShakeAmplitude) {
+				if (!arguments(2))
+					return 0;
+
+				CAM::SET_CAM_SHAKE_AMPLITUDE((::Cam)params[1], amx_ctof(params[2]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(setGameplayCamShakeAmplitude) {
+				if (!arguments(1))
+					return 0;
+
+				CAM::SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE(amx_ctof(params[1]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(setCinematicCamShakeAmplitude) {
+				if (!arguments(1))
+					return 0;
+
+				CAM::SET_CINEMATIC_CAM_SHAKE_AMPLITUDE(amx_ctof(params[1]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(setScreenFadeIn) {
+				if (!arguments(1))
+					return 0;
+
+				CAM::DO_SCREEN_FADE_IN(params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setScreenFadeOut) {
+				if (!arguments(1))
+					return 0;
+
+				CAM::DO_SCREEN_FADE_OUT(params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setCinematicButtonActive) {
+				if (!arguments(1))
+					return 0;
+
+				CAM::SET_CINEMATIC_BUTTON_ACTIVE(params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setCamPoint) {
+				if (!arguments(2))
+					return 0;
+
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
+					return 0;
+
+				CAM::POINT_CAM_AT_COORD((::Cam)params[1], coords[0], coords[1], coords[2]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setCamPointAtEntity) {
+				if (!arguments(3))
+					return 0;
+
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[3], coords, 3))
+					return 0;
+
+				CAM::POINT_CAM_AT_ENTITY((::Cam)params[1], (::Entity)params[2], coords[0], coords[1], coords[2], TRUE);
+
+				return 1;
+			}
+
+			MOD_NATIVE(setCamPointAtPedBone) {
+				if (!arguments(4))
+					return 0;
+
+				float coords[3];
+				if (!Utility::getFloatArrayFromParam(amx, params[4], coords, 3))
+					return 0;
+
+				CAM::POINT_CAM_AT_PED_BONE((::Cam)params[1], (::Entity)params[2], params[3], coords[0], coords[1], coords[2], TRUE);
+
+				return 1;
+			}
+
+			MOD_NATIVE(shakeCam) {
+				if (!arguments(3))
+					return 0;
+
+				CAM::SHAKE_CAM((::Cam)params[1], (char *)String::get(amx, params[2]).c_str(), amx_ctof(params[3]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(shakeGameplayCam) {
+				if (!arguments(2))
+					return 0;
+
+				CAM::SHAKE_GAMEPLAY_CAM((char *)String::get(amx, params[1]).c_str(), amx_ctof(params[2]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(shakeCinematicCam) {
+				if (!arguments(2))
+					return 0;
+
+				CAM::SHAKE_CINEMATIC_CAM((char *)String::get(amx, params[1]).c_str(), amx_ctof(params[2]));
+
+				return 1;
+			}
+
+			MOD_NATIVE(stopCamShaking) {
+				if (!arguments(2))
+					return 0;
+
+				CAM::STOP_CAM_SHAKING((::Cam)params[1], params[2]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(stopGameplayCamShaking) {
+				if (!arguments(1))
+					return 0;
+
+				CAM::STOP_GAMEPLAY_CAM_SHAKING(params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(stopCinematicCamShaking) {
+				if (!arguments(1))
+					return 0;
+
+				CAM::STOP_CINEMATIC_CAM_SHAKING(params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(stopCamPointing) {
+				if (!arguments(1))
+					return 0;
+
+				CAM::STOP_CAM_POINTING((::Cam)params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(showCrosshairThisFrame) {
+				CAM::_ENABLE_CROSSHAIR_THIS_FRAME();
+
+				return 1;
+			}
+
 			MOD_NATIVE(attachCamToEntity) {
 				if (!arguments(4))
 					return 0;
