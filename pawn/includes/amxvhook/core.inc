@@ -20,13 +20,11 @@
 #include <amxvhook\time>
 #include <amxvhook\weapon>
 #include <amxvhook\streaming>
+#include <amxvhook\audio>
 
 forward onModLoad();
 forward onModUnload();
 forward onModUpdate();
-
-native log(const text[]);
-native logf(const text[], {Float, _}:...);
 
 native isModLoaded(const modname[]);
 
@@ -34,12 +32,18 @@ native getFps();
 native getVersion();
 native getPoolSize();
 native getTickCount();
+
 native getAllPeds(dest[], len = sizeof dest);
 native getAllObjects(dest[], len = sizeof dest);
 native getAllPickups(dest[], len = sizeof dest);
 native getAllVehicles(dest[], len = sizeof dest);
 
 native setVersionVisible(bool:visible);
+
+native wait(ms);
+
+native log(const text[]);
+native logf(const text[], {Float, _}:...);
 
 native callFunc(const funcname[], const f[]="", bool:remote=false, {Float,_}:...);
 

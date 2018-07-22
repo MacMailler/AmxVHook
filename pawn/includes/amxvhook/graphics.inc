@@ -103,12 +103,17 @@ native setTextColor(color = 0x00000000);
 native setTextDropShadow(dist, color = 0x00000000);
 native setTextEdge(dist, color = 0x00000000);
 native setTextWrap(Float:start = 0.0, Float:end = 1.0);
+native setTextJustification(justifyType);
+native setTextRightJustify(bool:toggle);
 native setHudVisible(bool:visible);
 native setRadarVisible(bool:visible);
 native setRadarZoom(zoom);
 
 native showNotify(const text[], bool:blink = false, bool:in_breif = false);
 native showSubtitle(const text[], duration = 2000, bool:immediately = true);
+native showHelpMessage(const text[], bool:beep = true, duration = -1);
+native showLoadingSpinner(const text[], type);
+native hideLoadingSpinner();
 
 native getScreenSize(&width, &height);
 native Float:getSafeZoneSize();

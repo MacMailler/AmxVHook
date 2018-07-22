@@ -25,6 +25,8 @@ namespace AmxVHook {
 			MOD_NATIVE(setTextScale);
 			MOD_NATIVE(setTextCentre);
 			MOD_NATIVE(setTextFont);
+			MOD_NATIVE(setTextJustification);
+			MOD_NATIVE(setTextRightJustify);
 			MOD_NATIVE(setUILayer);
 			MOD_NATIVE(setDrawPosition);
 			MOD_NATIVE(setDrawPositionRatio);
@@ -36,6 +38,9 @@ namespace AmxVHook {
 			MOD_NATIVE(getScreenSize);
 			MOD_NATIVE(showNotify);
 			MOD_NATIVE(showSubtitle);
+			MOD_NATIVE(showHelpMessage);
+			MOD_NATIVE(showLoadingSpinner);
+			MOD_NATIVE(hideLoadingSpinner);
 			MOD_NATIVE(isWidescreen);
 			MOD_NATIVE(isHudComponentActive);
 			MOD_NATIVE(hideHudAndRadarThisFrame);

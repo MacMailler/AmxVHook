@@ -2,12 +2,13 @@
 
 namespace AmxVHook {
 
-	extern boost::shared_ptr<Pool> gPool;
 	extern boost::shared_ptr<Debug> gDebug;
+	extern boost::shared_ptr<Pool> gPool;
+	extern boost::shared_ptr<Timer::Pool> gTimer;
 
 	namespace Core {
 
-		cell lastFrames = 0;
+		ucell lastFrames = 0;
 		bool versionVisible = true;
 
 		void init() {
@@ -16,6 +17,7 @@ namespace AmxVHook {
 
 			gDebug = boost::make_shared<Debug>(".\\AmxVHook\\amxvhook.log");
 			gPool = boost::make_shared<Pool>();
+			gTimer = boost::make_shared<Timer::Pool>();
 
 			gPool->setNatives({
 				Natives::Core::list,
@@ -31,13 +33,14 @@ namespace AmxVHook {
 				Natives::Camera::list,
 				Natives::Time::list,
 				Natives::Weapon::list,
-				Natives::Streaming::list
+				Natives::Streaming::list,
+				Natives::Audio::list
 			});
 
 			gPool->make();
 
 			while (true) {
-				static cell timer, frames = 0;
+				static ucell timer, frames = 0;
 				if (GAMEPLAY::GET_GAME_TIMER() - timer < 1000)
 					frames++;
 				else {
@@ -48,6 +51,8 @@ namespace AmxVHook {
 
 				Keyboard::displayOnScreeKeyboardProcess();
 				gPool->execAll("onModUpdate");
+
+				gTimer->process();
 				
 				if (versionVisible)
 					Funcs::drawText("AmxVHook 0.1", 0.93500f, 0.97500f, 0.2f, 0, 255, 255, 255, 48);
@@ -60,9 +65,10 @@ namespace AmxVHook {
 			gPool->clear();
 			gPool.reset();
 			gDebug.reset();
+			gTimer.reset();
 		}
 		
-		cell getFps() {
+		ucell getFps() {
 			return lastFrames;
 		}
 	};

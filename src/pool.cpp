@@ -101,7 +101,7 @@ namespace AmxVHook {
 	}
 
 	size_t Pool::size() {
-		return this->pool.size();
+		return pool.size();
 	}
 
 	cell Pool::loadMod(boost::filesystem::path & path) {

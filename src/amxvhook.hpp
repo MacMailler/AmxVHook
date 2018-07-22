@@ -33,3 +33,4 @@
 #include "natives.hpp"
 #include "keyboard.hpp"
 #include "string.hpp"
+#include "timer.hpp"

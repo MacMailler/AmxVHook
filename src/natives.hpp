@@ -19,3 +19,4 @@
 #include "natives\time.hpp"
 #include "natives\weapon.hpp"
 #include "natives\streaming.hpp"
+#include "natives\audio.hpp"

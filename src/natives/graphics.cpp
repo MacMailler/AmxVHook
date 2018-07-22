@@ -28,6 +28,8 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setTextScale)
 				MOD_DEFINE_NATIVE(setTextCentre)
 				MOD_DEFINE_NATIVE(setTextFont)
+				MOD_DEFINE_NATIVE(setTextJustification)
+				MOD_DEFINE_NATIVE(setTextRightJustify)
 				MOD_DEFINE_NATIVE(setUILayer)
 				MOD_DEFINE_NATIVE(setDrawPosition)
 				MOD_DEFINE_NATIVE(setDrawPositionRatio)
@@ -39,6 +41,9 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getScreenSize)
 				MOD_DEFINE_NATIVE(showNotify)
 				MOD_DEFINE_NATIVE(showSubtitle)
+				MOD_DEFINE_NATIVE(showHelpMessage)
+				MOD_DEFINE_NATIVE(showLoadingSpinner)
+				MOD_DEFINE_NATIVE(hideLoadingSpinner)
 				MOD_DEFINE_NATIVE(isWidescreen)
 				MOD_DEFINE_NATIVE(isHudComponentActive)
 				MOD_DEFINE_NATIVE(hideHudAndRadarThisFrame)
@@ -390,6 +395,24 @@ namespace AmxVHook {
 				return 1;
 			}
 			
+			MOD_NATIVE(setTextJustification) {
+				if (!arguments(1))
+					return 0;
+
+				::UI::SET_TEXT_JUSTIFICATION(params[1]);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setTextRightJustify) {
+				if (!arguments(1))
+					return 0;
+
+				::UI::SET_TEXT_RIGHT_JUSTIFY(params[1]);
+
+				return 1;
+			}
+			
 			MOD_NATIVE(setTextScale) {
 				if (!arguments(2))
 					return 0;
@@ -455,6 +478,33 @@ namespace AmxVHook {
 
 				Funcs::showSubtitle(String::get(amx, params[1]), params[2], params[3]);
 
+				return 1;
+			}
+
+			MOD_NATIVE(showHelpMessage) {
+				if (!arguments(3))
+					return 0;
+
+				::UI::_SET_TEXT_COMPONENT_FORMAT("STRING");
+				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
+				::UI::_DISPLAY_HELP_TEXT_FROM_STRING_LABEL(0, 0, params[2], params[3]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(showLoadingSpinner) {
+				if (!arguments(2))
+					return 0;
+
+				::UI::_0xABA17D7CE615ADBF("STRING");
+				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
+				::UI::_0xBD12F8228410D9B4(params[2]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(hideLoadingSpinner) {
+				::UI::_0x10D373323E5B9C0D();
 				return 1;
 			}
 
