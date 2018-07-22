@@ -27,7 +27,9 @@
     <ClInclude Include="src\debug.hpp" />
     <ClInclude Include="src\funcs.hpp" />
     <ClInclude Include="src\keyboard.hpp" />
+    <ClInclude Include="src\menu.hpp" />
     <ClInclude Include="src\natives.hpp" />
+    <ClInclude Include="src\natives\audio.hpp" />
     <ClInclude Include="src\natives\blip.hpp" />
     <ClInclude Include="src\natives\camera.hpp" />
     <ClInclude Include="src\natives\checkpoint.hpp" />
@@ -45,6 +47,7 @@
     <ClInclude Include="src\pool.hpp" />
     <ClInclude Include="src\string.hpp" />
     <ClInclude Include="src\amxvhook.hpp" />
+    <ClInclude Include="src\timer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\amx\amx.c" />
@@ -57,6 +60,8 @@
     <ClCompile Include="src\debug.cpp" />
     <ClCompile Include="src\funcs.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
+    <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\natives\audio.cpp" />
     <ClCompile Include="src\natives\blip.cpp" />
     <ClCompile Include="src\natives\camera.cpp" />
     <ClCompile Include="src\natives\checkpoint.cpp" />
@@ -74,6 +79,7 @@
     <ClCompile Include="src\pool.cpp" />
     <ClCompile Include="src\string.cpp" />
     <ClCompile Include="src\amxvhook.cpp" />
+    <ClCompile Include="src\timer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

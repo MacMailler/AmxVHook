@@ -4,12 +4,14 @@ namespace AmxVHook {
 
 	extern boost::shared_ptr<Debug> gDebug;
 	extern boost::shared_ptr<Pool> gPool;
+	extern boost::shared_ptr<Timer::Pool> gTimer;
 
 	namespace Natives {
 		namespace Core {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(log)
 				MOD_DEFINE_NATIVE(logf)
+				MOD_DEFINE_NATIVE(wait)
 				MOD_DEFINE_NATIVE(format)
 				MOD_DEFINE_NATIVE(isModLoaded)
 				MOD_DEFINE_NATIVE(getFps)
@@ -22,6 +24,13 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getAllVehicles)
 				MOD_DEFINE_NATIVE(setVersionVisible)
 				MOD_DEFINE_NATIVE(callFunc)
+				MOD_DEFINE_NATIVE(addTimer)
+				MOD_DEFINE_NATIVE(dropTimer)
+				MOD_DEFINE_NATIVE(stopTimer)
+				MOD_DEFINE_NATIVE(isTimerExist)
+				MOD_DEFINE_NATIVE(isTimerStopped)
+				MOD_DEFINE_NATIVE(setTimerData)
+				MOD_DEFINE_NATIVE(setTimerInterval)
 
 				{NULL, NULL} // terminator
 			};
@@ -51,6 +60,15 @@ namespace AmxVHook {
 				return 1;
 			}
 			
+			MOD_NATIVE(wait) {
+				if (!arguments(1))
+					return 0;
+
+				scriptWait(params[1]);
+
+				return 1;
+			}
+
 			MOD_NATIVE(format) {
 				cell paramsCount = (params[0] / sizeof(cell));
 
@@ -161,6 +179,72 @@ namespace AmxVHook {
 					return gPool->exec(amx, String::get(amx, params[1]).c_str(), &stk);
 
 				return 1;
+			}
+
+			MOD_NATIVE(addTimer) {
+				if ((params[0] / sizeof(cell)) < 3)
+					return Timer::Pool::invalidTimerId;
+
+				boost::shared_ptr<Timer::Timer> timer = boost::make_shared<Timer::Timer>();
+
+				timer->amx = amx;
+				timer->interval = params[2];
+				timer->funcname = String::get(amx, params[1]);
+
+				int index;
+				if (amx_FindPublic(amx, (char *)timer->funcname.c_str(), &index) != AMX_ERR_NONE)
+					return Timer::Pool::invalidTimerId;
+
+				Utility::convertParamsToStack(amx, params, String::get(amx, params[3]), timer->params, 4);
+
+				timer->lastTime = GAMEPLAY::GET_GAME_TIMER();
+
+				return gTimer->add(timer);
+			}
+
+			MOD_NATIVE(dropTimer) {
+				if (!arguments(1))
+					return 0;
+
+				return gTimer->drop(params[1]);
+			}
+			
+			MOD_NATIVE(stopTimer) {
+				if (!arguments(2))
+					return 0;
+
+				return gTimer->stop(params[1], params[2]);
+			}
+
+			MOD_NATIVE(isTimerExist) {
+				if (!arguments(1))
+					return 0;
+
+				return gTimer->contains(params[1]);
+			}
+			
+			MOD_NATIVE(isTimerStopped) {
+				if (!arguments(1))
+					return 0;
+
+				return gTimer->stopped(params[1]);
+			}
+			
+			MOD_NATIVE(setTimerData) {
+				if ((params[0] / sizeof(cell)) < 2)
+					return 0;
+
+				std::stack<boost::variant<cell, std::string>> stk;
+				Utility::convertParamsToStack(amx, params, String::get(amx, params[2]), stk, 3);
+				
+				return gTimer->setData(params[1], stk);
+			}
+
+			MOD_NATIVE(setTimerInterval) {
+				if (!arguments(2))
+					return 0;
+
+				return gTimer->setInterval(params[1], params[2]);
 			}
 		};
 	};

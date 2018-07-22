@@ -99,6 +99,15 @@
     <ClInclude Include="src\natives\streaming.hpp">
       <Filter>Headers Files\natives</Filter>
     </ClInclude>
+    <ClInclude Include="src\menu.hpp">
+      <Filter>Headers Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\timer.hpp">
+      <Filter>Headers Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\natives\audio.hpp">
+      <Filter>Headers Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\amx\amx.c">
@@ -180,6 +189,15 @@
       <Filter>Source Files\natives</Filter>
     </ClCompile>
     <ClCompile Include="src\natives\streaming.cpp">
+      <Filter>Source Files\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\natives\audio.cpp">
       <Filter>Source Files\natives</Filter>
     </ClCompile>
   </ItemGroup>
