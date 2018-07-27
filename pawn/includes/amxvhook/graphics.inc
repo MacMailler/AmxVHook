@@ -75,19 +75,19 @@ enum eFonts {
 };
 
 native drawInt(value, Float:x, Float:y);
-native drawFloat(value, Float:x, Float:y, decimal_places = 0);
-native drawText(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF, bool:centre = false);
-native drawTextf(const text[], Float:x, Float:y, {Float, _}:...);
+native drawFloat(Float:value, Float:x, Float:y, decimal_places = 9);
+native drawText(Float:x, Float:y);
+native drawString(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF, bool:centre = false);
 native drawRect(Float:x, Float:y, Float:width, Float:height, color = 0xFFFFFFFF);
-native drawBox(Float:point1[@Vector3], Float:point2[@Vector3], color = 0xFFFFFFFF);
-native drawLine(Float:point1[@Vector3], Float:point2[@Vector3], color = 0xFFFFFFFF);
-native drawPoly(Float:point1[@Vector3], Float:point2[@Vector3], Float:point3[@Vector3], color = 0xFFFFFFFF);
-native drawMarker(type, Float:pos[@Vector3], Float:dir[@Vector3]={0,...}, Float:rot[@Vector3]={0,...}, Float:scale[@Vector3]={1,...}, color = 0xFFFFFFFF, bool:bobUpAndDown = false, bool:fadeCamera = false, bool:drawOnEnts = false);
+native drawBox(point1[@Vector3], point2[@Vector3], color = 0xFFFFFFFF);
+native drawLine(point1[@Vector3], point2[@Vector3], color = 0xFFFFFFFF);
+native drawPoly(point1[@Vector3], point2[@Vector3], point3[@Vector3], color = 0xFFFFFFFF);
+native drawMarker(type, pos[@Vector3], dir[@Vector3]={0.0,...}, rot[@Vector3]={0.0,...}, scale[@Vector3]={1.0,...}, color = 0xFFFFFFFF, bool:bobUpAndDown = false, bool:fadeCamera = false, bool:drawOnEnts = false);
 native drawSprite(const textureDict[], const textureName[], Float:x, Float:y, Float:width, Float:height, Float:heading = 0.0, color = 0xFFFFFFFF);
-native drawSpotLight(Float:coords[@Vector3], Float:dir[@Vector3], Float:distance, Float:brightness, Float:roundness, Float:radius, Float:fadeout, color = 0xFFFFFFFF);
-native drawSpotLightWithShadow(Float:coords[@Vector3], Float:dir[@Vector3], Float:distance, Float:brightness, Float:roundness, Float:radius, Float:fadeout, shadowid, color = 0xFFFFFFFF);
-native drawLightWithRange(Float:coords[@Vector3], Float:range, Float:intensity, color = 0xFFFFFFFF);
-native drawLightWithRangeAndShadow(Float:coords[@Vector3], Float:range, Float:intensity, Float:shadow, color = 0xFFFFFFFF);
+native drawSpotLight(coords[@Vector3], dir[@Vector3], Float:distance, Float:brightness, Float:roundness, Float:radius, Float:fadeout, color = 0xFFFFFFFF);
+native drawSpotLightWithShadow(coords[@Vector3], dir[@Vector3], Float:distance, Float:brightness, Float:roundness, Float:radius, Float:fadeout, shadowid, color = 0xFFFFFFFF);
+native drawLightWithRange(coords[@Vector3], Float:range, Float:intensity, color = 0xFFFFFFFF);
+native drawLightWithRangeAndShadow(coords[@Vector3], Float:range, Float:intensity, Float:shadow, color = 0xFFFFFFFF);
 
 native bool:isWidescreen();
 native bool:isHudComponentActive(id);
@@ -96,18 +96,25 @@ native setUILayer(layer);
 native setDrawPosition(Float:x, Float:y);
 native setDrawPositionRatio(Float:x, Float:y, Float:p2, Float:p3);
 native setDrawPositionEnd();
+
+native setTextEntry(const text[]);
 native setTextFont(font);
 native setTextCentre(bool:centre = true);
 native setTextScale(Float:scale, Float:size);
-native setTextColor(color = 0x00000000);
-native setTextDropShadow(dist, color = 0x00000000);
-native setTextEdge(dist, color = 0x00000000);
+native setTextColor(color);
+native setTextDropShadow(dist, color = 0x000000FF);
+native setTextEdge(dist, color = 0x000000FF);
 native setTextWrap(Float:start = 0.0, Float:end = 1.0);
 native setTextJustification(justifyType);
 native setTextRightJustify(bool:toggle);
+
 native setHudVisible(bool:visible);
 native setRadarVisible(bool:visible);
 native setRadarZoom(zoom);
+
+native addTextComponentStr(const value[]);
+native addTextComponentInt(value);
+native addTextComponentFloat(Float:value, decimal_places = 9);
 
 native showNotify(const text[], bool:blink = false, bool:in_breif = false);
 native showSubtitle(const text[], duration = 2000, bool:immediately = true);
@@ -125,8 +132,9 @@ native showHudComponentThisFrame(id);
 native requestStreamedTextureDict(const textureDict[]);
 native isStreamedTextureDictLoaded(const textureDict[]);
 native setStreamedTextureDictNoNeeded(const textureDict[]);
+native getTextureResolution(const textureDict[], const textureName[], resolution[@Vector3]);
 
-native world3DToScreen2D(Float:coords[@Vector3], &Float:sx, &Float:sy);
+native world3DToScreen2D(coords[@Vector3], &Float:sx, &Float:sy);
 
 native activateFrontendMenu(menuhash, bool:pause, component);
 native restartFrontendMenu(menuhash);

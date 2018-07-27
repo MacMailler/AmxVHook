@@ -38,9 +38,9 @@ enum ePedTypes {
 };
 
 
-native createPed(type, hash, Float:coords[@Vector3], Float:heading);
+native createPed(type, hash, coords[@Vector3], Float:heading);
 native createPedInVehicle(vehicle, type, hash, seat);
-native createRandomPed(Float:coords[@Vector3]);
+native createRandomPed(coords[@Vector3]);
 native clonePed(ped, Float:heading);
 native deletePed(ped);
 
@@ -138,7 +138,7 @@ native setPedHearingRange(ped, Float:range);
 native setPedSeeingRange(ped, Float:range);
 native setPedGravity(ped, bool:gravity);
 native setPedDropsWeapon(ped);
-native setPedDropsInventoryWeapon(ped, weaponHash, Float:offset[@Vector3], ammoCount);
+native setPedDropsInventoryWeapon(ped, weaponHash, offset[@Vector3], ammoCount);
 
 native addPedAmmo(ped, weaponHash, ammo);
 native addPedArmor(ped, armor);

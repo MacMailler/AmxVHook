@@ -3,7 +3,7 @@
 #endif
 #define __vehicle_inc__
 
-native createVehicle(modelHash, Float:coords[@Vector3], Float:heading);
+native createVehicle(modelHash, coords[@Vector3], Float:heading);
 native deleteVehicle(vehicle);
 
 native isVehicleModel(vehicle, modelHash);
@@ -59,13 +59,13 @@ native isVehicleInGarageArea(vehicle, const garageName[]);
 native isVehicleDoorsLockedForPlayer(vehicle);
 native isCargobobHookActive(cargobob);
 native isCargobobMagnetActive(cargobob);
-native isCopVehicleInArea3d(Float:coords1[@Vector3], Float:coords2[@Vector3]);
-native isAnyVehicleNearPoint(Float:point[@Vector3], Float:radius);
+native isCopVehicleInArea3d(coords1[@Vector3], coords2[@Vector3]);
+native isAnyVehicleNearPoint(point[@Vector3], Float:radius);
 native isPreloadModsFinished(p0);
 
 native setVehicleFixed(vehicle);
 native setVehicleDeformationFixed(vehicle);
-native setVehicleDamage(vehicle, Float:offset[@Vector3], Float:damage, Float:radius, bool:p6);
+native setVehicleDamage(vehicle, offset[@Vector3], Float:damage, Float:radius, bool:p6);
 native setVehicleBodyHealth(vehicle, Float:health);
 native setVehicleEngineHealth(vehicle, Float:health);
 native setVehiclePetrolTankHealth(vehicle, Float:health);
@@ -88,7 +88,7 @@ native setVehicleWindowTint(vehicle, tint);
 native setVehicleEnginePowerMult(vehicle, Float:value); 
 native setVehicleEngineTorqueMult(vehicle, Float:value); 
 native setVehicleIsWanted(vehicle, bool:toggle); 
-native setVehicleShootAtTarget(vehicle, entity, Float:target[@Vector3]);
+native setVehicleShootAtTarget(vehicle, entity, target[@Vector3]);
 native setVehicleLodMult(vehicle, Float:mult);
 native setVehicleLightMult(vehicle, Float:mult);
 native setVehicleLights(vehicle, _state);
@@ -142,8 +142,8 @@ native setVehicleColor(vehicle, color1, color2);
 native setVehicleDoorsLocked(vehicle, bool:locked);
 native setVehicleTaxiLights(vehicle, bool:toggle);
 
-native getClosestVehicle(Float:coords[@Vector3], Float:radius, modelHash, flags);
-native getRandomVehicleInSphere(Float:coords[@Vector3], Float:radius, modelHash, flags);
+native getClosestVehicle(coords[@Vector3], Float:radius, modelHash, flags);
+native getRandomVehicleInSphere(coords[@Vector3], Float:radius, modelHash, flags);
 native getVehiclePedInSeat(vehicle, seatIndex);
 native getVehicleLastPedInSeat(vehicle, seatIndex);
 native getVehicleLightsState(vehicle, &bool:lightsOn, &bool:highbeamsOn);
@@ -235,7 +235,7 @@ native clearVehicleCustomPrimaryColor(vehicle);
 native clearVehicleCustomSecondColor(vehicle);
 native enableCargobobHook(cargobob, _state);
 native retractCargobobHook(cargobob);
-native attachVehicleToCargobob(vehicle, cargobob, p2, Float:coords[@Vector3]);
+native attachVehicleToCargobob(vehicle, cargobob, p2, coords[@Vector3]);
 native detachVehicleFromCargobob(vehicle, cargobob);
 native detachVehicleFromAnyCargobob(vehicle);
 native requestVehicleScaleformMovie(vehicle);

@@ -5,7 +5,7 @@
 
 native getPlayerPed();
 native getPlayerName(dest[], maxlen = sizeof dest);
-native getPlayerPos(Float:pos[@Vector3], bool:alive=true);
+native getPlayerPos(pos[@Vector3], bool:alive=true);
 
 native isPlayerPlaying();
 native isPlayerDead();

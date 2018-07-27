@@ -4,6 +4,19 @@
 #define __time_inc__
 
 
+enum @Time3 {
+	@H,
+	@M,
+	@S
+};
+
+enum @Date3 {
+	@YY,
+	@MM,
+	@DD
+};
+
+
 native pauseClock(bool:toggle);
 
 native advanceClockTimeTo(const time[@Time3]);

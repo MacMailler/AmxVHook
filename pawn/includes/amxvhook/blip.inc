@@ -231,14 +231,14 @@ enum eBlipCategory {
 	BLIP_DISTANCE = 3
 };
 
-native addBlip(Float:coords[@Vector3]);
+native addBlip(coords[@Vector3]);
 native removeBlip(blip);
 
 native isBlipExist(blip);
 native isBlipFlashing(blip);
 native isBlipOnMinimap(blip);
 
-native setBlipPos(blip, Float:coords[@Vector3]);
+native setBlipPos(blip, coords[@Vector3]);
 native setBlipSprite(blip, spriteId);
 native setBlipAlpha(blip, alpha);
 native setBlipFade(blip, opacity, duration);
@@ -252,7 +252,7 @@ native setBlipFlashTimer(blip, duration);
 native setBlipFlashInerval(blip, interval);
 native setBlipPriority(blip, priority);
 
-native getBlipPos(blip, Float:coords[@Vector3]);
+native getBlipPos(blip, coords[@Vector3]);
 native getBlipSprite(blip);
 native getBlipColor(blip);
 

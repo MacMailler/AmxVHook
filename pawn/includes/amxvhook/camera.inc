@@ -12,7 +12,7 @@ enum eCamHash {
 };
 
 native createCam(camHash);
-native createCamEx(camHash, Float:pos[@Vector3], Float:rot[@Vector3], Float:fov);
+native createCamEx(camHash, pos[@Vector3], rot[@Vector3], Float:fov);
 
 native destroyCam(cam);
 native destroyAllCams();
@@ -28,22 +28,22 @@ native isGameplayCamShaking();
 native isGameplayCamLookingBehind();
 native isCinematicCamRendering();
 
-native getCamPos(cam, Float:pos[@Vector3]);
-native getCamRot(cam, Float:rot[@Vector3]);
+native getCamPos(cam, pos[@Vector3]);
+native getCamRot(cam, rot[@Vector3]);
 native Float:getCamFov(cam);
 native Float:getCamNearClip(cam);
 native Float:getCamFarClip(cam);
 native Float:getCamFarDof(cam);
 native getRenderingCam();
-native getGameplayCamPos(Float:coords[@Vector3]);
-native getGameplayCamRot(Float:coords[@Vector3], rotationOrder);
+native getGameplayCamPos(coords[@Vector3]);
+native getGameplayCamRot(coords[@Vector3], rotationOrder);
 native Float:getGameplayCamFov();
 native Float:getGameplayCamZoom();
 
 native setCamActive(cam, bool:active);
 native setCamFov(cam, Float:fov);
-native setCamPos(cam, Float:pos[@Vector3]);
-native setCamRot(cam, Float:rot[@Vector3]);
+native setCamPos(cam, pos[@Vector3]);
+native setCamRot(cam, rot[@Vector3]);
 native setCamNearClip(cam, Float:near);
 native setCamFarClip(cam, Float:far);
 native setCamMotionBlurStrength(cam, Float:strength);
@@ -51,16 +51,16 @@ native setCamNearDof(cam, Float:near);
 native setCamFarDof(cam, Float:far);
 native setCamDofStrength(cam, Float:strength);
 native setCamUseShallowDofMode(cam, bool:toggle);
-native setCamParams(cam, Float:pos[@Vector3], Float:rot[@Vector3], Float:fov);
+native setCamParams(cam, pos[@Vector3], rot[@Vector3], Float:fov);
 native setCamShakeAmplitude(cam, Float:amplitude);
 native setGameplayCamShakeAmplitude(Float:amplitude);
 native setCinematicCamShakeAmplitude(Float:amplitude);
 native setScreenFadeIn(duration);
 native setScreenFadeOut(duration);
 native setCinematicButtonActive(bool:active);
-native setCamPoint(cam, Float:coords[@Vector3]);
-native setCamPointAtEntity(cam, entity, Float:coords[@Vector3]);
-native setCamPointAtPedBone(cam, ped, boneIndex, Float:coords[@Vector3]);
+native setCamPoint(cam, coords[@Vector3]);
+native setCamPointAtEntity(cam, entity, coords[@Vector3]);
+native setCamPointAtPedBone(cam, ped, boneIndex, coords[@Vector3]);
 
 native shakeCam(cam, const shakeName[], Float:amplitude);
 native shakeGameplayCam(const shakeName[], Float:amplitude);
@@ -72,7 +72,7 @@ native stopCamPointing();
 
 native showCrosshairThisFrame();
 
-native attachCamToEntity(cam, entity, Float:offset[@Vector3], bool:relative);
-native attachCamToPedBone(cam, ped, boneIndex, Float:pos[@Vector3], bool:heading);
+native attachCamToEntity(cam, entity, offset[@Vector3], bool:relative);
+native attachCamToPedBone(cam, ped, boneIndex, pos[@Vector3], bool:heading);
 
 native detachCam(cam);

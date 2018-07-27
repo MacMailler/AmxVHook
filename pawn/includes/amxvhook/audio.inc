@@ -3,6 +3,7 @@
 #endif
 #define __audio_inc__
 
+
 native isSoundFinished(soundId);
 native isRadioRetuning(soundId);
 
@@ -15,7 +16,7 @@ native getRadioStationName(stationIndex, dest[], len = sizeof dest);
 native playSound(soundId, const audioName[], const audioRef[], bool:p3, bool:p4, bool:p5);
 native playSoundFrontend(soundId, const audioName[], const audioRef[]);
 native playSoundFromEntity(soundId, const audioName[], const audioRef[], entity);
-native playSoundFromPos(soundId, const audioName[], const audioRef[], Float:coords[@Vector3], range);
+native playSoundFromPos(soundId, const audioName[], const audioRef[], coords[@Vector3], range);
 
 native stopSound(soundId);
 
