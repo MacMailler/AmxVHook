@@ -3,8 +3,10 @@
 #endif
 #define __amxvhook_inc__
 
+
 #include <core>
 #include <float>
+#include <string>
 
 #include <amxvhook\defines>
 #include <amxvhook\player>
@@ -21,6 +23,8 @@
 #include <amxvhook\weapon>
 #include <amxvhook\streaming>
 #include <amxvhook\audio>
+#include <amxvhook\timer>
+#include <amxvhook\utility>
 
 forward onModLoad();
 forward onModUnload();
@@ -38,6 +42,8 @@ native getAllObjects(dest[], len = sizeof dest);
 native getAllPickups(dest[], len = sizeof dest);
 native getAllVehicles(dest[], len = sizeof dest);
 
+native getLabelText(const lable[], dest[], len = sizeof dest);
+
 native setVersionVisible(bool:visible);
 
 native wait(ms);
@@ -45,6 +51,6 @@ native wait(ms);
 native log(const text[]);
 native logf(const text[], {Float, _}:...);
 
-native callFunc(const funcname[], const f[]="", bool:remote=false, {Float,_}:...);
+native callFunc(const funcname[], const f[]="", const modname[]="self", {Float,_}:...);
 
 native format(dest[], size=sizeof dest, const format[], {Float, _}:...);
