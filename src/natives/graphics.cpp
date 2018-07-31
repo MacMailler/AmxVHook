@@ -9,9 +9,10 @@ namespace AmxVHook {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(drawInt)
 				MOD_DEFINE_NATIVE(drawFloat)
-				MOD_DEFINE_NATIVE(drawRect)
 				MOD_DEFINE_NATIVE(drawText)
-				MOD_DEFINE_NATIVE(drawTextf)
+				MOD_DEFINE_NATIVE(drawString)
+				MOD_DEFINE_NATIVE(drawCounter)
+				MOD_DEFINE_NATIVE(drawRect)
 				MOD_DEFINE_NATIVE(drawLine)
 				MOD_DEFINE_NATIVE(drawPoly)
 				MOD_DEFINE_NATIVE(drawBox)
@@ -30,6 +31,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setTextFont)
 				MOD_DEFINE_NATIVE(setTextJustification)
 				MOD_DEFINE_NATIVE(setTextRightJustify)
+				MOD_DEFINE_NATIVE(setTextEntry)
 				MOD_DEFINE_NATIVE(setUILayer)
 				MOD_DEFINE_NATIVE(setDrawPosition)
 				MOD_DEFINE_NATIVE(setDrawPositionRatio)
@@ -56,6 +58,10 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(requestStreamedTextureDict)
 				MOD_DEFINE_NATIVE(isStreamedTextureDictLoaded)
 				MOD_DEFINE_NATIVE(setStreamedTextureDictNoNeeded)
+				MOD_DEFINE_NATIVE(getTextureResolution)
+				MOD_DEFINE_NATIVE(addTextComponentStr)
+				MOD_DEFINE_NATIVE(addTextComponentInt)
+				MOD_DEFINE_NATIVE(addTextComponentFloat)
 
 				{NULL, NULL} // terminator
 			};
@@ -114,7 +120,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			MOD_NATIVE(drawText) {
+			MOD_NATIVE(drawString) {
 				if (!arguments(7))
 					return 0;
 
@@ -131,23 +137,19 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			MOD_NATIVE(drawTextf) {
-				std::string out;
-				cell paramsCount = (params[0] / sizeof(cell));
-
-				if (paramsCount < 3)
+			MOD_NATIVE(drawText) {
+				::UI::_DRAW_TEXT(amx_ctof(params[1]), amx_ctof(params[2]));
+				return 1;
+			}
+			
+			MOD_NATIVE(drawCounter) {
+				if (!arguments(4))
 					return 0;
 
-				else if (paramsCount == 3)
-					out = String::get(amx, params[1]);
-
-				else
-					String::format(amx, (params + 4), Utility::getAddrFromParam(amx, params[1]), out);
-
-				::UI::_SET_TEXT_ENTRY("STRING");
-				::UI::_ADD_TEXT_COMPONENT_STRING((char *)out.c_str());
-				::UI::_DRAW_TEXT(amx_ctof(params[2]), amx_ctof(params[3]));
-
+				::UI::_SET_TEXT_ENTRY("CM_ITEM_COUNT");
+				::UI::ADD_TEXT_COMPONENT_INTEGER(params[1]);
+				::UI::ADD_TEXT_COMPONENT_INTEGER(params[2]);
+				::UI::_DRAW_TEXT(amx_ctof(params[3]), amx_ctof(params[4]));
 				return 1;
 			}
 
@@ -413,6 +415,15 @@ namespace AmxVHook {
 				return 1;
 			}
 			
+			MOD_NATIVE(setTextEntry) {
+				if (!arguments(1))
+					return 0;
+
+				::UI::_SET_TEXT_ENTRY((char *)String::get(amx, params[1]).c_str());
+
+				return 1;
+			}
+			
 			MOD_NATIVE(setTextScale) {
 				if (!arguments(2))
 					return 0;
@@ -614,6 +625,33 @@ namespace AmxVHook {
 					return 0;
 
 				GRAPHICS::SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED((char *)String::get(amx, params[1]).c_str());
+
+				return 1;
+			}
+			
+			MOD_NATIVE(getTextureResolution) {
+				if (!arguments(3))
+					return 0;
+
+				Vector3 res = GRAPHICS::GET_TEXTURE_RESOLUTION((char *)String::get(amx, params[1]).c_str(), (char *)String::get(amx, params[2]).c_str());
+
+				return Utility::setVector3ToParam(amx, params[3], res);
+			}
+
+			MOD_NATIVE(addTextComponentStr) {
+				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
+
+				return 1;
+			}
+
+			MOD_NATIVE(addTextComponentInt) {
+				::UI::ADD_TEXT_COMPONENT_INTEGER(params[1]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(addTextComponentFloat) {
+				::UI::ADD_TEXT_COMPONENT_FLOAT(amx_ctof(params[1]), params[2]);
 
 				return 1;
 			}

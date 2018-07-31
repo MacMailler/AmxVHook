@@ -22,6 +22,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getAllObjects)
 				MOD_DEFINE_NATIVE(getAllPickups)
 				MOD_DEFINE_NATIVE(getAllVehicles)
+				MOD_DEFINE_NATIVE(getLabelText)
 				MOD_DEFINE_NATIVE(setVersionVisible)
 				MOD_DEFINE_NATIVE(callFunc)
 				MOD_DEFINE_NATIVE(addTimer)
@@ -156,6 +157,16 @@ namespace AmxVHook {
 
 				return worldGetAllVehicles(dest, params[2]);
 			}
+			
+			MOD_NATIVE(getLabelText) {
+				if (!arguments(3))
+					return 0;
+
+				char * out = ::UI::_GET_LABEL_TEXT((char *)String::get(amx, params[1]).c_str());
+				String::set(amx, params[2], out, params[3]);
+
+				return 1;
+			}
 
 			MOD_NATIVE(setVersionVisible) {
 				if (!arguments(1))
@@ -173,10 +184,19 @@ namespace AmxVHook {
 				std::stack<boost::variant<cell, std::string>> stk;
 				Utility::convertParamsToStack(amx, params, String::get(amx, params[2]), stk, 4);
 
-				if (params[3] == 1)
-					gPool->execAll(String::get(amx, params[1]).c_str(), &stk);
-				else
+				std::string modname = String::get(amx, params[3]);
+
+				if (!modname.compare("self")) {
 					return gPool->exec(amx, String::get(amx, params[1]).c_str(), &stk);
+				}
+				else if (!modname.compare("all")) {
+					gPool->execAll(String::get(amx, params[1]).c_str(), &stk);
+				}
+				else {
+					auto i = gPool->find(modname);
+					if (!i->first.empty())
+						return gPool->exec(i->second.amx, String::get(amx, params[1]).c_str(), &stk);
+				}
 
 				return 1;
 			}

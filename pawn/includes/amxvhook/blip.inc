@@ -232,29 +232,59 @@ enum eBlipCategory {
 };
 
 native addBlip(coords[@Vector3]);
+native addBlipForRadius(coords[@Vector3], Float:radius);
+native addBlipForEntity(entity);
+native addBlipForPickup(pickup);
 native removeBlip(blip);
 
 native isBlipExist(blip);
 native isBlipFlashing(blip);
 native isBlipOnMinimap(blip);
+native isBlipShortRange(blip);
 
 native setBlipPos(blip, coords[@Vector3]);
 native setBlipSprite(blip, spriteId);
 native setBlipAlpha(blip, alpha);
 native setBlipFade(blip, opacity, duration);
 native setBlipColor(blip, color);
+native setBlipSecondaryColour(blip, color);
 native setBlipScale(blip, Float:scale);
 native setBlipCategory(blip, category);
 native setBlipRotation(blip, rotation);
-native setBlipFlashes(blip, toggle);
-native setBlipFlashesAlternate(blip, toggle);
+native setBlipFlashes(blip, bool:toggle);
+native setBlipFlashesAlternate(blip, bool:toggle);
 native setBlipFlashTimer(blip, duration);
 native setBlipFlashInerval(blip, interval);
 native setBlipPriority(blip, priority);
+native setBlipRoute(blip, bool:enabled);
+native setBlipRouteColor(blip, color);
+native setBlipDisplay(blip, displayId);
+native setBlipAsShortRange(blip, bool:toggle);
+native setBlipAsFriendly(blip, bool:toggle);
+native setBlipBright(blip, bool:toggle);
+native setBlipShowCone(blip, bool:toggle);
 
 native getBlipPos(blip, coords[@Vector3]);
 native getBlipSprite(blip);
 native getBlipColor(blip);
+native getBlipHudColour(blip);
+native getBlipInfoIdDisplay(blip);
+native getBlipInfoIdType(blip);
+native getBlipInfoIdPos(blip, coords[@Vector3]);
+native getBlipInfoIdEntityIndex(blip);
+native getBlipFromEntity(entity);
+native getNumberOfActiveBlips();
+native getNextBlipInfoId(blipSprite);
+native getFirstBlipInfoId(blipSprite);
 
-native setBlipRoute(blip, bool:enabled);
-native setBlipRouteColor(blip, color);
+native isWaypointActive();
+native setWaypointOff();
+native refreshWaypoint();
+native setNewWaypoint(Float:x, Float:y);
+
+native showTickOnBlip(blip, bool:toggle);
+native showNumberOnBlip(blip, number);
+native hideNumberOnBlip(blip);
+native showHeadingIndicatorOnBlip(blip);
+
+native pulseBlip(blip);

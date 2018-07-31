@@ -77,6 +77,7 @@ enum eFonts {
 native drawInt(value, Float:x, Float:y);
 native drawFloat(Float:value, Float:x, Float:y, decimal_places = 9);
 native drawText(Float:x, Float:y);
+native drawCounter(value1, value2, Float:x, Float:y);
 native drawString(const text[], Float:x, Float:y, Float:scale = 1.0, font = FONT_NORMAL, color = 0xFFFFFFFF, bool:centre = false);
 native drawRect(Float:x, Float:y, Float:width, Float:height, color = 0xFFFFFFFF);
 native drawBox(point1[@Vector3], point2[@Vector3], color = 0xFFFFFFFF);
@@ -114,7 +115,7 @@ native setRadarZoom(zoom);
 
 native addTextComponentStr(const value[]);
 native addTextComponentInt(value);
-native addTextComponentFloat(Float:value, decimal_places = 9);
+native addTextComponentFloat(Float:value, decimal_places = 6);
 
 native showNotify(const text[], bool:blink = false, bool:in_breif = false);
 native showSubtitle(const text[], duration = 2000, bool:immediately = true);

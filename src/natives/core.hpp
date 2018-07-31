@@ -18,6 +18,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getAllObjects);
 			MOD_NATIVE(getAllPickups);
 			MOD_NATIVE(getAllVehicles);
+			MOD_NATIVE(getLabelText);
 			MOD_NATIVE(callFunc);
 			MOD_NATIVE(addTimer);
 			MOD_NATIVE(dropTimer);
