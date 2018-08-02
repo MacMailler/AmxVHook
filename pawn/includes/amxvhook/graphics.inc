@@ -4,33 +4,6 @@
 #define __graphics_inc__
 
 
-enum eHudComps {
-	HUD = 0,
-	HUD_WANTED_STARS = 1,
-	HUD_WEAPON_ICON = 2,
-	HUD_CASH = 3,
-	HUD_MP_CASH = 4,
-	HUD_MP_MESSAGE = 5,
-	HUD_VEHICLE_NAME = 6,
-	HUD_AREA_NAME = 7,
-	HUD_VEHICLE_CLASS = 8,
-	HUD_STREET_NAME = 9,
-	HUD_HELP_TEXT = 10,
-	HUD_FLOATING_HELP_TEXT_1 = 11,
-	HUD_FLOATING_HELP_TEXT_2 = 12,
-	HUD_CASH_CHANGE = 13,
-	HUD_RETICLE = 14,
-	HUD_SUBTITLE_TEXT = 15,
-	HUD_RADIO_STATIONS = 16,
-	HUD_SAVING_GAME = 17,
-	HUD_GAME_STREAM = 18,
-	HUD_WEAPON_WHEEL = 19,
-	HUD_WEAPON_WHEEL_STATS = 20,
-	MAX_HUD_COMPONENTS = 21,
-	MAX_HUD_WEAPONS = 22,
-	MAX_SCRIPTED_HUD_COMPONENTS = 141
-};
-
 enum eMarkers {
 	MARKER_UPSIDEDOWNCONE = 0,
 	MARKER_VERTICALCYLINDER = 1,
@@ -74,6 +47,8 @@ enum eFonts {
 	FONT_CAPS = 2
 };
 
+native createTexture(const path[]);
+native drawTexture(textureid, index, level, time, size[@Vector2], center[@Vector2], pos[@Vector2], Float:rotation, Float:screenHeightScaleFactor, Float:color[4]);
 native drawInt(value, Float:x, Float:y);
 native drawFloat(Float:value, Float:x, Float:y, decimal_places = 9);
 native drawText(Float:x, Float:y);
@@ -89,9 +64,6 @@ native drawSpotLight(coords[@Vector3], dir[@Vector3], Float:distance, Float:brig
 native drawSpotLightWithShadow(coords[@Vector3], dir[@Vector3], Float:distance, Float:brightness, Float:roundness, Float:radius, Float:fadeout, shadowid, color = 0xFFFFFFFF);
 native drawLightWithRange(coords[@Vector3], Float:range, Float:intensity, color = 0xFFFFFFFF);
 native drawLightWithRangeAndShadow(coords[@Vector3], Float:range, Float:intensity, Float:shadow, color = 0xFFFFFFFF);
-
-native bool:isWidescreen();
-native bool:isHudComponentActive(id);
 
 native setUILayer(layer);
 native setDrawPosition(Float:x, Float:y);
@@ -109,34 +81,11 @@ native setTextWrap(Float:start = 0.0, Float:end = 1.0);
 native setTextJustification(justifyType);
 native setTextRightJustify(bool:toggle);
 
-native setHudVisible(bool:visible);
-native setRadarVisible(bool:visible);
-native setRadarZoom(zoom);
-
 native addTextComponentStr(const value[]);
 native addTextComponentInt(value);
 native addTextComponentFloat(Float:value, decimal_places = 6);
 
-native showNotify(const text[], bool:blink = false, bool:in_breif = false);
-native showSubtitle(const text[], duration = 2000, bool:immediately = true);
-native showHelpMessage(const text[], bool:beep = true, duration = -1);
-native showLoadingSpinner(const text[], type);
-native hideLoadingSpinner();
-
-native getScreenSize(&width, &height);
-native Float:getSafeZoneSize();
-
-native hideHudAndRadarThisFrame();
-native hideHudComponentThisFrame(id);
-native showHudComponentThisFrame(id);
-
-native requestStreamedTextureDict(const textureDict[]);
-native isStreamedTextureDictLoaded(const textureDict[]);
-native setStreamedTextureDictNoNeeded(const textureDict[]);
-native getTextureResolution(const textureDict[], const textureName[], resolution[@Vector3]);
-
-native world3DToScreen2D(coords[@Vector3], &Float:sx, &Float:sy);
-
-native activateFrontendMenu(menuhash, bool:pause, component);
-native restartFrontendMenu(menuhash);
-native getCurrentFrontendMenu();
+native isTextureDictLoaded(const textureDict[]);
+native loadTextureDict(const textureDict[]);
+native unloadTextureDict(const textureDict[]);
+native getTextureDictSize(const textureDict[], const textureName[], size[@Vector3]);

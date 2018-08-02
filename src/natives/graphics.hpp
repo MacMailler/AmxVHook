@@ -4,6 +4,8 @@
 namespace AmxVHook {
 	namespace Natives {
 		namespace Graphics {
+			MOD_NATIVE(createTexture);
+			MOD_NATIVE(drawTexture);
 			MOD_NATIVE(drawInt);
 			MOD_NATIVE(drawFloat);
 			MOD_NATIVE(drawString);
@@ -30,32 +32,13 @@ namespace AmxVHook {
 			MOD_NATIVE(setTextRightJustify);
 			MOD_NATIVE(setTextEntry);
 			MOD_NATIVE(setUILayer);
-			MOD_NATIVE(setDrawPosition);
-			MOD_NATIVE(setDrawPositionRatio);
-			MOD_NATIVE(setDrawPositionEnd);
-			MOD_NATIVE(setHudVisible);
-			MOD_NATIVE(setRadarVisible);
-			MOD_NATIVE(setRadarZoom);
-			MOD_NATIVE(getSafeZoneSize);
-			MOD_NATIVE(getScreenSize);
-			MOD_NATIVE(showNotify);
-			MOD_NATIVE(showSubtitle);
-			MOD_NATIVE(showHelpMessage);
-			MOD_NATIVE(showLoadingSpinner);
-			MOD_NATIVE(hideLoadingSpinner);
-			MOD_NATIVE(isWidescreen);
-			MOD_NATIVE(isHudComponentActive);
-			MOD_NATIVE(hideHudAndRadarThisFrame);
-			MOD_NATIVE(hideHudComponentThisFrame);
-			MOD_NATIVE(showHudComponentThisFrame);
-			MOD_NATIVE(world3DToScreen2D);
-			MOD_NATIVE(activateFrontendMenu);
-			MOD_NATIVE(restartFrontendMenu);
-			MOD_NATIVE(getCurrentFrontendMenu);
-			MOD_NATIVE(requestStreamedTextureDict);
-			MOD_NATIVE(isStreamedTextureDictLoaded);
-			MOD_NATIVE(setStreamedTextureDictNoNeeded);
-			MOD_NATIVE(getTextureResolution);
+			MOD_NATIVE(setDrawPos);
+			MOD_NATIVE(setDrawPosRatio);
+			MOD_NATIVE(setDrawPosEnd);
+			MOD_NATIVE(loadTextureDict);
+			MOD_NATIVE(isTextureDictLoaded);
+			MOD_NATIVE(unloadTextureDict);
+			MOD_NATIVE(getTextureDictSize);
 			MOD_NATIVE(addTextComponentStr);
 			MOD_NATIVE(addTextComponentInt);
 			MOD_NATIVE(addTextComponentFloat);

@@ -18,6 +18,7 @@ namespace AmxVHook {
 			MOD_NATIVE(setBlipAlpha);
 			MOD_NATIVE(setBlipFade);
 			MOD_NATIVE(setBlipColor);
+			MOD_NATIVE(setBlipSecondaryColor);
 			MOD_NATIVE(setBlipScale);
 			MOD_NATIVE(setBlipCategory);
 			MOD_NATIVE(setBlipRoute);

@@ -56,6 +56,8 @@ namespace AmxVHook {
 			MOD_NATIVE(isPedCurrentWeaponSilenced);
 			MOD_NATIVE(isPedWeaponReadyToShoot);
 			MOD_NATIVE(isPedBeenDamagedByWeapon);
+			MOD_NATIVE(isPedRunningRagdollTask);
+			MOD_NATIVE(isPedRunningMobilePhoneTask);
 			MOD_NATIVE(getPedType);
 			MOD_NATIVE(getPedKiller);
 			MOD_NATIVE(getPedCauseOfDeath);

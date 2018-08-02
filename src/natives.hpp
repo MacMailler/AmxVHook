@@ -9,6 +9,7 @@
 #include "natives\blip.hpp"
 #include "natives\player.hpp"
 #include "natives\ped.hpp"
+#include "natives\ui.hpp"
 #include "natives\graphics.hpp"
 #include "natives\vehicle.hpp"
 #include "natives\checkpoint.hpp"
@@ -20,3 +21,4 @@
 #include "natives\weapon.hpp"
 #include "natives\streaming.hpp"
 #include "natives\audio.hpp"
+#include "natives\misc.hpp"

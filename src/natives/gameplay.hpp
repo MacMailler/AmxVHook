@@ -12,13 +12,6 @@ namespace AmxVHook {
 			MOD_NATIVE(getWindDirection);
 			MOD_NATIVE(setRainIntensity);
 			MOD_NATIVE(createLightningThunder);
-			MOD_NATIVE(getGameTimer);
-			MOD_NATIVE(getFrameTime);
-			MOD_NATIVE(getFrameCount);
-			MOD_NATIVE(getHashKey);
-			MOD_NATIVE(getRandomInt);
-			MOD_NATIVE(getRandomFloat);
-			MOD_NATIVE(getDistanceBetweenPos);
 			MOD_NATIVE(setPoliceRadarBlips);
 			MOD_NATIVE(setPoliceIgnorePlayer);
 			MOD_NATIVE(setEveryoneIgnorePlayer);

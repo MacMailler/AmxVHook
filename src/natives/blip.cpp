@@ -18,6 +18,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setBlipFade)
 				MOD_DEFINE_NATIVE(setBlipSprite)
 				MOD_DEFINE_NATIVE(setBlipColor)
+				MOD_DEFINE_NATIVE(setBlipSecondaryColor)
 				MOD_DEFINE_NATIVE(setBlipScale)
 				MOD_DEFINE_NATIVE(setBlipCategory)
 				MOD_DEFINE_NATIVE(setBlipRoute)
@@ -175,6 +176,16 @@ namespace AmxVHook {
 					return 0;
 
 				::UI::SET_BLIP_COLOUR((::Blip)params[1], params[2]);
+
+				return 1;
+			}
+			
+			MOD_NATIVE(setBlipSecondaryColor) {
+				if (!arguments(2))
+					return 0;
+
+				Utility::Color color(params[2]);
+				::UI::SET_BLIP_SECONDARY_COLOUR((::Blip)params[1], color.R, color.G, color.B);
 
 				return 1;
 			}

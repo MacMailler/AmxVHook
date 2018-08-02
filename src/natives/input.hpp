@@ -13,6 +13,7 @@ namespace AmxVHook {
 			MOD_NATIVE(isDisabledControlPressed);
 			MOD_NATIVE(isDisabledControlJustPressed);
 			MOD_NATIVE(isDisabledControlJustReleased);
+			MOD_NATIVE(isKeyboardDisplayed);
 			MOD_NATIVE(isKeyDown);
 			MOD_NATIVE(isKeyJustUp);
 			MOD_NATIVE(resetKeyState);

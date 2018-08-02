@@ -11,7 +11,6 @@ namespace AmxVHook {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(log)
 				MOD_DEFINE_NATIVE(logf)
-				MOD_DEFINE_NATIVE(wait)
 				MOD_DEFINE_NATIVE(format)
 				MOD_DEFINE_NATIVE(isModLoaded)
 				MOD_DEFINE_NATIVE(getFps)
@@ -22,7 +21,6 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(getAllObjects)
 				MOD_DEFINE_NATIVE(getAllPickups)
 				MOD_DEFINE_NATIVE(getAllVehicles)
-				MOD_DEFINE_NATIVE(getLabelText)
 				MOD_DEFINE_NATIVE(setVersionVisible)
 				MOD_DEFINE_NATIVE(callFunc)
 				MOD_DEFINE_NATIVE(addTimer)
@@ -49,24 +47,15 @@ namespace AmxVHook {
 				if ((params[0] / sizeof(cell)) == 1)
 					gDebug->log((char *)String::get(amx, params[1]).c_str());
 				else {
-					cell * f;
-					if (amx_GetAddr(amx, params[1], &f) != AMX_ERR_NONE)
+					cell * fstr = Utility::getAddrFromParam(amx, params[1]);
+					if (fstr == nullptr)
 						return 0;
 
 					std::string out;
-					String::format(amx, (params + 2), f, out);
+					String::format(amx, (params + 2), fstr, out);
 
 					gDebug->log((char *)out.c_str());
 				}
-				return 1;
-			}
-			
-			MOD_NATIVE(wait) {
-				if (!arguments(1))
-					return 0;
-
-				scriptWait(params[1]);
-
 				return 1;
 			}
 
@@ -80,12 +69,12 @@ namespace AmxVHook {
 					String::set(amx, params[1], String::get(amx, params[3]), params[2]);
 
 				else {
-					cell * f;
-					if (amx_GetAddr(amx, params[3], &f) != AMX_ERR_NONE)
+					cell * fstr = Utility::getAddrFromParam(amx, params[3]);
+					if (fstr == nullptr)
 						return 0;
 
 					std::string out;
-					String::format(amx, (params + 4), f, out);
+					String::format(amx, (params + 4), fstr, out);
 					String::set(amx, params[1], out, params[2]);
 				}
 				return 1;
@@ -156,16 +145,6 @@ namespace AmxVHook {
 					return 0;
 
 				return worldGetAllVehicles(dest, params[2]);
-			}
-			
-			MOD_NATIVE(getLabelText) {
-				if (!arguments(3))
-					return 0;
-
-				char * out = ::UI::_GET_LABEL_TEXT((char *)String::get(amx, params[1]).c_str());
-				String::set(amx, params[2], out, params[3]);
-
-				return 1;
 			}
 
 			MOD_NATIVE(setVersionVisible) {

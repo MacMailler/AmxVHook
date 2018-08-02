@@ -27,6 +27,7 @@ namespace AmxVHook {
 				Natives::Vehicle::list,
 				Natives::Gameplay::list,
 				Natives::Graphics::list,
+				Natives::UI::list,
 				Natives::Checkpoint::list,
 				Natives::Input::list,
 				Natives::Entity::list,
@@ -34,7 +35,8 @@ namespace AmxVHook {
 				Natives::Time::list,
 				Natives::Weapon::list,
 				Natives::Streaming::list,
-				Natives::Audio::list
+				Natives::Audio::list,
+				Natives::Misc::list
 			});
 
 			gPool->make();

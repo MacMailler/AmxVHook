@@ -3,10 +3,13 @@
 namespace AmxVHook {
 
 	extern boost::shared_ptr<Debug> gDebug;
+	extern boost::shared_ptr<Pool> gPool;
 
 	namespace Natives {
 		namespace Graphics {
 			AMX_NATIVE_INFO list[] = {
+				MOD_DEFINE_NATIVE(createTexture)
+				MOD_DEFINE_NATIVE(drawTexture)
 				MOD_DEFINE_NATIVE(drawInt)
 				MOD_DEFINE_NATIVE(drawFloat)
 				MOD_DEFINE_NATIVE(drawText)
@@ -33,32 +36,13 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(setTextRightJustify)
 				MOD_DEFINE_NATIVE(setTextEntry)
 				MOD_DEFINE_NATIVE(setUILayer)
-				MOD_DEFINE_NATIVE(setDrawPosition)
-				MOD_DEFINE_NATIVE(setDrawPositionRatio)
-				MOD_DEFINE_NATIVE(setDrawPositionEnd)
-				MOD_DEFINE_NATIVE(setHudVisible)
-				MOD_DEFINE_NATIVE(setRadarVisible)
-				MOD_DEFINE_NATIVE(setRadarZoom)
-				MOD_DEFINE_NATIVE(getSafeZoneSize)
-				MOD_DEFINE_NATIVE(getScreenSize)
-				MOD_DEFINE_NATIVE(showNotify)
-				MOD_DEFINE_NATIVE(showSubtitle)
-				MOD_DEFINE_NATIVE(showHelpMessage)
-				MOD_DEFINE_NATIVE(showLoadingSpinner)
-				MOD_DEFINE_NATIVE(hideLoadingSpinner)
-				MOD_DEFINE_NATIVE(isWidescreen)
-				MOD_DEFINE_NATIVE(isHudComponentActive)
-				MOD_DEFINE_NATIVE(hideHudAndRadarThisFrame)
-				MOD_DEFINE_NATIVE(hideHudComponentThisFrame)
-				MOD_DEFINE_NATIVE(showHudComponentThisFrame)
-				MOD_DEFINE_NATIVE(world3DToScreen2D)
-				MOD_DEFINE_NATIVE(activateFrontendMenu)
-				MOD_DEFINE_NATIVE(restartFrontendMenu)
-				MOD_DEFINE_NATIVE(getCurrentFrontendMenu)
-				MOD_DEFINE_NATIVE(requestStreamedTextureDict)
-				MOD_DEFINE_NATIVE(isStreamedTextureDictLoaded)
-				MOD_DEFINE_NATIVE(setStreamedTextureDictNoNeeded)
-				MOD_DEFINE_NATIVE(getTextureResolution)
+				MOD_DEFINE_NATIVE(setDrawPos)
+				MOD_DEFINE_NATIVE(setDrawPosRatio)
+				MOD_DEFINE_NATIVE(setDrawPosEnd)
+				MOD_DEFINE_NATIVE(loadTextureDict)
+				MOD_DEFINE_NATIVE(isTextureDictLoaded)
+				MOD_DEFINE_NATIVE(unloadTextureDict)
+				MOD_DEFINE_NATIVE(getTextureDictSize)
 				MOD_DEFINE_NATIVE(addTextComponentStr)
 				MOD_DEFINE_NATIVE(addTextComponentInt)
 				MOD_DEFINE_NATIVE(addTextComponentFloat)
@@ -66,40 +50,38 @@ namespace AmxVHook {
 				{NULL, NULL} // terminator
 			};
 
-			MOD_NATIVE(getScreenSize) {
-				if (!arguments(2))
+			MOD_NATIVE(createTexture) {
+				if (!arguments(1))
 					return 0;
 
-				cell * w = Utility::getAddrFromParam(amx, params[1]),
-					 * h = Utility::getAddrFromParam(amx, params[1]);
-
-				if (w == nullptr || h == nullptr)
-					return 0;
-
-				GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(w, h);
-
-				return 1;
+				boost::filesystem::path path = boost::filesystem::system_complete(".\\AmxVHook\\Stuff\\" + String::get(amx, params[1]));
+				if (boost::filesystem::exists(path) && !boost::filesystem::is_directory(path))
+					return ::createTexture(path.string().c_str());
+				
+				return -1;
 			}
 
-			MOD_NATIVE(world3DToScreen2D) {
-				if (!arguments(3))
+			MOD_NATIVE(drawTexture) {
+				if (!arguments(10))
 					return 0;
 
-				float coords[3];
-				cell * sx = Utility::getAddrFromParam(amx, params[2]),
-					 * sy = Utility::getAddrFromParam(amx, params[3]);
-
-				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
-					sx == nullptr || sy == nullptr)
+				float size[2], center[2], pos[2], color[4];
+				if (!Utility::getFloatArrayFromParam(amx, params[5], size, 2) ||
+					!Utility::getFloatArrayFromParam(amx, params[6], center, 2) ||
+					!Utility::getFloatArrayFromParam(amx, params[7], pos, 2) ||
+					!Utility::getFloatArrayFromParam(amx, params[10], color, 4))
 					return 0;
 
-				float sx2, sy2;
-				BOOL ret = GRAPHICS::_WORLD3D_TO_SCREEN2D(coords[0], coords[1], coords[2], &sx2, &sy2);
-				
-				*sx = amx_ftoc(sx2);
-				*sy = amx_ftoc(sy2);
+				::drawTexture(
+					params[1], params[2], params[3], params[4],
+					size[0], size[1],
+					center[0], center[1],
+					pos[0], pos[1],
+					amx_ctof(params[8]), amx_ctof(params[9]),
+					color[0], color[1], color[2], color[3]
+				);
 
-				return ret;
+				return 1;
 			}
 
 			MOD_NATIVE(drawInt) {
@@ -442,7 +424,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			MOD_NATIVE(setDrawPosition) {
+			MOD_NATIVE(setDrawPos) {
 				if (!arguments(2))
 					return 0;
 
@@ -451,7 +433,7 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			MOD_NATIVE(setDrawPositionRatio) {
+			MOD_NATIVE(setDrawPosRatio) {
 				if (!arguments(4))
 					return 0;
 
@@ -460,151 +442,13 @@ namespace AmxVHook {
 				return 1;
 			}
 
-			MOD_NATIVE(setDrawPositionEnd) {
+			MOD_NATIVE(setDrawPosEnd) {
 				GRAPHICS::_0xE3A3DB414A373DAB();
 
 				return 1;
 			}
-
-			MOD_NATIVE(getSafeZoneSize) {
-				float size = GRAPHICS::GET_SAFE_ZONE_SIZE();
-
-				return amx_ftoc(size);
-			}
-
-			MOD_NATIVE(isWidescreen) {
-				return GRAPHICS::GET_IS_WIDESCREEN();
-			}
 			
-			MOD_NATIVE(showNotify) {
-				if (!arguments(3))
-					return 0;
-
-				return Funcs::showNotify(String::get(amx, params[1]), (BOOL)params[2], (BOOL)params[3]);
-			}
-
-			MOD_NATIVE(showSubtitle) {
-				if (!arguments(3))
-					return 0;
-
-				Funcs::showSubtitle(String::get(amx, params[1]), params[2], params[3]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(showHelpMessage) {
-				if (!arguments(3))
-					return 0;
-
-				::UI::_SET_TEXT_COMPONENT_FORMAT("STRING");
-				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
-				::UI::_DISPLAY_HELP_TEXT_FROM_STRING_LABEL(0, 0, params[2], params[3]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(showLoadingSpinner) {
-				if (!arguments(2))
-					return 0;
-
-				::UI::_0xABA17D7CE615ADBF("STRING");
-				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
-				::UI::_0xBD12F8228410D9B4(params[2]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(hideLoadingSpinner) {
-				::UI::_0x10D373323E5B9C0D();
-				return 1;
-			}
-
-			MOD_NATIVE(setHudVisible) {
-				if (!arguments(1))
-					return 0;
-
-				::UI::DISPLAY_HUD((BOOL)params[1]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(setRadarVisible) {
-				if (!arguments(1))
-					return 0;
-
-				::UI::DISPLAY_RADAR((BOOL)params[1]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(setRadarZoom) {
-				if (!arguments(1))
-					return 0;
-
-				if (0 > params[1] || params[1] > 200)
-					return 0;
-
-				::UI::SET_RADAR_ZOOM(params[1]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(isHudComponentActive) {
-				if (!arguments(1))
-					return 0;
-
-				return ::UI::IS_HUD_COMPONENT_ACTIVE(params[1]);
-			}
-
-			MOD_NATIVE(hideHudAndRadarThisFrame) {
-				::UI::HIDE_HUD_AND_RADAR_THIS_FRAME();
-				return 1;
-			}
-			
-			MOD_NATIVE(hideHudComponentThisFrame) {
-				if (!arguments(1))
-					return 0;
-
-				::UI::HIDE_HUD_COMPONENT_THIS_FRAME(params[1]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(showHudComponentThisFrame) {
-				if (!arguments(1))
-					return 0;
-
-				::UI::SHOW_HUD_COMPONENT_THIS_FRAME(params[1]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(activateFrontendMenu) {
-				if (!arguments(3))
-					return 0;
-
-				::UI::ACTIVATE_FRONTEND_MENU(params[1], params[2], params[3]);
-
-				return 1;
-			}
-
-			MOD_NATIVE(restartFrontendMenu) {
-				if (!arguments(1))
-					return 0;
-
-				::UI::RESTART_FRONTEND_MENU(params[1], -1);
-
-				return 1;
-			}
-
-			MOD_NATIVE(getCurrentFrontendMenu) {
-				if (!arguments(1))
-					return 0;
-
-				return ::UI::_0x2309595AD6145265();
-			}
-			
-			MOD_NATIVE(requestStreamedTextureDict) {
+			MOD_NATIVE(loadTextureDict) {
 				if (!arguments(1))
 					return 0;
 
@@ -613,14 +457,14 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			MOD_NATIVE(isStreamedTextureDictLoaded) {
+			MOD_NATIVE(isTextureDictLoaded) {
 				if (!arguments(1))
 					return 0;
 
 				return GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED((char *)String::get(amx, params[1]).c_str());
 			}
 			
-			MOD_NATIVE(setStreamedTextureDictNoNeeded) {
+			MOD_NATIVE(unloadTextureDict) {
 				if (!arguments(1))
 					return 0;
 
@@ -629,7 +473,7 @@ namespace AmxVHook {
 				return 1;
 			}
 			
-			MOD_NATIVE(getTextureResolution) {
+			MOD_NATIVE(getTextureDictSize) {
 				if (!arguments(3))
 					return 0;
 

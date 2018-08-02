@@ -56,6 +56,8 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isPedCurrentWeaponSilenced)
 				MOD_DEFINE_NATIVE(isPedWeaponReadyToShoot)
 				MOD_DEFINE_NATIVE(isPedBeenDamagedByWeapon)
+				MOD_DEFINE_NATIVE(isPedRunningRagdollTask)
+				MOD_DEFINE_NATIVE(isPedRunningMobilePhoneTask)
 				MOD_DEFINE_NATIVE(getPedType)
 				MOD_DEFINE_NATIVE(getPedKiller)
 				MOD_DEFINE_NATIVE(getPedCauseOfDeath)
@@ -488,6 +490,20 @@ namespace AmxVHook {
 					return 0;
 
 				return WEAPON::HAS_PED_BEEN_DAMAGED_BY_WEAPON((::Ped)params[1], params[2], params[3]);
+			}
+			
+			MOD_NATIVE(isPedRunningRagdollTask) {
+				if (!arguments(1))
+					return 0;
+
+				return PED::IS_PED_RUNNING_RAGDOLL_TASK((::Ped)params[1]);
+			}
+			
+			MOD_NATIVE(isPedRunningMobilePhoneTask) {
+				if (!arguments(1))
+					return 0;
+
+				return PED::IS_PED_RUNNING_MOBILE_PHONE_TASK((::Ped)params[1]);
 			}
 
 			MOD_NATIVE(getPedType) {

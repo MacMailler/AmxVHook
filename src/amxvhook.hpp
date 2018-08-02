@@ -30,7 +30,6 @@
 #include "core.hpp"
 #include "debug.hpp"
 #include "funcs.hpp"
-#include "natives.hpp"
 #include "keyboard.hpp"
 #include "string.hpp"
 #include "timer.hpp"

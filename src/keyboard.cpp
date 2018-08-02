@@ -13,7 +13,7 @@ namespace AmxVHook {
 		} keyStates[KEYS_SIZE];
 		
 		std::vector<std::string> params;
-		bool inputStarted = false;
+		bool keyboardDisplayed = false;
 
 		void handler(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, BOOL isWithAlt, BOOL wasDownBefore, BOOL isUpNow) {
 			if (key < KEYS_SIZE) {
@@ -53,10 +53,14 @@ namespace AmxVHook {
 			return true;
 		}
 
+		bool isDisplayed() {
+			return keyboardDisplayed;
+		}
+
 		void displayOnScreeKeyboard(char * windowTitle, char * defaultText) {
-			if (!inputStarted) {
+			if (!keyboardDisplayed) {
 				GAMEPLAY::DISPLAY_ONSCREEN_KEYBOARD(UNK::_GET_UI_LANGUAGE_ID(), windowTitle, "", defaultText, "", "", "", 256);
-				inputStarted = true;
+				keyboardDisplayed = true;
 			}
 		}
 
@@ -65,7 +69,7 @@ namespace AmxVHook {
 				displayOnScreeKeyboard("FMMC_KEY_TIP8", "!");
 			}
 
-			if (inputStarted) {
+			if (keyboardDisplayed) {
 				int status = GAMEPLAY::UPDATE_ONSCREEN_KEYBOARD();
 				if (status == 0) {
 
@@ -110,14 +114,14 @@ namespace AmxVHook {
 						gPool->onModInputText(buf);
 					}
 
-					inputStarted = false;
+					keyboardDisplayed = false;
 				}
 				else if (status == 2) {
-					inputStarted = false;
+					keyboardDisplayed = false;
 					gPool->execAll("onModInputCanceled");
 				}
 				else {
-					inputStarted = false;
+					keyboardDisplayed = false;
 				}
 			}
 		}

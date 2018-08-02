@@ -11,6 +11,7 @@
 #include <amxvhook\defines>
 #include <amxvhook\player>
 #include <amxvhook\graphics>
+#include <amxvhook\ui>
 #include <amxvhook\input>
 #include <amxvhook\blip>
 #include <amxvhook\gameplay>
@@ -24,7 +25,7 @@
 #include <amxvhook\streaming>
 #include <amxvhook\audio>
 #include <amxvhook\timer>
-#include <amxvhook\utility>
+#include <amxvhook\misc>
 
 forward onModLoad();
 forward onModUnload();
@@ -42,15 +43,12 @@ native getAllObjects(dest[], len = sizeof dest);
 native getAllPickups(dest[], len = sizeof dest);
 native getAllVehicles(dest[], len = sizeof dest);
 
-native getLabelText(const lable[], dest[], len = sizeof dest);
-
 native setVersionVisible(bool:visible);
-
-native wait(ms);
 
 native log(const text[]);
 native logf(const text[], {Float, _}:...);
 
+native format(dest[], size=sizeof dest, const format[], {Float, _}:...);
+
 native callFunc(const funcname[], const f[]="", const modname[]="self", {Float,_}:...);
 
-native format(dest[], size=sizeof dest, const format[], {Float, _}:...);

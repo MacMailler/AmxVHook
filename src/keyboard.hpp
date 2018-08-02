@@ -13,6 +13,8 @@ namespace AmxVHook {
 		bool isKeyJustUp(DWORD key, bool exclusive = true);
 		bool getKeyInfo(DWORD key, DWORD &time, BOOL &isWithAlt, BOOL &wasDownBefore, BOOL &isUpNow);
 		void resetKeyState(DWORD key);
+
+		bool isDisplayed();
 		void displayOnScreeKeyboard(char * windowTitle, char * defaultText);
 		void displayOnScreeKeyboardProcess();
 

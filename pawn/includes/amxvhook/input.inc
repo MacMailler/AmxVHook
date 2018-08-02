@@ -140,6 +140,7 @@ native isControlJustReleased(group, control);
 native isDisabledControlPressed(group, control);
 native isDisabledControlJustPressed(group, control);
 native isDisabledControlJustReleased(group, control);
+native isKeyboardDisplayed();
 
 native isKeyDown(key);
 native isKeyJustUp(key, bool:exclusive = false);

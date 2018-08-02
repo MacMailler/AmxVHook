@@ -1,5 +1,6 @@
 #pragma once
 #include "amxvhook.hpp"
+#include "natives.hpp"
 
 namespace AmxVHook {
 	namespace Core {

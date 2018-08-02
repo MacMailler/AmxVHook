@@ -5,6 +5,7 @@ namespace AmxVHook {
 		namespace Input {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(isLookInverted)
+				MOD_DEFINE_NATIVE(isLookInverted)
 				MOD_DEFINE_NATIVE(isControlEnabled)
 				MOD_DEFINE_NATIVE(isControlPressed)
 				MOD_DEFINE_NATIVE(isControlReleased)
@@ -13,6 +14,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isDisabledControlPressed)
 				MOD_DEFINE_NATIVE(isDisabledControlJustPressed)
 				MOD_DEFINE_NATIVE(isDisabledControlJustReleased)
+				MOD_DEFINE_NATIVE(isKeyboardDisplayed)
 				MOD_DEFINE_NATIVE(isKeyDown)
 				MOD_DEFINE_NATIVE(isKeyJustUp)
 				MOD_DEFINE_NATIVE(resetKeyState)
@@ -95,6 +97,10 @@ namespace AmxVHook {
 					return 0;
 
 				return CONTROLS::IS_DISABLED_CONTROL_JUST_RELEASED(params[1], params[2]);
+			}
+			
+			MOD_NATIVE(isKeyboardDisplayed) {
+				return Keyboard::isDisplayed();
 			}
 
 			MOD_NATIVE(isKeyDown) {

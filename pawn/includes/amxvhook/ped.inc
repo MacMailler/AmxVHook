@@ -91,6 +91,8 @@ native isPedModel(ped, hash);
 native isPedCurrentWeaponSilenced(ped);
 native isPedWeaponReadyToShoot(ped);
 native isPedBeenDamagedByWeapon(ped, weaponHash, weaponType);
+native isPedRunningRagdollTask(ped);
+native isPedRunningMobilePhoneTask(ped);
 
 native getPedType(ped);
 native getPedKiller(ped);
