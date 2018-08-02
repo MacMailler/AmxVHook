@@ -39,11 +39,11 @@ namespace AmxVHook {
 					}
 					break;
 
-					case 'H':
-					case 'h': {
+					case 'x':
+					case 'X': {
 						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
-							sprintf_s(buff, *f == 'h' ? "%x" : "%X", *ptr);
+							sprintf_s(buff, *f == 'x' ? "%x" : "%X", *ptr);
 							out.append(buff);
 						}
 						else {
@@ -115,6 +115,44 @@ namespace AmxVHook {
 					}
 					break;
 
+					case '0': {
+						char fstr[] = { '%', '0', (char)*(++f), 'i', '\0' };
+
+						switch (*(++f)) {
+						case 'i':
+						case 'd': {
+							ptr = Utility::getAddrFromParam(amx, params[index++]);
+							if (ptr != nullptr) {
+								sprintf(buff, fstr, *ptr);
+								out.append(buff);
+							}
+							else {
+								out.append("(null)");
+							}
+						}
+						break;
+
+						case 'x':
+						case 'X': {
+							fstr[3] = (char)*f;
+							ptr = Utility::getAddrFromParam(amx, params[index++]);
+							if (ptr != nullptr) {
+								sprintf_s(buff, fstr, *ptr);
+								out.append(buff);
+							}
+							else {
+								out.append("(null)");
+							}
+						}
+						break;
+
+						default:
+							out.append({ '%', '0', (char)*f });
+						}
+						f++;
+					}
+					break;
+
 					default:
 						out.push_back(*f), f++;
 					}
@@ -127,11 +165,11 @@ namespace AmxVHook {
 			}
 		}
 
-		void set(AMX * amx, cell param, std::string data, std::size_t size) {
+		void set(AMX * amx, cell param, std::string data, std::size_t size, bool pack) {
 			cell *dest = NULL;
 
 			amx_GetAddr(amx, param, &dest);
-			amx_SetString(dest, data.c_str(), NULL, NULL, size);
+			amx_SetString(dest, data.c_str(), pack, NULL, size);
 		}
 
 		std::string get(AMX * amx, cell param) {
