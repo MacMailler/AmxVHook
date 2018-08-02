@@ -16,7 +16,7 @@ namespace AmxVHook {
 	extern boost::shared_ptr<Debug> gDebug;
 
 	Pool::Pool() {
-		this->location = boost::filesystem::system_complete("AmxVHook\\mods");
+		this->location = boost::filesystem::system_complete("AmxVHook\\Mods");
 
 		if (!boost::filesystem::exists(this->location))
 			boost::filesystem::create_directory(this->location);
@@ -140,7 +140,7 @@ namespace AmxVHook {
 
 	bool Pool::reloadMod(std::string & name) {
 		gDebug->log("Unloading mod '%s.amx'...", name.c_str());
-	
+
 		if (!this->contains(name))
 			return false;
 
