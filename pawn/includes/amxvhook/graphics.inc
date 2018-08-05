@@ -66,9 +66,9 @@ native drawLightWithRange(coords[@Vector3], Float:range, Float:intensity, color 
 native drawLightWithRangeAndShadow(coords[@Vector3], Float:range, Float:intensity, Float:shadow, color = 0xFFFFFFFF);
 
 native setUILayer(layer);
-native setDrawPosition(Float:x, Float:y);
-native setDrawPositionRatio(Float:x, Float:y, Float:p2, Float:p3);
-native setDrawPositionEnd();
+native setDrawPos(Float:x, Float:y);
+native setDrawPosRatio(Float:x, Float:y, Float:p2, Float:p3);
+native setDrawPosEnd();
 
 native setTextEntry(const text[]);
 native setTextFont(font);

@@ -19,6 +19,12 @@
     <Filter Include="Headers Files\natives">
       <UniqueIdentifier>{fe63e029-9802-41b1-b1b9-900472926b8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\amx\minini">
+      <UniqueIdentifier>{e3647e6e-9dab-4232-95dd-fefe6bcf6e19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers Files\amx\minini">
+      <UniqueIdentifier>{e594fa3d-f312-4387-a88a-1ecb2ecf9630}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\amx\amx.h">
@@ -110,6 +116,18 @@
     </ClInclude>
     <ClInclude Include="src\natives\misc.hpp">
       <Filter>Headers Files\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\fpattern.h">
+      <Filter>Headers Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\minini\dev\minGlue.h">
+      <Filter>Headers Files\amx\minini</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\minini\dev\minIni.h">
+      <Filter>Headers Files\amx\minini</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\amx_ptrarray.h">
+      <Filter>Headers Files\amx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +223,15 @@
     </ClCompile>
     <ClCompile Include="src\natives\misc.cpp">
       <Filter>Source Files\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amxfile.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\fpattern.c">
+      <Filter>Source Files\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\minini\dev\minIni.c">
+      <Filter>Source Files\amx\minini</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

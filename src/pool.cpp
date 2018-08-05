@@ -7,6 +7,8 @@ extern "C" {
 	int AMXEXPORT AMXAPI amx_FloatCleanup(AMX *amx);
 	int AMXEXPORT AMXAPI amx_StringInit(AMX *amx);
 	int AMXEXPORT AMXAPI amx_StringCleanup(AMX *amx);
+	int AMXEXPORT AMXAPI amx_FileInit(AMX *amx);
+	int AMXEXPORT AMXAPI amx_FileCleanup(AMX *amx);
 }
 
 
@@ -56,12 +58,14 @@ namespace AmxVHook {
 			amx_CoreInit(amx);
 			amx_FloatInit(amx);
 			amx_StringInit(amx);
+			amx_FileInit(amx);
 
 			for (const auto& list : natives)
 				err = amx_Register(amx, list, -1);
 
 			if (err == AMX_ERR_NONE) {
 				gDebug->log("Mod '%s' loaded! Registred natives: %d", name, Utility::Amx::getNumNatives(amx));
+
 				this->exec(amx, "onModLoad");
 			}
 			else {
@@ -76,6 +80,7 @@ namespace AmxVHook {
 
 	void Pool::clear() {
 		for (const auto& i : pool) {
+			amx_FileCleanup(i.second.amx);
 			amx_StringCleanup(i.second.amx);
 			amx_FloatCleanup(i.second.amx);
 			amx_CoreCleanup(i.second.amx);
@@ -197,6 +202,7 @@ namespace AmxVHook {
 				amx_Exec(amx, &ret, index);
 			}
 		}
+
 		return ret;
 	}
 
@@ -213,6 +219,9 @@ namespace AmxVHook {
 				amx_PushString(i.second.amx, &amx_addr, &phys_addr, text, 0, 0);
 				amx_Exec(i.second.amx, &ret, index);
 				amx_Release(i.second.amx, amx_addr);
+
+				if (ret == 1)
+					break;
 			}
 		}
 	}
