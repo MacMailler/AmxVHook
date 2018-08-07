@@ -23,7 +23,6 @@
 #include <sdk\natives.h>
 #include <sdk\nativeCaller.h>
 
-#define HAVE_STDINT_H
 #include "amx\amx.h"
 
 #include "pool.hpp"
