@@ -69,11 +69,11 @@ namespace AmxVHook {
 				this->exec(amx, "onModLoad");
 			}
 			else {
-				gDebug->log("Failed to load '%s' mod! %s", name, Utility::Amx::errorToString(err));
+				gDebug->log("Failed to load '%s' mod! %s", name, Utility::Amx::strError(err));
 				Utility::Amx::cleanup(amx);
 			}
 		}
-		else gDebug->log("Failed to load '%s' mod. %s!", name, Utility::Amx::errorToString(err));
+		else gDebug->log("Failed to load '%s' mod. %s!", name, Utility::Amx::strError(err));
 
 		return err;
 	}

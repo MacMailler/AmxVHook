@@ -233,7 +233,7 @@ namespace AmxVHook {
 				return (hdr.magic == AMX_MAGIC) ? (size_t)hdr.stp : 0;
 			}
 
-			char * errorToString(int err) {
+			char * strError(int err) {
 				static char * errstr[] = {
 					/* AMX_ERR_NONE      */ "(none)",
 					/* AMX_ERR_EXIT      */ "Forced exit",

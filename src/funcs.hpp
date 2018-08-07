@@ -41,7 +41,7 @@ namespace AmxVHook {
 			int load(AMX * amx, std::string & path, void * memblock = NULL);
 			int cleanup(AMX * amx);
 			size_t getSize(std::string & path);
-			char * errorToString(int err);
+			char * strError(int err);
 
 			const AMX_HEADER * getHeader(AMX * amx);
 			const AMX_FUNCSTUBNT * getNatives(AMX * amx);
