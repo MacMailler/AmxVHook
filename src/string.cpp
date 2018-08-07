@@ -3,21 +3,22 @@
 namespace AmxVHook {
 	namespace String {
 		void format(AMX * amx, const cell * params, cell * f, std::string & out) {
-			cell index = 0;
-
+			cell index = 0, *ptr = nullptr;
+			char buff[32];
+	
 			while (*f != '\0') {
-				char buff[32];
-				cell * ptr = nullptr;
-
 				switch (*f) {
 				case '%': {
-					f++;
-					switch (*f) {
+					switch (*(++f)) {
 					case 'i':
 					case 'd': {
 						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
-							sprintf_s(buff, "%i", *ptr);
+							#if PAWN_CELL_SIZE == 64
+								sprintf_s(buff, "%lld", *ptr);
+							#else
+								sprintf_s(buff, "%d", *ptr);
+							#endif
 							out.append(buff);
 						}
 						else {
@@ -43,7 +44,11 @@ namespace AmxVHook {
 					case 'X': {
 						ptr = Utility::getAddrFromParam(amx, params[index++]);
 						if (ptr != nullptr) {
-							sprintf_s(buff, *f == 'x' ? "%x" : "%X", *ptr);
+							#if PAWN_CELL_SIZE == 64
+								sprintf_s(buff, *f == 'x' ? "%llx" : "%llX", *ptr);
+							#else
+								sprintf_s(buff, *f == 'x' ? "%x" : "%X", *ptr);
+							#endif
 							out.append(buff);
 						}
 						else {
@@ -116,51 +121,105 @@ namespace AmxVHook {
 					break;
 
 					case '0': {
-						char fstr[] = { '%', '0', (char)*(++f), 'i', '\0' };
+						std::string fstr("%0");
+						while (*(++f) >= '0' && '9' >= *f)
+							fstr.push_back((char)*f);
 
-						switch (*(++f)) {
+						switch (*f) {
 						case 'i':
 						case 'd': {
 							ptr = Utility::getAddrFromParam(amx, params[index++]);
 							if (ptr != nullptr) {
-								sprintf(buff, fstr, *ptr);
+								#if PAWN_CELL_SIZE == 64
+									fstr.append({ 'l', 'l', (char)*f });
+								#else
+									fstr.push_back((char)*f);
+								#endif
+								sprintf(buff, fstr.c_str(), *ptr);
 								out.append(buff);
 							}
 							else {
 								out.append("(null)");
 							}
+							f++;
 						}
 						break;
 
-						case 'x':
-						case 'X': {
-							fstr[3] = (char)*f;
+						#ifdef FLOATPOINT
+						case 'f': {
 							ptr = Utility::getAddrFromParam(amx, params[index++]);
 							if (ptr != nullptr) {
-								sprintf_s(buff, fstr, *ptr);
+								fstr.push_back((char)*f);
+								sprintf(buff, fstr.c_str(), amx_ctof(*ptr));
 								out.append(buff);
 							}
 							else {
 								out.append("(null)");
 							}
+							f++;
+						}
+						break;
+
+						case '.': {
+							fstr.push_back((char)*f);
+
+							while (*(++f) >= '0' && '9' >= *f)
+								fstr.push_back((char)*f);
+
+							if (*f == 'f') {
+								ptr = Utility::getAddrFromParam(amx, params[index++]);
+								if (ptr != nullptr) {
+									fstr.push_back((char)*f);
+									sprintf(buff, fstr.c_str(), amx_ctof(*ptr));
+									out.append(buff);
+								}
+								else {
+									out.append("(null)");
+								}
+							}
+							else {
+								fstr.push_back((char)*f);
+								out.append(fstr);
+							}
+							f++;
+						}
+						break;
+						#endif
+
+						case 'x':
+						case 'X': {
+							ptr = Utility::getAddrFromParam(amx, params[index++]);
+							if (ptr != nullptr) {
+								#if PAWN_CELL_SIZE == 64
+									fstr.append({'l', 'l', (char)*f});
+								#else
+									fstr.push_back((char)*f);
+								#endif
+
+								sprintf_s(buff, fstr.c_str(), *ptr);
+								out.append(buff);
+							}
+							else {
+								out.append("(null)");
+							}
+							f++;
 						}
 						break;
 
 						default:
-							out.append({ '%', '0', (char)*f });
+							out.append(fstr);
 						}
-						f++;
 					}
 					break;
 
 					default:
-						out.push_back(*f), f++;
+						out.push_back(*(f++));
 					}
 				}
 				break;
 
 				default:
-					out.push_back(*f), f++;
+					out.push_back(*(f++));
 				}
 			}
 		}
@@ -174,24 +233,12 @@ namespace AmxVHook {
 
 		std::string get(AMX * amx, cell param) {
 			char * dest = NULL;
+			amx_StrParam(amx, param, dest);
+			
+			if (dest != NULL)
+				return std::string(dest);
 
-			getArr(amx, param, dest);
-			std::string ret(dest);
-
-			free(dest);
-
-			return ret;
-		}
-
-		int getArr(AMX* amx, cell param, char*& dest) {
-			cell *ptr;
-			int len;
-			amx_GetAddr(amx, param, &ptr);
-			amx_StrLen(ptr, &len);
-			dest = (char *)malloc((len * sizeof(char)) + 1);
-			amx_GetString(dest, ptr, 0, UNLIMITED);
-			dest[len] = '\0';
-			return len;
+			return std::string("");
 		}
 
 		bool is_dec(std::string &data) {
