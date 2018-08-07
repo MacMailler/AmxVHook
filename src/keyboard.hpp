@@ -16,7 +16,7 @@ namespace AmxVHook {
 
 		bool isDisplayed();
 		void displayOnScreeKeyboard(char * windowTitle, char * defaultText);
-		void displayOnScreeKeyboardProcess();
+		void displayOnScreenKeyboardProcess();
 
 		int getCommandParam(int id);
 		float getCommandParamF(int id);

@@ -154,7 +154,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(deletePed) {
-				if (!arguments(2))
+				if (!arguments(1))
 					return 0;
 
 				::Ped ped = params[1];

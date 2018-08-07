@@ -534,7 +534,7 @@ namespace AmxVHook {
 				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
 					return 0;
 
-				ENTITY::SET_ENTITY_COORDS((::Entity)params[1], coords[0], coords[1], coords[2], amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), amx_ctof(params[6]));
+				ENTITY::SET_ENTITY_COORDS((::Entity)params[1], coords[0], coords[1], coords[2], params[3], params[4], params[5], params[6]);
 
 				return 1;
 			}

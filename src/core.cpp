@@ -51,7 +51,7 @@ namespace AmxVHook {
 					frames = 0;
 				}
 
-				Keyboard::displayOnScreeKeyboardProcess();
+				Keyboard::displayOnScreenKeyboardProcess();
 				gPool->execAll("onModUpdate");
 
 				gTimer->process();

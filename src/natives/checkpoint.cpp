@@ -15,7 +15,7 @@ namespace AmxVHook {
 			};
 
 			MOD_NATIVE(createCP) {
-				if (!arguments(5))
+				if (!arguments(6))
 					return 0;
 
 				float coords[3], next[3];
@@ -30,7 +30,7 @@ namespace AmxVHook {
 					coords[0], coords[1], coords[2],
 					next[0], next[1], next[2],
 					amx_ctof(params[4]),
-					color.R, color.G, color.B, color.A, 0
+					color.R, color.G, color.B, color.A, params[6]
 				);
 			}
 

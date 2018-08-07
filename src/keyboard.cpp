@@ -64,7 +64,7 @@ namespace AmxVHook {
 			}
 		}
 
-		void displayOnScreeKeyboardProcess() {
+		void displayOnScreenKeyboardProcess() {
 			if (isKeyJustUp(VK_ADD)) {
 				displayOnScreeKeyboard("FMMC_KEY_TIP8", "!");
 			}

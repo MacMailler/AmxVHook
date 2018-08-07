@@ -388,7 +388,7 @@ enum {
       cell *amx_cstr_; int amx_length_;                                     \
       amx_GetAddr((amx), (param), &amx_cstr_);                              \
       if (amx_StrLen(amx_cstr_, &amx_length_)==AMX_ERR_NONE &&              \
-          ((result) = (void*)alloca((amx_length_ + 1) * sizeof(*(result)))) != NULL) \
+          ((result) = (char*)alloca((amx_length_ + 1) * sizeof(*(result)))) != NULL) \
         amx_GetString((char*)(result), amx_cstr_, sizeof(*(result))>1, amx_length_ + 1); \
       else (result) = NULL;                                                 \
     } while (0)

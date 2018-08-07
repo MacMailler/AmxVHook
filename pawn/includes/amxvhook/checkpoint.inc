@@ -3,7 +3,7 @@
 #endif
 #define __checkpoint_inc__
 
-native createCP(type, p1[@Vector3], p2[@Vector3]={0.0,...}, Float:radius = 2.0, color = 0xFFFFFFFF);
+native createCP(type, p1[@Vector3], p2[@Vector3]={0.0,...}, Float:radius = 2.0, color = 0xFFFFFFFF, reserved = 0);
 native setCPScale(checkpoint, Float:scale);
 native setCPCylinderHeight(checkpoint, Float:nearHeight, Float:farHeight, Float:radius);
 native setCPColor(checkpoint, color = 0xFFFFFFFF);
