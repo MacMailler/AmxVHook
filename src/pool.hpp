@@ -4,19 +4,21 @@
 namespace AmxVHook {
 	struct Mod {
 		AMX * amx;
-		boost::filesystem::path path;
+		Fs::path path;
 	};
 
-	class Pool : boost::noncopyable {
+	class Pool : NonCopy {
 	private:
 		std::unordered_map<std::string, Mod> pool;
 		std::list<AMX_NATIVE_INFO *> natives;
-		boost::filesystem::path location;
+		Fs::path location;
 
-		cell loadAmx(AMX * amx, boost::filesystem::path & path);
+		cell loadAmx(AMX * amx, Fs::path & path);
+		void handleExecError(AMX * amx, int err);
 
 	public:
 		Pool();
+		Pool(const std::string & dir);
 		~Pool();
 		
 		void make();
@@ -24,22 +26,24 @@ namespace AmxVHook {
 		void remake();
 
 		std::unordered_map<std::string, Mod>::iterator find(std::string & name);
+		std::unordered_map<std::string, Mod>::iterator find(AMX * amx);
+
 		bool contains(std::string & name);
 		size_t size();
 
-		cell loadMod(boost::filesystem::path & path);
+		cell loadMod(Fs::path & path);
 		bool unloadMod(std::string & name);
 		bool reloadMod(std::string & name);
 
-		void setLocation(boost::filesystem::path & dir);
+		void setLocation(Fs::path & dir);
 		void setNatives(std::list<AMX_NATIVE_INFO *> n);
 
-		boost::filesystem::path getLocation();
+		Fs::path getLocation();
 
-		cell exec(AMX * amx, const std::string & funcname, std::stack<boost::variant<cell, std::string>> * params = nullptr);
-		void execAll(const std::string & funcname, std::stack<boost::variant<cell, std::string>> * params = nullptr);
+		cell exec(AMX * amx, const std::string & funcname, std::stack<std::variant<cell, std::string>> * params = nullptr);
+		void execAll(const std::string & funcname, std::stack<std::variant<cell, std::string>> * params = nullptr);
 
-		void onModInputText(char * text);
-		void onModInputCommand(char * cmd, cell params);
+		void onModInputText(const char * text);
+		void onModInputCommand(const std::string & cmd, cell params);
 	};
 };

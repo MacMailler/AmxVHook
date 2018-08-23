@@ -2,7 +2,7 @@
 
 namespace AmxVHook {
 
-	extern boost::shared_ptr<Pool> gPool;
+	extern std::shared_ptr<Pool> gPool;
 
 	namespace Keyboard {
 		struct keyS {
@@ -12,7 +12,7 @@ namespace AmxVHook {
 			BOOL isUpNow;
 		} keyStates[KEYS_SIZE];
 		
-		std::vector<std::string> params;
+		std::vector<std::string> tokens;
 		bool keyboardDisplayed = false;
 
 		void handler(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, BOOL isWithAlt, BOOL wasDownBefore, BOOL isUpNow) {
@@ -77,43 +77,42 @@ namespace AmxVHook {
 				else if (status == 1) {
 					char *buf = GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT();
 
-					params.clear();
-					boost::split(params, buf, boost::is_any_of(" "));
+					tokens.clear();
+					String::tokenize(buf, tokens);
 
-					if (params[0].front() == '!') {
-						if (!params[0].compare("!r") && params.size() > 1) {
-							if (!params[1].compare("all")) {
+					if (tokens[0].front() == '!') {
+						if (!tokens[0].compare("!r") && tokens.size() > 1) {
+							if (!tokens[1].compare("all")) {
 								gPool->remake();
 								Funcs::showSubtitle("~g~AmxVHook:~w~ all mods reloaded!", 4000, TRUE);
 							}
 							else {
 								char temp[64];
-								for (int i = 1; i < params.size(); i++)
-									if (!params[i].empty()) {
-										if (gPool->reloadMod(params[i])) {
-											sprintf_s(temp, "~g~AmxVHook: ~w~`~b~%s~w~` reloaded!", params[i].c_str());
+								for (int i = 1; i < tokens.size(); i++)
+									if (!tokens[i].empty()) {
+										if (gPool->reloadMod(tokens[i])) {
+											sprintf_s(temp, "~g~AmxVHook: ~w~`~b~%s~w~` reloaded!", tokens[i].c_str());
 											Funcs::showSubtitle(std::string(temp), 4000, TRUE);
 										}
 										else {
-											sprintf_s(temp, "~g~AmxVHook:~w~`~b~%s~w~` ~r~NOT ~w~found!", params[i].c_str());
+											sprintf_s(temp, "~g~AmxVHook:~w~`~b~%s~w~` ~r~NOT ~w~found!", tokens[i].c_str());
 											Funcs::showSubtitle(std::string(temp), 4000, TRUE);
 										}
 									}
 							}
 						}
-						else if (!params[0].compare("!l") && params.size() > 1) {
-							for (int i = 1; i < params.size(); i++)
-								if (!params[i].empty())
-									gPool->loadMod(boost::filesystem::path(gPool->getLocation().string()+ "\\" + params[i] + ".amx"));
+						else if (!tokens[0].compare("!l") && tokens.size() > 1) {
+							for (int i = 1; i < tokens.size(); i++)
+								if (!tokens[i].empty())
+									gPool->loadMod(Fs::path(gPool->getLocation().string()+ "\\" + tokens[i] + ".amx"));
 						}
 						else {
-							gPool->onModInputCommand((char *)params[0].c_str(), static_cast<cell>(params.size()) - 1);
+							gPool->onModInputCommand(tokens[0], static_cast<cell>(tokens.size()) - 1);
 						}
 					}
 					else {
 						gPool->onModInputText(buf);
 					}
-
 					keyboardDisplayed = false;
 				}
 				else if (status == 2) {
@@ -126,25 +125,32 @@ namespace AmxVHook {
 			}
 		}
 
-		int getCommandParam(int id) {
-			if (0 > id || id > params.size() - 1)
+		int getCmdParamInt(int index) {
+			if (0 > index || index > tokens.size() - 1)
 				return NULL;
-			
-			return std::stoi(params[id]);
+
+			return std::stoi(tokens[index]);
 		}
 
-		float getCommandParamF(int id) {
-			if (0 > id || id > params.size() - 1)
+		int64_t getCmdParamHex(int index) {
+			if (0 > index || index > tokens.size() - 1)
 				return NULL;
 
-			return std::stof(params[id]);
+			return std::strtoll(tokens[index].data(), NULL, 16);
 		}
 
-		std::string getCommandParamS(int id) {
-			if (0 > id || id > params.size() - 1)
+		float getCmdParamFloat(int index) {
+			if (0 > index || index > tokens.size() - 1)
 				return NULL;
 
-			return params[id];
+			return std::stof(tokens[index]);
+		}
+
+		std::string getCmdParam(int index) {
+			if (0 > index || index > tokens.size() - 1)
+				return std::string("");
+
+			return tokens[index];
 		}
 	};
 };

@@ -211,7 +211,7 @@ static size_t fgets_cell(FILE *fp,cell *string,size_t max,int utf8mode)
         if (--follow==0) {
           /* encoding a character in more bytes than is strictly needed,
            * is not really valid UTF-8; we are strict here to increase
-           * the chance of heuristic dectection of non-UTF-8 text
+           * the chance of heuristic detection of non-UTF-8 text
            * (JAVA writes zero bytes as a 2-byte code UTF-8, which is invalid)
            */
           if (string[index]<lowmark)
@@ -409,7 +409,7 @@ static char *completename(TCHAR *dest, TCHAR *src, size_t size)
     } /* if */
     assert(_tcslen(dest)<size);
 
-    /* for DOS/Windows and Unix/Linux, skip everyting up to a comma, because
+    /* for DOS/Windows and Unix/Linux, skip everything up to a comma, because
      * this is used to indicate a protocol (e.g. file://C:/myfile.txt)
      */
     #if DIRSEP_CHAR!=':'
@@ -635,8 +635,7 @@ static cell AMX_NATIVE_CALL n_fputchar(AMX *amx, const cell *params)
     assert(result==0 || result==1);
     return result;
   } /* if */
-  fputc((int)params[2],f);
-  return 1;
+  return (fputc((int)params[2],f)!=EOF);
 }
 
 /* fgetchar(File: handle, bool: utf8 = true) */
@@ -723,7 +722,7 @@ err_native:
   for (count=0; count<max; count++) {
     ucell v;
     if (fread(&v,sizeof(cell),1,f)!=1)
-      break;          /* write error */
+      break;          /* read error */
     *(ucell *)(cptr++)=*aligncell(&v);
   } /* for */
   return count;
@@ -1395,10 +1394,7 @@ err_native:
 }
 
 
-#if defined __cplusplus
-  extern "C"
-#endif
-AMX_NATIVE_INFO file_Natives[] = {
+static const AMX_NATIVE_INFO natives[] = {
   { "fopen",        n_fopen },
   { "fclose",       n_fclose },
   { "fwrite",       n_fwrite },
@@ -1429,11 +1425,14 @@ AMX_NATIVE_INFO file_Natives[] = {
 
 int AMXEXPORT AMXAPI amx_FileInit(AMX *amx)
 {
-  return amx_Register(amx, file_Natives, -1);
+  if (!ptrarray_acquire(&filepool))
+    return AMX_ERR_MEMORY;
+  return amx_Register(amx,natives,-1);
 }
 
 int AMXEXPORT AMXAPI amx_FileCleanup(AMX *amx)
 {
   UNUSED_PARAM(amx);
+  ptrarray_release(&filepool);
   return AMX_ERR_NONE;
 }

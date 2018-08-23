@@ -2,22 +2,26 @@
 
 namespace AmxVHook {
 
-	extern boost::shared_ptr<Debug> gDebug;
-	extern boost::shared_ptr<Pool> gPool;
-	extern boost::shared_ptr<Timer::Pool> gTimer;
+	extern std::shared_ptr<Log> gLog;
+	extern std::shared_ptr<Pool> gPool;
+	extern std::shared_ptr<Timer::Pool> gTimer;
 
 	namespace Core {
+
+		const std::string pluginDir = ".\\AmxVHook";
+		const std::string modsDir = pluginDir + "\\Mods";
+		const std::string logFile = pluginDir + "\\amxvhook.log";
 
 		ucell lastFrames = 0;
 		bool versionVisible = true;
 
 		void init() {
-			if (!boost::filesystem::exists(".\\AmxVHook"))
-				boost::filesystem::create_directory(".\\AmxVHook");
-
-			gDebug = boost::make_shared<Debug>(".\\AmxVHook\\amxvhook.log");
-			gPool = boost::make_shared<Pool>();
-			gTimer = boost::make_shared<Timer::Pool>();
+			if (!Fs::exists(pluginDir))
+				Fs::create_directory(pluginDir);
+	
+			gLog = std::make_shared<Log>(logFile);
+			gPool = std::make_shared<Pool>(modsDir);
+			gTimer = std::make_shared<Timer::Pool>();
 
 			gPool->setNatives({
 				Natives::Core::list,
@@ -66,7 +70,7 @@ namespace AmxVHook {
 		void cleanup() {
 			gPool->clear();
 			gPool.reset();
-			gDebug.reset();
+			gLog.reset();
 			gTimer.reset();
 		}
 		

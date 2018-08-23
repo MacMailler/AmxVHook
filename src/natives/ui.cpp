@@ -53,15 +53,13 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(isHudComponentActive) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return ::UI::IS_HUD_COMPONENT_ACTIVE(params[1]);
 			}
 
 			MOD_NATIVE(setHudVisible) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::DISPLAY_HUD((BOOL)params[1]);
 
@@ -69,8 +67,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setRadarVisible) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::DISPLAY_RADAR((BOOL)params[1]);
 
@@ -78,8 +75,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setRadarZoom) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				if (0 > params[1] || params[1] > 200)
 					return 0;
@@ -96,13 +92,11 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getScreenSize) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
-				cell * w = Utility::getAddrFromParam(amx, params[1]),
-						* h = Utility::getAddrFromParam(amx, params[2]);
-
-				if (w == nullptr || h == nullptr)
+				cell *w, *h;
+				if (amx_GetAddr(amx, params[1], &w) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &h) != AMX_ERR_NONE)
 					return 0;
 
 				GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(w, h);
@@ -111,8 +105,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(getScreenAspectRatio) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				float ratio = GRAPHICS::_GET_SCREEN_ASPECT_RATIO(params[1]);
 
@@ -120,8 +113,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getLabelText) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				char * out = ::UI::_GET_LABEL_TEXT((char *)String::get(amx, params[1]).c_str());
 				String::set(amx, params[2], out, params[3]);
@@ -130,15 +122,13 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(showNotify) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				return Funcs::showNotify(String::get(amx, params[1]), (BOOL)params[2], (BOOL)params[3]);
 			}
 
 			MOD_NATIVE(showSubtitle) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				Funcs::showSubtitle(String::get(amx, params[1]), params[2], params[3]);
 
@@ -146,8 +136,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(showHelpMessage) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				::UI::_SET_TEXT_COMPONENT_FORMAT("STRING");
 				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
@@ -157,8 +146,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(showLoadingSpinner) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				::UI::_0xABA17D7CE615ADBF("STRING");
 				::UI::_ADD_TEXT_COMPONENT_STRING((char *)String::get(amx, params[1]).c_str());
@@ -168,8 +156,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(showHudComponentThisFrame) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::SHOW_HUD_COMPONENT_THIS_FRAME(params[1]);
 
@@ -177,8 +164,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(showHud) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::DISPLAY_HUD(params[1]);
 
@@ -186,8 +172,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(showRadar) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::DISPLAY_RADAR(params[1]);
 
@@ -195,8 +180,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(showCash) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::DISPLAY_CASH(params[1]);
 
@@ -204,8 +188,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(showAreaName) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::DISPLAY_AREA_NAME(params[1]);
 
@@ -223,8 +206,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(hideHudComponentThisFrame) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::HIDE_HUD_COMPONENT_THIS_FRAME(params[1]);
 
@@ -232,8 +214,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(removeNotify) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::_REMOVE_NOTIFICATION(params[1]);
 
@@ -241,8 +222,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(activateFrontendMenu) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				::UI::ACTIVATE_FRONTEND_MENU(params[1], params[2], params[3]);
 
@@ -250,8 +230,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(restartFrontendMenu) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::RESTART_FRONTEND_MENU(params[1], -1);
 
@@ -259,8 +238,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getCurrentFrontendMenu) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return ::UI::_0x2309595AD6145265();
 			}

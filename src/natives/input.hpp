@@ -17,10 +17,11 @@ namespace AmxVHook {
 			MOD_NATIVE(isKeyDown);
 			MOD_NATIVE(isKeyJustUp);
 			MOD_NATIVE(resetKeyState);
-			MOD_NATIVE(getCommandParams);
-			MOD_NATIVE(getCommandParamsInt);
-			MOD_NATIVE(getCommandParamsHash);
-			MOD_NATIVE(getCommandParamsFloat);
+			MOD_NATIVE(getCmdParam);
+			MOD_NATIVE(getCmdParamInt);
+			MOD_NATIVE(getCmdParamHex);
+			MOD_NATIVE(getCmdParamHash);
+			MOD_NATIVE(getCmdParamFloat);
 			MOD_NATIVE(displayOnScreeKeyboard);
 			MOD_NATIVE(disableControlAction);
 			MOD_NATIVE(enableControlAction);

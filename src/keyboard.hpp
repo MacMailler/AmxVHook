@@ -18,8 +18,9 @@ namespace AmxVHook {
 		void displayOnScreeKeyboard(char * windowTitle, char * defaultText);
 		void displayOnScreenKeyboardProcess();
 
-		int getCommandParam(int id);
-		float getCommandParamF(int id);
-		std::string getCommandParamS(int id);
+		std::string getCmdParam(int index);
+		int getCmdParamInt(int index);
+		int64_t getCmdParamHex(int index);
+		float getCmdParamFloat(int index);
 	};
 };

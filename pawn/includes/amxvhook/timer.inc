@@ -3,7 +3,7 @@
 #endif
 #define __timer_inc__
 
-#define Timer%0(%1) forward%0(%1); public%0(%1)
+#define timer%0(%1) forward%0(%1); public%0(%1)
 
 #define TIMER_CODE_DROP (0)
 #define TIMER_CODE_CONT (1)

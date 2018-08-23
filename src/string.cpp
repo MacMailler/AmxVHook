@@ -2,6 +2,22 @@
 
 namespace AmxVHook {
 	namespace String {
+		void tokenize(const std::string & str, std::vector<std::string> & tokens, const std::string & delims) {
+			size_t pos, lastPos = 0, length = str.length();
+
+			while (lastPos < length + 1) {
+				pos = str.find_first_of(delims, lastPos);
+				if (pos == std::string::npos)
+					pos = length;
+
+				if (pos != lastPos)
+					tokens.emplace_back(str.data() + lastPos, pos - lastPos);
+
+				lastPos = pos + 1;
+			}
+		}
+
+
 		void format(AMX * amx, const cell * params, cell * f, std::string & out) {
 			cell index = 0, *ptr = nullptr;
 			char buff[32];
@@ -12,8 +28,7 @@ namespace AmxVHook {
 					switch (*(++f)) {
 					case 'i':
 					case 'd': {
-						ptr = Utility::getAddrFromParam(amx, params[index++]);
-						if (ptr != nullptr) {
+						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 							#if PAWN_CELL_SIZE == 64
 								sprintf_s(buff, "%lld", *ptr);
 							#else
@@ -29,8 +44,7 @@ namespace AmxVHook {
 					break;
 
 					case 'c': {
-						ptr = Utility::getAddrFromParam(amx, params[index++]);
-						if (ptr != nullptr) {
+						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 							out.push_back(*ptr);
 						}
 						else {
@@ -42,8 +56,7 @@ namespace AmxVHook {
 
 					case 'x':
 					case 'X': {
-						ptr = Utility::getAddrFromParam(amx, params[index++]);
-						if (ptr != nullptr) {
+						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 							#if PAWN_CELL_SIZE == 64
 								sprintf_s(buff, *f == 'x' ? "%llx" : "%llX", *ptr);
 							#else
@@ -60,8 +73,7 @@ namespace AmxVHook {
 
 					#ifdef FLOATPOINT
 					case 'f': {
-						ptr = Utility::getAddrFromParam(amx, params[index++]);
-						if (ptr != nullptr) {
+						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 							sprintf_s(buff, "%f", amx_ctof(*ptr));
 							out.append(buff);
 						}
@@ -73,12 +85,15 @@ namespace AmxVHook {
 					break;
 
 					case '.': {
-						char fstr[] = { '%', '.', (char)*(++f), 'f', '\0' };
+						std::string fstr("%.");
+						while (*(++f) >= '0' && '9' >= *f)
+							fstr.push_back((char)*f);
 
-						if (*(++f) == 'f') {
-							ptr = Utility::getAddrFromParam(amx, params[index++]);
-							if (ptr != nullptr) {
-								sprintf(buff, fstr, amx_ctof(*ptr));
+						fstr.push_back((char)*f);
+
+						if (*f == 'f') {
+							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
+								sprintf(buff, fstr.c_str(), amx_ctof(*ptr));
 								out.append(buff);
 							}
 							else {
@@ -86,7 +101,7 @@ namespace AmxVHook {
 							}
 						}
 						else {
-							out.append({ '%', '.', fstr[2] });
+							out.append(fstr);
 						}
 						f++;
 					}
@@ -94,8 +109,7 @@ namespace AmxVHook {
 					#endif
 
 					case 'b': {
-						ptr = Utility::getAddrFromParam(amx, params[index++]);
-						if (ptr != nullptr) {
+						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 							out.append(*ptr == 0 ? "false" : "true");
 						}
 						else {
@@ -106,12 +120,9 @@ namespace AmxVHook {
 					break;
 
 					case 's': {
-						ptr = Utility::getAddrFromParam(amx, params[index++]);
-						if (ptr != nullptr) {
-							while (*ptr != '\0') {
-								out.push_back(*ptr);
-								ptr++;
-							}
+						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
+							while (*ptr != '\0')
+								out.push_back(*(ptr++));
 						}
 						else {
 							out.append("(null)");
@@ -128,8 +139,7 @@ namespace AmxVHook {
 						switch (*f) {
 						case 'i':
 						case 'd': {
-							ptr = Utility::getAddrFromParam(amx, params[index++]);
-							if (ptr != nullptr) {
+							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 								#if PAWN_CELL_SIZE == 64
 									fstr.append({ 'l', 'l', (char)*f });
 								#else
@@ -144,11 +154,46 @@ namespace AmxVHook {
 							f++;
 						}
 						break;
+						
+						case 'x':
+						case 'X': {
+							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
+								#if PAWN_CELL_SIZE == 64
+									fstr.append({ 'l', 'l', (char)*f });
+								#else
+									fstr.push_back((char)*f);
+								#endif
+								sprintf_s(buff, fstr.c_str(), *ptr);
+								out.append(buff);
+							}
+							else {
+								out.append("(null)");
+							}
+							f++;
+						}
+						break;
+
+						case 's':
+						case 'S': {
+							if (fstr.length() > 2) {
+								if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
+									for (int len = std::stoi(&fstr[2]), i = 0; i < len && *ptr != '\0'; i++)
+											out.push_back((char)*(ptr++));
+								}
+								else {
+									out.append("(null)");
+								}
+							}
+							else {
+								out.append(fstr);
+							}
+							f++;
+						}
+						break;
 
 						#ifdef FLOATPOINT
 						case 'f': {
-							ptr = Utility::getAddrFromParam(amx, params[index++]);
-							if (ptr != nullptr) {
+							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 								fstr.push_back((char)*f);
 								sprintf(buff, fstr.c_str(), amx_ctof(*ptr));
 								out.append(buff);
@@ -167,8 +212,7 @@ namespace AmxVHook {
 								fstr.push_back((char)*f);
 
 							if (*f == 'f') {
-								ptr = Utility::getAddrFromParam(amx, params[index++]);
-								if (ptr != nullptr) {
+								if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 									fstr.push_back((char)*f);
 									sprintf(buff, fstr.c_str(), amx_ctof(*ptr));
 									out.append(buff);
@@ -185,26 +229,6 @@ namespace AmxVHook {
 						}
 						break;
 						#endif
-
-						case 'x':
-						case 'X': {
-							ptr = Utility::getAddrFromParam(amx, params[index++]);
-							if (ptr != nullptr) {
-								#if PAWN_CELL_SIZE == 64
-									fstr.append({'l', 'l', (char)*f});
-								#else
-									fstr.push_back((char)*f);
-								#endif
-
-								sprintf_s(buff, fstr.c_str(), *ptr);
-								out.append(buff);
-							}
-							else {
-								out.append("(null)");
-							}
-							f++;
-						}
-						break;
 
 						default:
 							out.append(fstr);
@@ -241,7 +265,7 @@ namespace AmxVHook {
 			return std::string("");
 		}
 
-		bool is_dec(std::string &data) {
+		bool is_dec(std::string & data) {
 			for (int i = 0; i < data.size(); i++) {
 				if ((i == 0) && (data[i] == '-'))
 					continue;
@@ -252,7 +276,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool is_hex(std::string &data) {
+		bool is_hex(std::string & data) {
 			for (int i = 0; i < data.size(); i++) {
 				if (!isxdigit(data[i]))
 					return false;

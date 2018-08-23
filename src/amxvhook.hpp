@@ -8,14 +8,16 @@
 #include <queue>
 #include <stack>
 #include <string>
+#include <map>
 #include <unordered_map>
-
-#include <boost\variant.hpp>
-#include <boost\filesystem.hpp>
-#include <boost\thread\thread.hpp>
-#include <boost\thread\mutex.hpp>
-#include <boost\algorithm\string.hpp>
-#include <boost\make_shared.hpp>
+#include <filesystem>
+#include <thread>
+#include <memory>
+#include <fstream>
+#include <variant>
+#include <mutex>
+#include <thread>
+#include <assert.h>
 
 #include <sdk\main.h>
 #include <sdk\types.h>
@@ -24,10 +26,17 @@
 #include <sdk\nativeCaller.h>
 
 #include "amx\amx.h"
+#if defined AMXDBG
+#include "amx\amxdbg.h"
+#endif
 
+namespace AmxVHook { namespace Fs = std::experimental::filesystem; };
+
+#include "noncopy.hpp"
+#include "amxaux.hpp"
 #include "pool.hpp"
 #include "core.hpp"
-#include "debug.hpp"
+#include "log.hpp"
 #include "funcs.hpp"
 #include "keyboard.hpp"
 #include "string.hpp"

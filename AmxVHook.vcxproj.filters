@@ -42,9 +42,6 @@
     <ClInclude Include="src\core.hpp">
       <Filter>Headers Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\debug.hpp">
-      <Filter>Headers Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\funcs.hpp">
       <Filter>Headers Files</Filter>
     </ClInclude>
@@ -129,6 +126,21 @@
     <ClInclude Include="src\amx\amx_ptrarray.h">
       <Filter>Headers Files\amx</Filter>
     </ClInclude>
+    <ClInclude Include="src\id.hpp">
+      <Filter>Headers Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\log.hpp">
+      <Filter>Headers Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amxaux.hpp">
+      <Filter>Headers Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amx\amxdbg.h">
+      <Filter>Headers Files\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\noncopy.hpp">
+      <Filter>Headers Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\amx\amx.c">
@@ -148,9 +160,6 @@
     </ClCompile>
     <ClCompile Include="src\amx\float.c">
       <Filter>Source Files\amx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\debug.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\funcs.cpp">
       <Filter>Source Files</Filter>
@@ -232,6 +241,18 @@
     </ClCompile>
     <ClCompile Include="src\amx\minini\dev\minIni.c">
       <Filter>Source Files\amx\minini</Filter>
+    </ClCompile>
+    <ClCompile Include="src\id.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amxaux.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amx\amxdbg.c">
+      <Filter>Source Files\amx</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

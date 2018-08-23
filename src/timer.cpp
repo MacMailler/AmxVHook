@@ -2,12 +2,12 @@
 
 namespace AmxVHook {
 
-	extern boost::shared_ptr<AmxVHook::Pool> gPool;
-	boost::shared_ptr<Timer::Pool> gTimer;
+	extern std::shared_ptr<AmxVHook::Pool> gPool;
+	std::shared_ptr<Timer::Pool> gTimer;
 
 	namespace Timer {
 		Pool::Pool() {
-			currTimerId = minTimerId;
+			ident.reset();
 			pool.clear();
 		}
 
@@ -15,13 +15,12 @@ namespace AmxVHook {
 			clear();
 		}
 
-		cell Pool::add(boost::shared_ptr<Timer> & timer) {
-			if (!isValidTimer(currTimerId))
-				return invalidTimerId;
+		cell Pool::add(std::shared_ptr<Timer> & timer) {
+			cell id = ident.get();
 
-			pool.insert({ currTimerId, std::move(timer) });
+			pool.insert({ id, std::move(timer) });
 
-			return currTimerId++;
+			return id;
 		}
 
 		bool Pool::drop(cell id) {
@@ -30,6 +29,7 @@ namespace AmxVHook {
 
 			pool[id].reset();
 			pool.erase(id);
+			ident.remove(id);
 
 			return true;
 		}
@@ -51,9 +51,6 @@ namespace AmxVHook {
 		}
 
 		bool Pool::contains(cell id) {
-			if (!isValidTimer(id))
-				return false;
-
 			return pool.find(id) == pool.end();
 		}
 
@@ -62,16 +59,20 @@ namespace AmxVHook {
 				i.second.reset();
 				pool.erase(i.first);
 			}
+
+			ident.reset();
 		}
 
 		void Pool::clearByAmx(AMX * amx) {
 			for (const auto& i : pool) {
-				if (i.second->amx == amx)
+				if (i.second->amx == amx) {
 					pool.erase(i.first);
+					ident.remove(i.first);
+				}
 			}
 		}
 
-		bool Pool::setData(cell id, std::stack<boost::variant<cell, std::string>> & params) {
+		bool Pool::setData(cell id, std::stack<std::variant<cell, std::string>> & params) {
 			if (!contains(id))
 				return false;
 			

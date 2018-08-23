@@ -66,30 +66,29 @@ namespace AmxVHook {
 			};
 
 			MOD_NATIVE(createCam) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return CAM::CREATE_CAMERA(params[1], FALSE);
 			}
 
 			MOD_NATIVE(createCamEx) {
-				if (!arguments(4))
-					return 0;
+				checkargs(4);
 
-				float coords[3], rot[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[3], rot, 3))
+				cell *coords, *rot;
+				if (amx_GetAddr(amx, params[2], &coords) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[3], &rot) != AMX_ERR_NONE)
 					return 0;
 
 				return CAM::CREATE_CAMERA_WITH_PARAMS(
-					params[1], coords[0], coords[1], coords[2], rot[0], rot[1], rot[2],
+					params[1], 
+					amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]),
+					amx_ctof(rot[0]), amx_ctof(rot[1]), amx_ctof(rot[2]),
 					params[4], FALSE, 2
 				);
 			}
 
 			MOD_NATIVE(destroyCam) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::DESTROY_CAM((::Cam)params[1], TRUE);
 
@@ -103,42 +102,36 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(isCamExist) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return CAM::DOES_CAM_EXIST((::Cam)params[1]);
 			}
 
 			MOD_NATIVE(isCamActive) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return CAM::IS_CAM_ACTIVE((::Cam)params[1]);
 			}
 
 			MOD_NATIVE(isCamInterpolating) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return CAM::IS_CAM_INTERPOLATING((::Cam)params[1]);
 			}
 
 			MOD_NATIVE(isCamShaking) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return CAM::IS_CAM_SHAKING((::Cam)params[1]);
 			}
 
 			MOD_NATIVE(isCamPlayingAnim) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				return CAM::IS_CAM_PLAYING_ANIM((::Cam)params[1], (Any *)String::get(amx, params[2]).c_str(), (Any *)String::get(amx, params[3]).c_str());
 			}
 			MOD_NATIVE(isCamRendering) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return CAM::IS_CAM_RENDERING((::Cam)params[1]);
 			}
@@ -160,23 +153,20 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getCamPos) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				Vector3 coords = CAM::GET_CAM_COORD((::Cam)params[1]);
-				return Utility::setVector3ToParam(amx, params[2], coords);
+				return Aux::setVector3(amx, params[2], coords);
 			}
 			MOD_NATIVE(getCamRot) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				Vector3 coords = CAM::GET_CAM_ROT((::Cam)params[1], 2);
-				return Utility::setVector3ToParam(amx, params[2], coords);
+				return Aux::setVector3(amx, params[2], coords);
 			}
 
 			MOD_NATIVE(getCamFov) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				float fov = CAM::GET_CAM_FOV((::Cam)params[1]);
 
@@ -184,8 +174,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getCamNearClip) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				float clip = CAM::GET_CAM_NEAR_CLIP((::Cam)params[1]);
 
@@ -193,8 +182,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getCamFarClip) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				float clip = CAM::GET_CAM_FAR_CLIP((::Cam)params[1]);
 
@@ -202,8 +190,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getCamFarDof) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				float dof = CAM::GET_CAM_FAR_DOF((::Cam)params[1]);
 
@@ -215,21 +202,19 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getGameplayCamPos) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				Vector3 coords = CAM::GET_GAMEPLAY_CAM_COORD();
 
-				return Utility::setVector3ToParam(amx, params[1], coords);
+				return Aux::setVector3(amx, params[1], coords);
 			}
 
 			MOD_NATIVE(getGameplayCamRot) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(params[2]);
 
-				return Utility::setVector3ToParam(amx, params[1], rot);
+				return Aux::setVector3(amx, params[1], rot);
 			}
 
 			MOD_NATIVE(getGameplayCamFov) {
@@ -243,8 +228,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamActive) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_ACTIVE((::Cam)params[1], params[2]);
 
@@ -252,8 +236,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamFov) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_FOV((::Cam)params[1], amx_ctof(params[2]));
 
@@ -261,34 +244,31 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamPos) {
-				if (!arguments(2))
+				checkargs(2);
+
+				cell *coords;
+				if (amx_GetAddr(amx, params[2], &coords) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
-					return 0;
-
-				CAM::SET_CAM_COORD((::Cam)params[1], coords[0], coords[1], coords[2]);
+				CAM::SET_CAM_COORD((::Cam)params[1], amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]));
 
 				return 1;
 			}
 
 			MOD_NATIVE(setCamRot) {
-				if (!arguments(2))
+				checkargs(2);
+
+				cell *rot;
+				if (amx_GetAddr(amx, params[2], &rot) != AMX_ERR_NONE)
 					return 0;
 
-				float rot[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[2], rot, 3))
-					return 0;
-
-				CAM::SET_CAM_ROT((::Cam)params[1], rot[0], rot[1], rot[2], 2);
+				CAM::SET_CAM_ROT((::Cam)params[1], amx_ctof(rot[0]), amx_ctof(rot[1]), amx_ctof(rot[2]), 2);
 
 				return 1;
 			}
 
 			MOD_NATIVE(setCamNearClip) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_NEAR_CLIP((::Cam)params[1], amx_ctof(params[2]));
 
@@ -296,8 +276,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamFarClip) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_FAR_CLIP((::Cam)params[1], amx_ctof(params[2]));
 
@@ -305,8 +284,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamMotionBlurStrength) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_MOTION_BLUR_STRENGTH((::Cam)params[1], amx_ctof(params[2]));
 
@@ -314,8 +292,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamNearDof) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_NEAR_DOF((::Cam)params[1], amx_ctof(params[2]));
 
@@ -323,8 +300,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamFarDof) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_FAR_DOF((::Cam)params[1], amx_ctof(params[2]));
 
@@ -332,8 +308,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamDofStrength) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_DOF_STRENGTH((::Cam)params[1], amx_ctof(params[2]));
 
@@ -341,8 +316,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamUseShallowDofMode) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_USE_SHALLOW_DOF_MODE((::Cam)params[1], amx_ctof(params[2]));
 
@@ -350,18 +324,17 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamParams) {
-				if (!arguments(4))
-					return 0;
+				checkargs(4);
 
-				float coords[3], rot[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[3], rot, 3))
+				cell *coords, *rot;
+				if (amx_GetAddr(amx, params[2], &coords) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[3], &rot) != AMX_ERR_NONE)
 					return 0;
 
 				CAM::SET_CAM_PARAMS(
 					(::Cam)params[1],
-					coords[0], coords[1], coords[2],
-					rot[0], rot[1], rot[2],
+					amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]),
+					amx_ctof(rot[0]), amx_ctof(rot[1]), amx_ctof(rot[2]),
 					amx_ctof(params[4]),
 					NULL, NULL, NULL, NULL
 				);
@@ -370,8 +343,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamShakeAmplitude) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SET_CAM_SHAKE_AMPLITUDE((::Cam)params[1], amx_ctof(params[2]));
 
@@ -379,8 +351,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setGameplayCamShakeAmplitude) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE(amx_ctof(params[1]));
 
@@ -388,8 +359,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCinematicCamShakeAmplitude) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::SET_CINEMATIC_CAM_SHAKE_AMPLITUDE(amx_ctof(params[1]));
 
@@ -397,8 +367,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setScreenFadeIn) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::DO_SCREEN_FADE_IN(params[1]);
 
@@ -406,8 +375,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setScreenFadeOut) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::DO_SCREEN_FADE_OUT(params[1]);
 
@@ -415,8 +383,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCinematicButtonActive) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::SET_CINEMATIC_BUTTON_ACTIVE(params[1]);
 
@@ -424,47 +391,43 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setCamPoint) {
-				if (!arguments(2))
+				checkargs(2);
+
+				cell *coords;
+				if (amx_GetAddr(amx, params[2], &coords) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3))
-					return 0;
-
-				CAM::POINT_CAM_AT_COORD((::Cam)params[1], coords[0], coords[1], coords[2]);
+				CAM::POINT_CAM_AT_COORD((::Cam)params[1], amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]));
 
 				return 1;
 			}
 
 			MOD_NATIVE(setCamPointAtEntity) {
-				if (!arguments(3))
+				checkargs(3);
+
+				cell *coords;
+				if (amx_GetAddr(amx, params[3], &coords) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[3], coords, 3))
-					return 0;
-
-				CAM::POINT_CAM_AT_ENTITY((::Cam)params[1], (::Entity)params[2], coords[0], coords[1], coords[2], TRUE);
+				CAM::POINT_CAM_AT_ENTITY((::Cam)params[1], (::Entity)params[2], amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]), TRUE);
 
 				return 1;
 			}
 
 			MOD_NATIVE(setCamPointAtPedBone) {
-				if (!arguments(4))
+				checkargs(4);
+
+				cell *coords;
+				if (amx_GetAddr(amx, params[4], &coords) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[4], coords, 3))
-					return 0;
-
-				CAM::POINT_CAM_AT_PED_BONE((::Cam)params[1], (::Entity)params[2], params[3], coords[0], coords[1], coords[2], TRUE);
+				CAM::POINT_CAM_AT_PED_BONE((::Cam)params[1], (::Entity)params[2], params[3], amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]), TRUE);
 
 				return 1;
 			}
 
 			MOD_NATIVE(shakeCam) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				CAM::SHAKE_CAM((::Cam)params[1], (char *)String::get(amx, params[2]).c_str(), amx_ctof(params[3]));
 
@@ -472,8 +435,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(shakeGameplayCam) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SHAKE_GAMEPLAY_CAM((char *)String::get(amx, params[1]).c_str(), amx_ctof(params[2]));
 
@@ -481,8 +443,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(shakeCinematicCam) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::SHAKE_CINEMATIC_CAM((char *)String::get(amx, params[1]).c_str(), amx_ctof(params[2]));
 
@@ -490,8 +451,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(stopCamShaking) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				CAM::STOP_CAM_SHAKING((::Cam)params[1], params[2]);
 
@@ -499,8 +459,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(stopGameplayCamShaking) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::STOP_GAMEPLAY_CAM_SHAKING(params[1]);
 
@@ -508,8 +467,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(stopCinematicCamShaking) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::STOP_CINEMATIC_CAM_SHAKING(params[1]);
 
@@ -517,8 +475,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(stopCamPointing) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::STOP_CAM_POINTING((::Cam)params[1]);
 
@@ -532,34 +489,31 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(attachCamToEntity) {
-				if (!arguments(4))
+				checkargs(4);
+
+				cell *offset;
+				if (amx_GetAddr(amx, params[3], &offset) != AMX_ERR_NONE)
 					return 0;
 
-				float offset[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[3], offset, 3))
-					return 0;
-
-				CAM::ATTACH_CAM_TO_ENTITY((::Cam)params[1], (::Entity)params[2], offset[0], offset[1], offset[2], params[4]);
+				CAM::ATTACH_CAM_TO_ENTITY((::Cam)params[1], (::Entity)params[2], amx_ctof(offset[0]), amx_ctof(offset[1]), amx_ctof(offset[2]), params[4]);
 
 				return 1;
 			}
 
 			MOD_NATIVE(attachCamToPedBone) {
-				if (!arguments(5))
+				checkargs(5);
+
+				cell *offset;
+				if (amx_GetAddr(amx, params[4], &offset) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[4], coords, 3))
-					return 0;
-
-				CAM::ATTACH_CAM_TO_PED_BONE((::Cam)params[1], (::Ped)params[2], params[3], coords[0], coords[1], coords[2], params[5]);
+				CAM::ATTACH_CAM_TO_PED_BONE((::Cam)params[1], (::Ped)params[2], params[3], amx_ctof(offset[0]), amx_ctof(offset[1]), amx_ctof(offset[2]), params[5]);
 
 				return 1;
 			}
 
 			MOD_NATIVE(detachCam) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				CAM::DETACH_CAM((::Cam)params[1]);
 

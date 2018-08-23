@@ -1,10 +1,6 @@
 #include "graphics.hpp"
 
 namespace AmxVHook {
-
-	extern boost::shared_ptr<Debug> gDebug;
-	extern boost::shared_ptr<Pool> gPool;
-
 	namespace Natives {
 		namespace Graphics {
 			AMX_NATIVE_INFO list[] = {
@@ -51,42 +47,39 @@ namespace AmxVHook {
 			};
 
 			MOD_NATIVE(createTexture) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
-				boost::filesystem::path path = boost::filesystem::system_complete(".\\AmxVHook\\Stuff\\" + String::get(amx, params[1]));
-				if (boost::filesystem::exists(path) && !boost::filesystem::is_directory(path))
+				Fs::path path = Fs::system_complete(".\\AmxVHook\\Stuff\\" + String::get(amx, params[1]));
+				if (Fs::exists(path) && !Fs::is_directory(path))
 					return ::createTexture(path.string().c_str());
 				
 				return -1;
 			}
 
 			MOD_NATIVE(drawTexture) {
-				if (!arguments(10))
-					return 0;
+				checkargs(10);
 
-				float size[2], center[2], pos[2], color[4];
-				if (!Utility::getFloatArrayFromParam(amx, params[5], size, 2) ||
-					!Utility::getFloatArrayFromParam(amx, params[6], center, 2) ||
-					!Utility::getFloatArrayFromParam(amx, params[7], pos, 2) ||
-					!Utility::getFloatArrayFromParam(amx, params[10], color, 4))
+				cell *size, *center, *pos, *color;
+				if (amx_GetAddr(amx, params[5], &size) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[6], &center) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[7], &pos) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[10], &color) != AMX_ERR_NONE)
 					return 0;
 
 				::drawTexture(
 					params[1], params[2], params[3], params[4],
-					size[0], size[1],
-					center[0], center[1],
-					pos[0], pos[1],
+					amx_ctof(size[0]), amx_ctof(size[1]),
+					amx_ctof(center[0]), amx_ctof(center[1]),
+					amx_ctof(pos[0]), amx_ctof(pos[1]),
 					amx_ctof(params[8]), amx_ctof(params[9]),
-					color[0], color[1], color[2], color[3]
+					amx_ctof(color[0]), amx_ctof(color[1]), amx_ctof(color[2]), amx_ctof(color[3])
 				);
 
 				return 1;
 			}
 
 			MOD_NATIVE(drawInt) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				Funcs::drawInt(params[1], amx_ctof(params[2]), amx_ctof(params[3]));
 
@@ -94,8 +87,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(drawFloat) {
-				if (!arguments(4))
-					return 0;
+				checkargs(4);
 
 				Funcs::drawFloat(amx_ctof(params[1]), params[4], amx_ctof(params[2]), amx_ctof(params[3]));
 
@@ -103,10 +95,9 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(drawString) {
-				if (!arguments(7))
-					return 0;
+				checkargs(7);
 
-				Utility::Color color(params[6]);
+				Color color(params[6]);
 
 				::UI::SET_TEXT_FONT(params[5]);
 				::UI::SET_TEXT_SCALE(amx_ctof(params[4]), amx_ctof(params[4]));
@@ -121,65 +112,74 @@ namespace AmxVHook {
 
 			MOD_NATIVE(drawText) {
 				::UI::_DRAW_TEXT(amx_ctof(params[1]), amx_ctof(params[2]));
+				
 				return 1;
 			}
 			
 			MOD_NATIVE(drawCounter) {
-				if (!arguments(4))
-					return 0;
+				checkargs(4);
 
 				::UI::_SET_TEXT_ENTRY("CM_ITEM_COUNT");
 				::UI::ADD_TEXT_COMPONENT_INTEGER(params[1]);
 				::UI::ADD_TEXT_COMPONENT_INTEGER(params[2]);
 				::UI::_DRAW_TEXT(amx_ctof(params[3]), amx_ctof(params[4]));
+				
 				return 1;
 			}
 
 			MOD_NATIVE(drawBox) {
-				if (!arguments(3))
+				checkargs(3);
+				
+				cell *p1, *p2;
+				if (amx_GetAddr(amx, params[1], &p1) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &p2) != AMX_ERR_NONE)
 					return 0;
 
-				float point1[3], point2[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], point1, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[2], point2, 3))
-					return 0;
-
-				Utility::Color color(params[3]);
-				GRAPHICS::DRAW_BOX(point1[0], point1[1], point1[2], point2[0], point2[1], point2[2], color.R, color.G, color.B, color.A);
+				Color color(params[3]);
+				
+				GRAPHICS::DRAW_BOX(
+					amx_ctof(p1[0]), amx_ctof(p1[1]), amx_ctof(p1[2]),
+					amx_ctof(p2[0]), amx_ctof(p2[1]), amx_ctof(p2[2]),
+					color.R, color.G, color.B, color.A
+				);
 
 				return 1;
 			}
 
 			MOD_NATIVE(drawLine) {
-				if (!arguments(3))
+				checkargs(3);
+
+				cell *p1, *p2;
+				if (amx_GetAddr(amx, params[1], &p1) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &p2) != AMX_ERR_NONE)
 					return 0;
 
-				float point1[3], point2[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], point1, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[2], point2, 3))
-					return 0;
-
-				Utility::Color color(params[3]);
-				GRAPHICS::DRAW_LINE(point1[0], point1[1], point1[2], point2[0], point2[1], point2[2], color.R, color.G, color.B, color.A);
+				Color color(params[3]);
+				
+				GRAPHICS::DRAW_LINE(
+					amx_ctof(p1[0]), amx_ctof(p1[1]), amx_ctof(p1[2]),
+					amx_ctof(p2[0]), amx_ctof(p2[1]), amx_ctof(p2[2]),
+					color.R, color.G, color.B, color.A
+				);
 
 				return 1;
 			}
 
 			MOD_NATIVE(drawPoly) {
-				if (!arguments(4))
+				checkargs(4);
+
+				cell *p1, *p2, *p3;
+				if (amx_GetAddr(amx, params[1], &p1) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &p2) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[3], &p3) != AMX_ERR_NONE)
 					return 0;
 
-				float point1[3], point2[3], point3[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], point1, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[2], point2, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[2], point3, 3))
-					return 0;
-
-				Utility::Color color(params[3]);
+				Color color(params[4]);
+				
 				GRAPHICS::DRAW_POLY(
-					point1[0], point1[1], point1[2],
-					point2[0], point2[1], point2[2],
-					point3[0], point3[1], point3[2],
+					amx_ctof(p1[0]), amx_ctof(p1[1]), amx_ctof(p1[2]),
+					amx_ctof(p2[0]), amx_ctof(p2[1]), amx_ctof(p2[2]),
+					amx_ctof(p3[0]), amx_ctof(p3[1]), amx_ctof(p3[2]),
 					color.R, color.G, color.B, color.A
 				);
 
@@ -187,34 +187,33 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(drawRect) {
-				if (!arguments(5))
-					return 0;
+				checkargs(5);
 
-				Utility::Color color(params[5]);
+				Color color(params[5]);
 				Funcs::drawRect(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), color.R, color.G, color.B, color.A);
 
 				return 1;
 			}
 
 			MOD_NATIVE(drawMarker) {
-				if (!arguments(9))
+				checkargs(9);
+					
+				cell *coords, *dir, *rot, *scale;
+				if (amx_GetAddr(amx, params[2], &coords) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[3], &dir) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[4], &rot) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[5], &scale) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3], dir[3], rot[3], scale[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[2], coords, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[3], dir, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[4], rot, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[5], scale, 3))
-					return 0;
 
-				Utility::Color color(params[6]);
+				Color color(params[6]);
 
 				GRAPHICS::DRAW_MARKER(
 					params[1],
-					coords[0], coords[1], coords[2], // x y z
-					dir[0], dir[1], dir[2], // dx dy dz
-					rot[0], rot[1], rot[2], // rx ry rz
-					scale[0], scale[1], scale[2], // sx sy sz
+					amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]), // x y z
+					amx_ctof(dir[0]), amx_ctof(dir[1]), amx_ctof(dir[2]), // dx dy dz
+					amx_ctof(rot[0]), amx_ctof(rot[1]), amx_ctof(rot[2]), // rx ry rz
+					amx_ctof(scale[0]), amx_ctof(scale[1]), amx_ctof(scale[2]), // sx sy sz
 					color.R, color.G, color.B, color.A, // r b g a
 					params[7], params[8], 2, FALSE, NULL, NULL, params[9]
 				);
@@ -223,10 +222,9 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(drawSprite) {
-				if (!arguments(8))
-					return 0;
+				checkargs(8);
 
-				Utility::Color color(params[8]);
+				Color color(params[8]);
 
 				GRAPHICS::DRAW_SPRITE(
 					(char *)String::get(amx, params[1]).c_str(),
@@ -241,19 +239,18 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(drawSpotLight) {
-				if (!arguments(8))
-					return 0;
+				checkargs(8);
 
-				float coords[3], dir[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[2], dir, 3))
+				cell *coords, *dir;
+				if (amx_GetAddr(amx, params[1], &coords) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &dir) != AMX_ERR_NONE)
 					return 0;
-
-				Utility::Color color(params[8]);
+					
+				Color color(params[8]);
 
 				GRAPHICS::DRAW_SPOT_LIGHT(
-					coords[0], coords[1], coords[2],
-					dir[0], dir[1], dir[2],
+					amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]),
+					amx_ctof(dir[0]), amx_ctof(dir[1]), amx_ctof(dir[2]),
 					color.R, color.G, color.B,
 					amx_ctof(params[3]), amx_ctof(params[4]),
 					amx_ctof(params[5]), amx_ctof(params[6]),
@@ -264,19 +261,18 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(drawSpotLightWithShadow) {
-				if (!arguments(9))
+				checkargs(9);
+
+				cell *coords, *dir;
+				if (amx_GetAddr(amx, params[1], &coords) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &dir) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3], dir[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[2], dir, 3))
-					return 0;
-
-				Utility::Color color(params[9]);
+				Color color(params[9]);
 
 				GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW(
-					coords[0], coords[1], coords[2],
-					dir[0], dir[1], dir[2],
+					amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]),
+					amx_ctof(dir[0]), amx_ctof(dir[1]), amx_ctof(dir[2]),
 					color.R, color.G, color.B,
 					amx_ctof(params[3]), amx_ctof(params[4]),
 					amx_ctof(params[5]), amx_ctof(params[6]),
@@ -287,17 +283,16 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(drawLightWithRange) {
-				if (!arguments(4))
+				checkargs(4);
+
+				cell *coords;
+				if (amx_GetAddr(amx, params[1], &coords) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3))
-					return 0;
-
-				Utility::Color color(params[4]);
+				Color color(params[4]);
 
 				GRAPHICS::DRAW_LIGHT_WITH_RANGE(
-					coords[0], coords[1], coords[2],
+					amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]),
 					color.R, color.G, color.B, amx_ctof(params[2]), amx_ctof(params[3])
 				);
 
@@ -305,17 +300,16 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(drawLightWithRangeAndShadow) {
-				if (!arguments(4))
+				checkargs(4);
+
+				cell *coords;
+				if (amx_GetAddr(amx, params[1], &coords) != AMX_ERR_NONE)
 					return 0;
 
-				float coords[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3))
-					return 0;
-
-				Utility::Color color(params[5]);
+				Color color(params[5]);
 
 				GRAPHICS::_DRAW_LIGHT_WITH_RANGE_WITH_SHADOW(
-					coords[0], coords[1], coords[2],
+					amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]),
 					color.R, color.G, color.B, amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4])
 				);
 
@@ -323,28 +317,25 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setTextDropShadow) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
-				Utility::Color color(params[2]);
+				Color color(params[2]);
 				::UI::SET_TEXT_DROPSHADOW(params[1], color.R, color.G, color.B, color.A);
 
 				return 1;
 			}
 			
 			MOD_NATIVE(setTextEdge) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
-				Utility::Color color(params[2]);
+				Color color(params[2]);
 				::UI::SET_TEXT_EDGE(params[1], color.R, color.G, color.B, color.A);
 
 				return 1;
 			}
 			
 			MOD_NATIVE(setTextWrap) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				::UI::SET_TEXT_WRAP(amx_ctof(params[1]), amx_ctof(params[2]));
 
@@ -352,18 +343,16 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setTextColor) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
-				Utility::Color color(params[1]);
+				Color color(params[1]);
 				::UI::SET_TEXT_COLOUR(color.R, color.G, color.B, color.A);
 
 				return 1;
 			}
 			
 			MOD_NATIVE(setTextCentre) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::SET_TEXT_CENTRE(params[1]);
 
@@ -371,8 +360,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(setTextFont) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::SET_TEXT_FONT(params[1]);
 
@@ -380,8 +368,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(setTextJustification) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::SET_TEXT_JUSTIFICATION(params[1]);
 
@@ -389,8 +376,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(setTextRightJustify) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::SET_TEXT_RIGHT_JUSTIFY(params[1]);
 
@@ -398,8 +384,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(setTextEntry) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::UI::_SET_TEXT_ENTRY((char *)String::get(amx, params[1]).c_str());
 
@@ -407,8 +392,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(setTextScale) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				::UI::SET_TEXT_SCALE(amx_ctof(params[1]), amx_ctof(params[2]));
 
@@ -416,8 +400,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setUILayer) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GRAPHICS::_0x61BB1D9B3A95D802(params[1]);
 
@@ -425,8 +408,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setDrawPos) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				GRAPHICS::_SET_SCREEN_DRAW_POSITION(amx_ctof(params[1]), amx_ctof(params[2]));
 
@@ -434,8 +416,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setDrawPosRatio) {
-				if (!arguments(4))
-					return 0;
+				checkargs(4);
 
 				GRAPHICS::_0xF5A2C681787E579D(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]));
 
@@ -449,8 +430,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(loadTextureDict) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT((char *)String::get(amx, params[1]).c_str(), TRUE);
 
@@ -458,15 +438,13 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(isTextureDictLoaded) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED((char *)String::get(amx, params[1]).c_str());
 			}
 			
 			MOD_NATIVE(unloadTextureDict) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GRAPHICS::SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED((char *)String::get(amx, params[1]).c_str());
 
@@ -474,12 +452,11 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(getTextureDictSize) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				Vector3 res = GRAPHICS::GET_TEXTURE_RESOLUTION((char *)String::get(amx, params[1]).c_str(), (char *)String::get(amx, params[2]).c_str());
 
-				return Utility::setVector3ToParam(amx, params[3], res);
+				return Aux::setVector3(amx, params[3], res);
 			}
 
 			MOD_NATIVE(addTextComponentStr) {

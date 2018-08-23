@@ -41,8 +41,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setWind) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GAMEPLAY::SET_WIND(amx_ctof(params[1]));
 
@@ -50,8 +49,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setWindSpeed) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GAMEPLAY::SET_WIND_SPEED(amx_ctof(params[1]));
 
@@ -59,8 +57,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setWindDirection) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GAMEPLAY::SET_WIND_DIRECTION(amx_ctof(params[1]));
 
@@ -78,8 +75,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setRainIntensity) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GAMEPLAY::_SET_RAIN_FX_INTENSITY(amx_ctof(params[1]));
 
@@ -92,8 +88,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPoliceRadarBlips) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				PLAYER::SET_POLICE_RADAR_BLIPS((BOOL)params[1]);
 
@@ -101,8 +96,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPoliceIgnorePlayer) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				PLAYER::SET_POLICE_IGNORE_PLAYER(PLAYER::PLAYER_ID(), (BOOL)params[1]);
 
@@ -110,8 +104,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setEveryoneIgnorePlayer) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				PLAYER::SET_EVERYONE_IGNORE_PLAYER(PLAYER::PLAYER_ID(), (BOOL)params[1]);
 
@@ -137,22 +130,19 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(isPrevWeather) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return GAMEPLAY::IS_PREV_WEATHER_TYPE((char *)String::get(amx, params[1]).c_str());
 			}
 
 			MOD_NATIVE(isNextWeather) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return GAMEPLAY::IS_NEXT_WEATHER_TYPE((char *)String::get(amx, params[1]).c_str());
 			}
 
 			MOD_NATIVE(setWeatherPersist) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GAMEPLAY::SET_WEATHER_TYPE_PERSIST((char *)String::get(amx, params[1]).c_str());
 
@@ -160,8 +150,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setWeatherNowPersist) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GAMEPLAY::SET_WEATHER_TYPE_NOW_PERSIST((char *)String::get(amx, params[1]).c_str());
 
@@ -169,8 +158,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setWeatherNow) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GAMEPLAY::SET_WEATHER_TYPE_NOW((char *)String::get(amx, params[1]).c_str());
 
@@ -178,8 +166,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setWeatherOverTime) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				GAMEPLAY::_SET_WEATHER_TYPE_OVER_TIME((char *)String::get(amx, params[1]).c_str(), amx_ctof(params[2]));
 
@@ -187,8 +174,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setWeatherTransition) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(params[1], params[2], amx_ctof(params[2]));
 
@@ -196,8 +182,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setOverrideWeather) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				GAMEPLAY::SET_OVERRIDE_WEATHER((char *)String::get(amx, params[1]).c_str());
 
@@ -223,14 +208,12 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getWeatherTransition) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 				
-				cell * sourceWeather = Utility::getAddrFromParam(amx, params[1]),
-					 * targetWeather = Utility::getAddrFromParam(amx, params[2]),
-					 * transitionTime = Utility::getAddrFromParam(amx, params[3]);
-
-				if (sourceWeather == nullptr || targetWeather == nullptr || transitionTime == nullptr)
+				cell *sourceWeather, *targetWeather, *transitionTime;
+				if (amx_GetAddr(amx, params[1], &sourceWeather) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &targetWeather) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[3], &transitionTime) != AMX_ERR_NONE)
 					return 0;
 				
 				float time;

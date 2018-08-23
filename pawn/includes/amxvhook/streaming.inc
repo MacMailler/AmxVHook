@@ -10,9 +10,9 @@ native isModelInRpf(modelHash);
 native isEntityFocus(entity);
 
 native setFocusEntity(entity);
-native setModelAsNoLongerNeeded(modelHash);
 native setVehiclePopulationBudget(budget);
 native setPedPopulationBudget(budget);
 native setInteriorActive(interiorid, bool:toggle);
 
-native requestModel(modelHash);
+native loadModel(modelHash);
+native unloadModel(modelHash);

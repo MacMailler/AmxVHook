@@ -44,13 +44,12 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getPlayerName) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
-				cell * dest = Utility::getAddrFromParam(amx, params[1]);
-				if (dest == nullptr)
+				cell *dest;
+				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
 					return 0;
-
+				
 				char * name = PLAYER::GET_PLAYER_NAME(PLAYER::PLAYER_ID());
 
 				amx_SetString(dest, name, NULL, NULL, params[2]);
@@ -67,8 +66,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(isPlayerTargettingEntity) {
-				if (arguments(1))
-					return 0;
+				checkargs(1);
 
 				return PLAYER::IS_PLAYER_TARGETTING_ENTITY(PLAYER::PLAYER_ID(), (::Entity)params[1]);
 			}
@@ -86,8 +84,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(isPlayerBusted) {
-				if (arguments(1))
-					return 0;
+				checkargs(1);
 
 				return PLAYER::IS_PLAYER_BEING_ARRESTED(PLAYER::PLAYER_ID(), params[1]);
 			}
@@ -97,8 +94,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPlayerSprint) {
-				if (arguments(1))
-					return 0;
+				checkargs(1);
 
 				PLAYER::SET_PLAYER_SPRINT(PLAYER::PLAYER_ID(), (BOOL)params[1]);
 
@@ -106,8 +102,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPlayerLockOn) {
-				if (arguments(1))
-					return 0;
+				checkargs(1);
 
 				PLAYER::SET_PLAYER_LOCKON(PLAYER::PLAYER_ID(), (BOOL)params[1]);
 
@@ -115,8 +110,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(reportPlayerCrime) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				PLAYER::REPORT_CRIME(PLAYER::PLAYER_ID(), params[1], params[2]);
 
@@ -124,8 +118,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPlayerWantedLevel) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::Player player = PLAYER::PLAYER_ID();
 
@@ -136,8 +129,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPlayerWantedLevelNoDrop) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				::Player player = PLAYER::PLAYER_ID();
 
@@ -170,12 +162,11 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getPlayerTargetEntity) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
-				cell * entity = Utility::getAddrFromParam(amx, params[1]);
-				if (entity == nullptr)
-					return 0;
+				cell *entity;
+				if (amx_GetAddr(amx, params[1], &entity) != AMX_ERR_NONE)
+					return 0;;
 
 				return PLAYER::GET_PLAYER_TARGET_ENTITY(PLAYER::PLAYER_ID(), (::Entity *)entity);
 			}
@@ -205,16 +196,14 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getPlayerPos) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), params[2]);
-				return Utility::setVector3ToParam(amx, params[1], coords);
+				return Aux::setVector3(amx, params[1], coords);
 			}
 
 			MOD_NATIVE(setPlayerInvincible) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::GET_PLAYER_PED(PLAYER::PLAYER_ID()), params[1]);
 
@@ -233,8 +222,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPlayerMaxArmor) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				PLAYER::SET_PLAYER_MAX_ARMOUR(PLAYER::PLAYER_ID(), params[1]);
 
@@ -242,8 +230,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(setPlayerModel) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				Hash model = GAMEPLAY::GET_HASH_KEY((char *)String::get(amx, params[1]).c_str());
 				if (STREAMING::IS_MODEL_IN_CDIMAGE(model) && STREAMING::IS_MODEL_VALID(model)) {

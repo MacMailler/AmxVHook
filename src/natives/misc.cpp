@@ -19,8 +19,7 @@ namespace AmxVHook {
 			};
 
 			MOD_NATIVE(getHashKey) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return GAMEPLAY::GET_HASH_KEY((char *)String::get(amx, params[1]).c_str());
 			}
@@ -39,15 +38,13 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getRandomInt) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				return GAMEPLAY::GET_RANDOM_INT_IN_RANGE(params[1], params[2]);
 			}
 
 			MOD_NATIVE(getRandomFloat) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				float value = GAMEPLAY::GET_RANDOM_FLOAT_IN_RANGE(amx_ctof(params[1]), amx_ctof(params[2]));
 
@@ -55,17 +52,16 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getDistanceBetweenPos) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
-				float coords[3], coords2[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
-					!Utility::getFloatArrayFromParam(amx, params[2], coords2, 3))
+				cell *coords1, *coords2;
+				if (amx_GetAddr(amx, params[1], &coords1) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &coords2) != AMX_ERR_NONE)
 					return 0;
 
 				float dist = GAMEPLAY::GET_DISTANCE_BETWEEN_COORDS(
-					coords[0], coords[1], coords[2],
-					coords2[0], coords2[1], coords2[2],
+					amx_ctof(coords1[0]), amx_ctof(coords1[1]), amx_ctof(coords1[1]),
+					amx_ctof(coords2[0]), amx_ctof(coords2[1]), amx_ctof(coords2[1]),
 					params[3]
 				);
 
@@ -73,22 +69,23 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getAngleBetween2dVectors) {
-				if (!arguments(2))
+				checkargs(2);
+
+				cell *vec1, *vec2;
+				if (amx_GetAddr(amx, params[1], &vec1) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &vec2) != AMX_ERR_NONE)
 					return 0;
 
-				float vec1[2], vec2[2];
-				if (!Utility::getFloatArrayFromParam(amx, params[1], vec1, 2) ||
-					!Utility::getFloatArrayFromParam(amx, params[2], vec2, 2))
-					return 0;
-
-				float dist = GAMEPLAY::GET_ANGLE_BETWEEN_2D_VECTORS(vec1[0], vec1[1], vec2[0], vec2[1]);
+				float dist = GAMEPLAY::GET_ANGLE_BETWEEN_2D_VECTORS(
+					amx_ctof(vec1[0]), amx_ctof(vec1[1]),
+					amx_ctof(vec2[0]), amx_ctof(vec2[1])
+				);
 
 				return amx_ftoc(dist);
 			}
 
 			MOD_NATIVE(getHeadingFromVector2d) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				float dist = GAMEPLAY::GET_HEADING_FROM_VECTOR_2D(amx_ctof(params[1]), amx_ctof(params[2]));
 
@@ -96,19 +93,16 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(world3DToScreen2D) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
-				float coords[3];
-				cell * sx = Utility::getAddrFromParam(amx, params[2]),
-					 * sy = Utility::getAddrFromParam(amx, params[3]);
-
-				if (!Utility::getFloatArrayFromParam(amx, params[1], coords, 3) ||
-					sx == nullptr || sy == nullptr)
+				cell *sx, *sy, *coords;
+				if (amx_GetAddr(amx, params[1], &coords) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &sx) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[3], &sy) != AMX_ERR_NONE)
 					return 0;
 
 				float sx2, sy2;
-				BOOL ret = GRAPHICS::_WORLD3D_TO_SCREEN2D(coords[0], coords[1], coords[2], &sx2, &sy2);
+				BOOL ret = GRAPHICS::_WORLD3D_TO_SCREEN2D(amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]), &sx2, &sy2);
 
 				*sx = amx_ftoc(sx2);
 				*sy = amx_ftoc(sy2);

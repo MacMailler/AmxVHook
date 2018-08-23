@@ -2,9 +2,9 @@
 
 namespace AmxVHook {
 
-	extern boost::shared_ptr<Debug> gDebug;
-	extern boost::shared_ptr<Pool> gPool;
-	extern boost::shared_ptr<Timer::Pool> gTimer;
+	extern std::shared_ptr<Log> gLog;
+	extern std::shared_ptr<Pool> gPool;
+	extern std::shared_ptr<Timer::Pool> gTimer;
 
 	namespace Natives {
 		namespace Core {
@@ -35,54 +35,42 @@ namespace AmxVHook {
 			};
 
 			MOD_NATIVE(log) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
-				gDebug->log((char *)String::get(amx, params[1]).c_str());
+				gLog->log((char *)String::get(amx, params[1]).data());
 
 				return 1;
 			}
 			
 			MOD_NATIVE(logf) {
-				if ((params[0] / sizeof(cell)) == 1)
-					gDebug->log((char *)String::get(amx, params[1]).c_str());
-				else {
-					cell * fstr = Utility::getAddrFromParam(amx, params[1]);
-					if (fstr == nullptr)
-						return 0;
+				cell *fstr;
+				if (amx_GetAddr(amx, params[1], &fstr) != AMX_ERR_NONE)
+					return 0;
 
-					std::string out;
-					String::format(amx, (params + 2), fstr, out);
+				std::string out;
+				String::format(amx, &params[2], fstr, out);
 
-					gDebug->log((char *)out.c_str());
-				}
+				gLog->log((char *)out.data());
+
 				return 1;
 			}
 
 			MOD_NATIVE(format) {
-				cell paramsCount = (params[0] / sizeof(cell));
-
-				if (paramsCount < 3)
+				cell *fstr;
+				if (amx_GetAddr(amx, params[3], &fstr) != AMX_ERR_NONE)
 					return 0;
 
-				else if (paramsCount == 3)
-					String::set(amx, params[1], String::get(amx, params[3]), params[2]);
+				std::string out;
+				out.reserve(params[2]);
 
-				else {
-					cell * fstr = Utility::getAddrFromParam(amx, params[3]);
-					if (fstr == nullptr)
-						return 0;
+				String::format(amx, &params[4], fstr, out);
+				String::set(amx, params[1], out, params[2]);
 
-					std::string out;
-					String::format(amx, (params + 4), fstr, out);
-					String::set(amx, params[1], out, params[2]);
-				}
 				return 1;
 			}
 
 			MOD_NATIVE(isModLoaded) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return gPool->contains(String::get(amx, params[1]));
 			}
@@ -104,52 +92,57 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getAllPeds) {
-				if (!arguments(2))
+				checkargs(2);
+
+	/*			cell * amxDest;
+				if (amx_GetAddr(amx, params[1], &amxDest) != AMX_ERR_NONE)
 					return 0;
 
-				cell * dest = Utility::getAddrFromParam(amx, params[1]);
-				if (dest == nullptr)
+				int * dest = (int *)alloca(params[2] * sizeof(int));
+				int ret = worldGetAllPeds(dest, params[2]);
+				Funcs::cpy(amxDest, dest, params[2]);
+
+				return ret;*/
+
+				cell * dest;
+				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
 					return 0;
 
 				return worldGetAllPeds(dest, params[2]);
 			}
 
 			MOD_NATIVE(getAllObjects) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
-				cell * dest = Utility::getAddrFromParam(amx, params[1]);
-				if (dest == nullptr)
+				cell * dest;
+				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
 					return 0;
 
 				return worldGetAllObjects(dest, params[2]);
 			}
 
 			MOD_NATIVE(getAllPickups) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
-				cell * dest = Utility::getAddrFromParam(amx, params[1]);
-				if (dest == nullptr)
+				cell * dest;
+				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
 					return 0;
 
 				return worldGetAllPickups(dest, params[2]);
 			}
 
 			MOD_NATIVE(getAllVehicles) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
-				cell * dest = Utility::getAddrFromParam(amx, params[1]);
-				if (dest == nullptr)
+				cell * dest;
+				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
 					return 0;
 
 				return worldGetAllVehicles(dest, params[2]);
 			}
 
 			MOD_NATIVE(setVersionVisible) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AmxVHook::Core::versionVisible = params[1];
 
@@ -160,8 +153,8 @@ namespace AmxVHook {
 				if ((params[0] / sizeof(cell)) < 3)
 					return 0;
 
-				std::stack<boost::variant<cell, std::string>> stk;
-				Utility::convertParamsToStack(amx, params, String::get(amx, params[2]), stk, 4);
+				std::stack<std::variant<cell, std::string>> stk;
+				Aux::toStack(amx, params, String::get(amx, params[2]), stk, 4);
 
 				std::string modname = String::get(amx, params[3]);
 
@@ -172,9 +165,8 @@ namespace AmxVHook {
 					gPool->execAll(String::get(amx, params[1]).c_str(), &stk);
 				}
 				else {
-					auto i = gPool->find(modname);
-					if (!i->first.empty())
-						return gPool->exec(i->second.amx, String::get(amx, params[1]).c_str(), &stk);
+					if (gPool->contains(modname))
+						return gPool->exec(gPool->find(modname)->second.amx, String::get(amx, params[1]).c_str(), &stk);
 				}
 
 				return 1;
@@ -182,9 +174,9 @@ namespace AmxVHook {
 
 			MOD_NATIVE(addTimer) {
 				if ((params[0] / sizeof(cell)) < 3)
-					return Timer::Pool::invalidTimerId;
+					return 0;
 
-				boost::shared_ptr<Timer::Timer> timer = boost::make_shared<Timer::Timer>();
+				std::shared_ptr<Timer::Timer> timer = std::make_shared<Timer::Timer>();
 
 				timer->amx = amx;
 				timer->interval = params[2];
@@ -192,9 +184,9 @@ namespace AmxVHook {
 
 				int index;
 				if (amx_FindPublic(amx, (char *)timer->funcname.c_str(), &index) != AMX_ERR_NONE)
-					return Timer::Pool::invalidTimerId;
+					return 0;
 
-				Utility::convertParamsToStack(amx, params, String::get(amx, params[3]), timer->params, 4);
+				Aux::toStack(amx, params, String::get(amx, params[3]), timer->params, 4);
 
 				timer->lastTime = GAMEPLAY::GET_GAME_TIMER();
 
@@ -202,29 +194,25 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(dropTimer) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return gTimer->drop(params[1]);
 			}
 			
 			MOD_NATIVE(stopTimer) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				return gTimer->stop(params[1], params[2]);
 			}
 
 			MOD_NATIVE(isTimerExist) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return gTimer->contains(params[1]);
 			}
 			
 			MOD_NATIVE(isTimerStopped) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return gTimer->stopped(params[1]);
 			}
@@ -233,15 +221,14 @@ namespace AmxVHook {
 				if ((params[0] / sizeof(cell)) < 2)
 					return 0;
 
-				std::stack<boost::variant<cell, std::string>> stk;
-				Utility::convertParamsToStack(amx, params, String::get(amx, params[2]), stk, 3);
+				std::stack<std::variant<cell, std::string>> stk;
+				Aux::toStack(amx, params, String::get(amx, params[2]), stk, 3);
 				
 				return gTimer->setData(params[1], stk);
 			}
 
 			MOD_NATIVE(setTimerInterval) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				return gTimer->setInterval(params[1], params[2]);
 			}

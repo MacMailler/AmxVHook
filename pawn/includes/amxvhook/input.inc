@@ -157,12 +157,13 @@ native setControlNormal(group, control, Float:normal);
 
 native getControlValue(group, control); 
 native Float:getControlNormal(group, control); 
-native Float:getDisabledControlNormal(group, control); 
+native Float:getDisabledControlNormal(group, control);
 
-native getCommandParams(id, dest[], len = sizeof dest);
-native getCommandParamsInt(id);
-native getCommandParamsHash(id);
-native Float:getCommandParamsFloat(id);
+native getCmdParam(index, dest[], maxlen = sizeof dest);
+native getCmdParamInt(index);
+native getCmdParamHex(index);
+native getCmdParamHash(index);
+native Float:getCmdParamFloat(index);
 
 native stopPadShake();
 

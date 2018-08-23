@@ -10,11 +10,11 @@ namespace AmxVHook {
 			MOD_NATIVE(isModelInRpf);
 			MOD_NATIVE(isEntityFocus);
 			MOD_NATIVE(setFocusEntity);
-			MOD_NATIVE(setModelAsNoLongerNeeded);
 			MOD_NATIVE(setVehiclePopulationBudget);
 			MOD_NATIVE(setPedPopulationBudget);
 			MOD_NATIVE(setInteriorActive);
-			MOD_NATIVE(requestModel);
+			MOD_NATIVE(loadModel);
+			MOD_NATIVE(unloadModel);
 
 			AMX_NATIVE_INFO list[];
 		};

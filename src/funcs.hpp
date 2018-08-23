@@ -12,41 +12,22 @@ namespace AmxVHook {
 		void drawString(std::string & data, float x, float y);
 		void drawInt(int value, float x, float y);
 		void drawFloat(float value, DWORD decimal_places, float x, float y);
+
+		template<typename T1, typename T2>
+		inline void cpy(T1* dst, T2* src, size_t len);
 	};
 
-	namespace Utility {
-		class Color {
-		public:
-			uint16_t R = 255;
-			uint16_t G = 255;
-			uint16_t B = 255;
-			uint16_t A = 255;
-			uint32_t RGBA = 0xFFFFFFFF;
+	class Color {
+	public:
+		uint8_t R = 255u;
+		uint8_t G = 255u;
+		uint8_t B = 255u;
+		uint8_t A = 255u;
 
-			Color();
-			Color(uint32_t);
-			Color(uint16_t, uint16_t, uint16_t, uint16_t);
-		};
+		int32_t RGBA = 0xFFFFFFFF;
 
-		bool setVector3ToParam(AMX * amx, cell param, Vector3 & vec);
-		bool getVector3FromParam(AMX * amx, cell param, Vector3 & vec);
-
-		cell * getAddrFromParam(AMX * amx, const cell param);
-		bool setArrayToParam(AMX * amx, cell param, cell * arr, int size);
-		bool getArrayFromParam(AMX * amx, cell param, cell * dest, int size);
-		bool getFloatArrayFromParam(AMX * amx, cell param, float * dest, int size);
-		void convertParamsToStack(AMX * amx, const cell * params, std::string & format, std::stack<boost::variant<cell, std::string>> & stk, int index = 0);
-
-		namespace Amx {
-			int load(AMX * amx, std::string & path, void * memblock = NULL);
-			int cleanup(AMX * amx);
-			size_t getSize(std::string & path);
-			char * strError(int err);
-
-			const AMX_HEADER * getHeader(AMX * amx);
-			const AMX_FUNCSTUBNT * getNatives(AMX * amx);
-			const int getNumNatives(AMX * amx);
-			const char * getNativeName(AMX * amx, cell offset);
-		};
+		Color();
+		Color(int32_t);
+		Color(uint8_t, uint8_t, uint8_t, uint8_t);
 	};
 };

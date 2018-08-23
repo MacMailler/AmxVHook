@@ -40,8 +40,7 @@ namespace AmxVHook {
 			};
 
 			MOD_NATIVE(isSoundFinished) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return AUDIO::HAS_SOUND_FINISHED(params[1]);
 			}
@@ -59,8 +58,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getRadioStationName) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				char * name = AUDIO::GET_RADIO_STATION_NAME(params[1]);
 				String::set(amx, params[2], name, params[3]);
@@ -69,8 +67,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(releaseSoundId) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::RELEASE_SOUND_ID(params[1]);
 
@@ -78,8 +75,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(playSound) {
-				if (!arguments(6))
-					return 0;
+				checkargs(6);
 
 				AUDIO::PLAY_SOUND(params[1], (char *)String::get(amx, params[2]).c_str(), (char *)String::get(amx, params[3]).c_str(), params[4], params[5], params[6]);
 
@@ -87,8 +83,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(playSoundFrontend) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				AUDIO::PLAY_SOUND_FRONTEND(params[1], (char *)String::get(amx, params[2]).c_str(), (char *)String::get(amx, params[3]).c_str(), FALSE);
 
@@ -96,25 +91,24 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(playSoundFromEntity) {
-				if (!arguments(4))
-					return 0;
+				checkargs(4);
 
 				AUDIO::PLAY_SOUND_FROM_ENTITY(params[1], (char *)String::get(amx, params[2]).c_str(), params[4], (char *)String::get(amx, params[3]).c_str(), FALSE, FALSE);
 
 				return 1;
 			}
+			
 			MOD_NATIVE(playSoundFromPos) {
-				if (!arguments(5))
-					return 0;
+				checkargs(5);
 
-				float coords[3];
-				if (!Utility::getFloatArrayFromParam(amx, params[4], coords, 3))
+				cell *coords;
+				if (amx_GetAddr(amx, params[4], &coords) != AMX_ERR_NONE)
 					return 0;
 
 				AUDIO::PLAY_SOUND_FROM_COORD(
 					params[1],
 					(char *)String::get(amx, params[2]).c_str(),
-					coords[0], coords[1], coords[2],
+					amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]),
 					(char *)String::get(amx, params[3]).c_str(),
 					FALSE, params[5], FALSE
 				);
@@ -123,8 +117,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(stopSound) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::STOP_SOUND(params[1]);
 
@@ -138,8 +131,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(freezeRadioStation) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::FREEZE_RADIO_STATION((char *)String::get(amx, params[1]).c_str());
 
@@ -147,8 +139,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(unfreezeRadioStation) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::UNFREEZE_RADIO_STATION((char *)String::get(amx, params[1]).c_str());
 
@@ -156,22 +147,19 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(loadStream) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				return AUDIO::LOAD_STREAM((char *)String::get(amx, params[1]).c_str(), (char *)String::get(amx, params[2]).c_str());
 			}
 
 			MOD_NATIVE(loadStreamWithOffset) {
-				if (!arguments(3))
-					return 0;
+				checkargs(3);
 
 				return AUDIO::LOAD_STREAM_WITH_START_OFFSET((char *)String::get(amx, params[1]).c_str(), params[3], (char *)String::get(amx, params[2]).c_str());
 			}
 
 			MOD_NATIVE(playStreamFromPed) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::_0x89049DD63C08B5D1(params[1]);
 
@@ -179,8 +167,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(playStreamFromVehicle) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::PLAY_STREAM_FROM_VEHICLE(params[1]);
 
@@ -188,8 +175,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(playStreamFromObject) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::PLAY_STREAM_FROM_OBJECT(params[1]);
 
@@ -197,8 +183,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(playStreamFrontend) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::PLAY_STREAM_FRONTEND();
 
@@ -212,22 +197,19 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(isAlarmPlaying) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return AUDIO::IS_ALARM_PLAYING((char *)String::get(amx, params[1]).c_str());
 			}
 
 			MOD_NATIVE(prepareAlarm) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				return AUDIO::PREPARE_ALARM((char *)String::get(amx, params[1]).c_str());
 			}
 
 			MOD_NATIVE(startAlarm) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::START_ALARM((char *)String::get(amx, params[1]).c_str(), FALSE);
 
@@ -235,8 +217,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(stopAlarm) {
-				if (!arguments(2))
-					return 0;
+				checkargs(2);
 
 				AUDIO::STOP_ALARM((char *)String::get(amx, params[1]).c_str(), params[2]);
 
@@ -244,8 +225,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(stopAllAlarms) {
-				if (!arguments(1))
-					return 0;
+				checkargs(1);
 
 				AUDIO::STOP_ALL_ALARMS(TRUE);
 

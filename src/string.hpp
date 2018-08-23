@@ -3,10 +3,11 @@
 
 namespace AmxVHook {
 	namespace String {
+		void tokenize(const std::string & str, std::vector<std::string> & tokens, const std::string & delims = " ");
 		void format(AMX * amx, const cell * params, cell * f, std::string & out);
 		void set(AMX * amx, cell param, std::string data, std::size_t size, bool pack = false);
 		std::string get(AMX * amx, cell param);
-		bool is_dec(std::string &data);
-		bool is_hex(std::string &data);
+		bool is_dec(std::string & data);
+		bool is_hex(std::string & data);
 	};
 };
