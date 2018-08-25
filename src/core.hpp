@@ -2,10 +2,12 @@
 #include "amxvhook.hpp"
 #include "natives.hpp"
 
+#define AMXVHOOK_VER		"0.1"
+#define AMXVHOOK_VER_INT	0x01
+
 namespace AmxVHook {
 	namespace Core {
 		extern bool versionVisible;
-		static const ucell AMXVHOOK_VERSION = 0x01;
 
 		void init();
 		void cleanup();

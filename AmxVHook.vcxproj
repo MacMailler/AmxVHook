@@ -49,6 +49,7 @@
     <ClInclude Include="src\string.hpp" />
     <ClInclude Include="src\amxvhook.hpp" />
     <ClInclude Include="src\timer.hpp" />
+    <ClInclude Include="src\types.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\amxaux.cpp" />
@@ -152,7 +153,7 @@
       <AdditionalLibraryDirectories>$(BOOST_LIBRARYDIR);$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)build\$(Configuration)\AmxVHook.asi "D:\Games\Installed\Grand Theft Auto V\AmxVHook.asi"</Command>
+      <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) "$(GTAV_DIR)$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -177,7 +178,7 @@
       <AdditionalLibraryDirectories>$(BOOST_LIBRARYDIR);$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)build\$(Configuration)\AmxVHook.asi "D:\Games\Installed\Grand Theft Auto V\AmxVHook.asi"</Command>
+      <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) "$(GTAV_DIR)$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

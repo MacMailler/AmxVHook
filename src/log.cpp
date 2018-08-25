@@ -92,14 +92,6 @@ namespace AmxVHook {
 		assert(gLog->getThreadInstance()->get_id() == std::this_thread::get_id());
 
 		while (true) {
-			/*std::ofstream file;
-			file.open(".\\test.log", (std::ofstream::out | std::ofstream::app));
-			file << "threadInstanse: " << gLog->getThreadInstance()->get_id() << ", this_thread: " << std::this_thread::get_id() << std::endl;
-
-			gLog->worker(file);
-
-			file.close();*/
-
 			std::ofstream out;
 			gLog->worker(out);
 

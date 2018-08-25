@@ -16,7 +16,7 @@ namespace AmxVHook {
 
 			AMX * amx;
 			std::string funcname;
-			std::stack<std::variant<cell, std::string>> params;
+			AmxArgs params;
 		};
 
 		class Pool : NonCopy {
@@ -35,7 +35,7 @@ namespace AmxVHook {
 			bool contains(cell);
 			void clear();
 			void clearByAmx(AMX *);
-			bool setData(cell, std::stack<std::variant<cell, std::string>> &);
+			bool setData(cell, AmxArgs &);
 			bool setInterval(cell, ucell);
 
 			void process();

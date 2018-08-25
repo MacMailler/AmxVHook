@@ -80,7 +80,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(getVersion) {
-				return AmxVHook::Core::AMXVHOOK_VERSION;
+				return AMXVHOOK_VER_INT;
 			}
 
 			MOD_NATIVE(getPoolSize) {
@@ -153,7 +153,7 @@ namespace AmxVHook {
 				if ((params[0] / sizeof(cell)) < 3)
 					return 0;
 
-				std::stack<std::variant<cell, std::string>> stk;
+				AmxArgs stk;
 				Aux::toStack(amx, params, String::get(amx, params[2]), stk, 4);
 
 				std::string modname = String::get(amx, params[3]);
@@ -221,7 +221,7 @@ namespace AmxVHook {
 				if ((params[0] / sizeof(cell)) < 2)
 					return 0;
 
-				std::stack<std::variant<cell, std::string>> stk;
+				AmxArgs stk;
 				Aux::toStack(amx, params, String::get(amx, params[2]), stk, 3);
 				
 				return gTimer->setData(params[1], stk);

@@ -30,9 +30,8 @@
 #include "amx\amxdbg.h"
 #endif
 
-namespace AmxVHook { namespace Fs = std::experimental::filesystem; };
-
 #include "noncopy.hpp"
+#include "types.hpp"
 #include "amxaux.hpp"
 #include "pool.hpp"
 #include "core.hpp"

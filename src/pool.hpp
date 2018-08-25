@@ -6,11 +6,11 @@ namespace AmxVHook {
 		AMX * amx;
 		Fs::path path;
 	};
-
+	
 	class Pool : NonCopy {
 	private:
-		std::unordered_map<std::string, Mod> pool;
-		std::list<AMX_NATIVE_INFO *> natives;
+		ModPool pool;
+		NativeList natives;
 		Fs::path location;
 
 		cell loadAmx(AMX * amx, Fs::path & path);
@@ -25,8 +25,8 @@ namespace AmxVHook {
 		void clear();
 		void remake();
 
-		std::unordered_map<std::string, Mod>::iterator find(std::string & name);
-		std::unordered_map<std::string, Mod>::iterator find(AMX * amx);
+		ModPool::iterator find(std::string & name);
+		ModPool::iterator find(AMX * amx);
 
 		bool contains(std::string & name);
 		size_t size();
@@ -36,12 +36,12 @@ namespace AmxVHook {
 		bool reloadMod(std::string & name);
 
 		void setLocation(Fs::path & dir);
-		void setNatives(std::list<AMX_NATIVE_INFO *> n);
+		void setNatives(NativeList n);
 
 		Fs::path getLocation();
 
-		cell exec(AMX * amx, const std::string & funcname, std::stack<std::variant<cell, std::string>> * params = nullptr);
-		void execAll(const std::string & funcname, std::stack<std::variant<cell, std::string>> * params = nullptr);
+		cell exec(AMX * amx, const std::string & funcname, AmxArgs * params = nullptr);
+		void execAll(const std::string & funcname, AmxArgs * params = nullptr);
 
 		void onModInputText(const char * text);
 		void onModInputCommand(const std::string & cmd, cell params);

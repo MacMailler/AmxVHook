@@ -188,7 +188,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		void toStack(AMX * amx, const cell * params, std::string & format, std::stack<std::variant<cell, std::string>> & stk, int index) {
+		void toStack(AMX * amx, const cell * params, std::string & format, AmxArgs & stk, int index) {
 			for (const auto& i : format) {
 				cell * addr;
 

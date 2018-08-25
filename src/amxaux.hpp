@@ -19,6 +19,6 @@ namespace AmxVHook {
 		bool getVector3(AMX * amx, cell param, Vector3 & vec);
 		bool setArray(AMX * amx, cell param, cell * arr, int size);
 		bool setVector3(AMX * amx, cell param, Vector3 & vec);
-		void toStack(AMX * amx, const cell * params, std::string & format, std::stack<std::variant<cell, std::string>> & stk, int index = 0);
+		void toStack(AMX * amx, const cell * params, std::string & format, AmxArgs & stk, int index = 0);
 	};
 };

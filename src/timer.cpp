@@ -72,7 +72,7 @@ namespace AmxVHook {
 			}
 		}
 
-		bool Pool::setData(cell id, std::stack<std::variant<cell, std::string>> & params) {
+		bool Pool::setData(cell id, AmxArgs & params) {
 			if (!contains(id))
 				return false;
 			

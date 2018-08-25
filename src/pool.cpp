@@ -98,12 +98,12 @@ namespace AmxVHook {
 		this->make();
 	}
 
-	std::unordered_map<std::string, Mod>::iterator Pool::find(std::string & name) {
+	ModPool::iterator Pool::find(std::string & name) {
 		return pool.find(name);
 	}
 
-	std::unordered_map<std::string, Mod>::iterator Pool::find(AMX * amx) {
-		std::unordered_map<std::string, Mod>::iterator i = pool.begin();
+	ModPool::iterator Pool::find(AMX * amx) {
+		ModPool::iterator i = pool.begin();
 
 		while (i != pool.end()) {
 			if (i->second.amx == amx)
@@ -182,7 +182,7 @@ namespace AmxVHook {
 		this->location = dir;
 	}
 
-	void Pool::setNatives(std::list<AMX_NATIVE_INFO *> n) {
+	void Pool::setNatives(NativeList n) {
 		this->natives = n;
 	}
 
@@ -190,7 +190,7 @@ namespace AmxVHook {
 		return this->location;
 	}
 
-	cell Pool::exec(AMX * amx, const std::string & funcname, std::stack<std::variant<cell, std::string>> * params) {
+	cell Pool::exec(AMX * amx, const std::string & funcname, AmxArgs * params) {
 		int index;
 		cell ret;
 		if (amx_FindPublic(amx, funcname.data(), &index) == AMX_ERR_NONE) {
@@ -220,7 +220,7 @@ namespace AmxVHook {
 		return ret;
 	}
 
-	void Pool::execAll(const std::string & funcname, std::stack<std::variant<cell, std::string>> * params) {
+	void Pool::execAll(const std::string & funcname, AmxArgs * params) {
 		for (const auto& i : pool)
 			this->exec(i.second.amx, funcname, params);
 	}
