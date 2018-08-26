@@ -2,53 +2,96 @@
 
 namespace AmxVHook {
 	namespace Aux {
-		int load(AMX * amx, std::string & path, void * memblock) {
+		int load(AMX * amx, std::string & path) {
 			std::ifstream file(path, std::ios::binary);
 
 			if (!file.is_open())
 				return AMX_ERR_NOTFOUND;
 
+			void *pcode = NULL;
+			#if defined JIT
+				void *ncode = NULL;  // ncode = new machine code
+				void *rt = NULL;     // rt = relocation table (temporary)
+			#endif
+			int err = AMX_ERR_FORMAT;
+
 			AMX_HEADER hdr;
 			file.read((char *)&hdr, sizeof hdr);
 
 			amx_Align16(&hdr.magic);
+			if (hdr.magic != AMX_MAGIC)
+				goto fail;
+
+			err = AMX_ERR_MEMORY;
 			amx_Align32((uint32_t *)&hdr.size);
 			amx_Align32((uint32_t *)&hdr.stp);
 
-			if (hdr.magic != AMX_MAGIC) {
-				file.close();
-				return AMX_ERR_FORMAT;
-			}
-
-			bool didalloc = false;
-			if (memblock == NULL) {
-				if ((memblock = malloc(hdr.stp)) == NULL) {
-					file.close();
-					return AMX_ERR_MEMORY;
-				}
-				didalloc = true;
-			}
+			if ((pcode = malloc((size_t)hdr.stp)) == NULL)
+				goto fail;
 
 			file.seekg(0);
-			file.read((char *)memblock, (size_t)hdr.size);
+			file.read((char *)pcode, (size_t)hdr.size);
 			file.close();
 
 			std::memset(amx, 0, sizeof *amx);
-			int result = amx_Init(amx, memblock);
 
-			if (result != AMX_ERR_NONE && didalloc) {
-				free(memblock);
-				amx->base = NULL;
-			}
+			#if defined JIT
+				amx->flags = AMX_FLAG_JITC;
+				if ((err = amx_Init(amx, pcode)) != AMX_ERR_NONE)
+					goto fail;
 
-			return result;
+				err = AMX_ERR_MEMORY;       /* assume "insufficient memory" */
+				if ((ncode = malloc(amx->code_size)) == NULL) /* amx->code_size is an estimate */
+					goto fail;
+
+				if (amx->reloc_size > 0)
+					if ((rt = malloc(amx->reloc_size)) == NULL)
+						goto fail;
+
+				  /* JIT rulz! (TM) */
+				if ((err = amx_InitJIT(amx, rt, ncode)) != AMX_ERR_NONE)
+					goto fail;
+
+				err = AMX_ERR_MEMORY;       /* assume "insufficient memory" */
+				if ((amx->base = (unsigned char*)valloc(amx->code_size)) == NULL)
+					goto fail;
+
+				std::memcpy(amx->base, ncode, amx->code_size);
+
+				free(pcode);
+				free(rt);
+				free(ncode);
+			#else
+				if ((err = amx_Init(amx, pcode)) != AMX_ERR_NONE)
+					goto fail;
+			#endif
+			return AMX_ERR_NONE;
+
+		fail:
+			file.close();
+
+			if (pcode != NULL)
+				free(pcode);
+#if defined JIT
+			if (rt != NULL)
+				free(rt);
+
+			if (ncode != NULL)
+				free(ncode);
+#endif
+			std::memset(amx, 0, sizeof *amx);
+
+			return err;
 		}
 
 		int cleanup(AMX * amx) {
 			if (amx->base != NULL) {
 				amx_Cleanup(amx);
-				free(amx->base);
-
+				#if defined JIT
+					vfree(amx->base);
+				#else
+					free(amx->base);
+				#endif
 				std::memset(amx, 0, sizeof AMX);
 			}
 
@@ -112,17 +155,41 @@ namespace AmxVHook {
 			return reinterpret_cast<AMX_HEADER *>(amx->base);
 		}
 
+		const AMX_FUNCSTUBNT * getPublics(AMX * amx) {
+			return reinterpret_cast<AMX_FUNCSTUBNT*>(getHeader(amx)->publics + amx->base);
+		}
+
 		const AMX_FUNCSTUBNT * getNatives(AMX * amx) {
 			return reinterpret_cast<AMX_FUNCSTUBNT *>(getHeader(amx)->natives + amx->base);
 		}
 
+		const int getNumPublics(AMX * amx) {
+			const AMX_HEADER *hdr = getHeader(amx);
+			return (hdr->natives - hdr->publics) / hdr->defsize;
+		}
+
 		const int getNumNatives(AMX * amx) {
-			const AMX_HEADER * hdr = getHeader(amx);
+			const AMX_HEADER *hdr = getHeader(amx);
 			return (hdr->libraries - hdr->natives) / hdr->defsize;
 		}
 
 		const char * getNativeName(AMX * amx, cell offset) {
 			return reinterpret_cast<char *>(amx->base + offset);
+		}
+
+		const char * getPublicName(AMX * amx, uint32_t offset) {
+			return reinterpret_cast<char*>(amx->base + offset);
+		}
+
+		int getPublicIndex(AMX * amx, const std::string & funcname) {
+			int n = getNumPublics(amx);
+			const AMX_FUNCSTUBNT *publics = getPublics(amx);
+
+			for (int i = 0; i < n; i++)
+				if (!funcname.compare(getPublicName(amx, publics[i].nameofs)))
+					return i;
+
+			return -1;
 		}
 
 		cell * getAddr(AMX * amx, const cell param) {
@@ -213,6 +280,28 @@ namespace AmxVHook {
 					stk.push(std::string("NULL"));
 				}
 			}
+		}
+
+		void * valloc(long size) {
+			void *memblk;
+			#if defined __WIN32__
+				memblk = VirtualAlloc(NULL, size, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+			#elif LINUX
+				memblk = malloc(size);
+				if (ptr)
+					mprotect(memblk, size, PROT_READ | PROT_WRITE | PROT_EXEC);
+			#else
+				memblk = malloc(size);
+			#endif
+			return memblk;
+		}
+
+		void vfree(void * memblk) {
+			#if defined __WIN32__
+				VirtualFree(memblk, 0, MEM_RELEASE);
+			#else
+				free(memblk);
+			#endif
 		}
 	};
 };

@@ -25,6 +25,7 @@ namespace AmxVHook {
 			MOD_NATIVE(isTimerStopped);
 			MOD_NATIVE(setTimerData);
 			MOD_NATIVE(setTimerInterval);
+			MOD_NATIVE(getTimerId);
 
 			AMX_NATIVE_INFO list[];
 		};

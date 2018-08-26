@@ -18,3 +18,5 @@ native isTimerStopped(timerid);
 
 native setTimerInterval(timerid, interval);
 native setTimerData(timerid, const f[]="", {Float, _}:...);
+
+native getTimerId();

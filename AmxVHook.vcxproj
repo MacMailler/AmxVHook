@@ -113,6 +113,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -151,10 +152,14 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(BOOST_LIBRARYDIR);$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AddModuleNamesToAssembly>$(OutDir)amxjits.obj;%(AddModuleNamesToAssembly)</AddModuleNamesToAssembly>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) "$(GTAV_DIR)$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
+    <MASM>
+      <EnableMASM51Compatibility>true</EnableMASM51Compatibility>
+    </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -176,12 +181,17 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(BOOST_LIBRARYDIR);$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AddModuleNamesToAssembly>$(OutDir)amxjits.obj;%(AddModuleNamesToAssembly)</AddModuleNamesToAssembly>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) "$(GTAV_DIR)$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
+    <MASM>
+      <EnableMASM51Compatibility>true</EnableMASM51Compatibility>
+    </MASM>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
   </ImportGroup>
 </Project>

@@ -30,6 +30,7 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(isTimerStopped)
 				MOD_DEFINE_NATIVE(setTimerData)
 				MOD_DEFINE_NATIVE(setTimerInterval)
+				MOD_DEFINE_NATIVE(getTimerId)
 
 				{NULL, NULL} // terminator
 			};
@@ -180,10 +181,9 @@ namespace AmxVHook {
 
 				timer->amx = amx;
 				timer->interval = params[2];
-				timer->funcname = String::get(amx, params[1]);
+				timer->funcindex = Aux::getPublicIndex(amx, String::get(amx, params[1]));
 
-				int index;
-				if (amx_FindPublic(amx, (char *)timer->funcname.c_str(), &index) != AMX_ERR_NONE)
+				if (timer->funcindex != -1)
 					return 0;
 
 				Aux::toStack(amx, params, String::get(amx, params[3]), timer->params, 4);
@@ -231,6 +231,10 @@ namespace AmxVHook {
 				checkargs(2);
 
 				return gTimer->setInterval(params[1], params[2]);
+			}
+
+			MOD_NATIVE(getTimerId) {
+				return gTimer->getCurrId();
 			}
 		};
 	};

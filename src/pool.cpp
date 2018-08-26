@@ -191,9 +191,13 @@ namespace AmxVHook {
 	}
 
 	cell Pool::exec(AMX * amx, const std::string & funcname, AmxArgs * params) {
-		int index;
+		return execByIndex(amx, Aux::getPublicIndex(amx, funcname));
+	}
+
+	cell Pool::execByIndex(AMX * amx, const int index, AmxArgs * params) {
 		cell ret;
-		if (amx_FindPublic(amx, funcname.data(), &index) == AMX_ERR_NONE) {
+
+		if (index >= 0 && index < Aux::getNumPublics(amx)) {
 			if (params != nullptr) {
 				std::queue<cell> amxAddr;
 				while (!params->empty()) {

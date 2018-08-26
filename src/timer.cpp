@@ -7,6 +7,7 @@ namespace AmxVHook {
 
 	namespace Timer {
 		Pool::Pool() {
+			currTimerId = 0;
 			ident.reset();
 			pool.clear();
 		}
@@ -90,13 +91,17 @@ namespace AmxVHook {
 			return true;
 		}
 
+		cell Pool::getCurrId() {
+			return currTimerId;
+		}
+
 		void Pool::process() {
 			for (const auto& i : pool) {
 				if (i.second->stop) continue;
 
 				if ((GAMEPLAY::GET_GAME_TIMER() - i.second->lastTime) >= i.second->interval) {
-					
-					switch (gPool->exec(i.second->amx, i.second->funcname, &i.second->params)) {
+					currTimerId = i.first;
+					switch (gPool->execByIndex(i.second->amx, i.second->funcindex, &i.second->params)) {
 					case TIMER_CODE_DROP:
 						pool.erase(i.first);
 						break;
@@ -105,6 +110,7 @@ namespace AmxVHook {
 						i.second->stop = true;
 						break;
 					}
+					currTimerId = 0;
 					i.second->lastTime = GAMEPLAY::GET_GAME_TIMER();
 				}
 			}

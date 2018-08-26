@@ -10,6 +10,7 @@ namespace AmxVHook {
 	class Pool : NonCopy {
 	private:
 		ModPool pool;
+		PublicPool publics;
 		NativeList natives;
 		Fs::path location;
 
@@ -41,6 +42,7 @@ namespace AmxVHook {
 		Fs::path getLocation();
 
 		cell exec(AMX * amx, const std::string & funcname, AmxArgs * params = nullptr);
+		cell execByIndex(AMX * amx, const int index, AmxArgs * params = nullptr);
 		void execAll(const std::string & funcname, AmxArgs * params = nullptr);
 
 		void onModInputText(const char * text);

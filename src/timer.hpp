@@ -15,13 +15,14 @@ namespace AmxVHook {
 			ucell lastTime;
 
 			AMX * amx;
-			std::string funcname;
+			int funcindex;
 			AmxArgs params;
 		};
 
 		class Pool : NonCopy {
 		private:
 			Id ident;
+			uint32_t currTimerId = 0;
 			std::map<cell, std::shared_ptr<Timer>> pool;
 
 		public:
@@ -37,6 +38,7 @@ namespace AmxVHook {
 			void clearByAmx(AMX *);
 			bool setData(cell, AmxArgs &);
 			bool setInterval(cell, ucell);
+			cell getCurrId();
 
 			void process();
 		};
