@@ -2,20 +2,18 @@
 #include "amxvhook.hpp"
 
 namespace AmxVHook {
-	struct LogData {
-		std::string name;
-		std::string data;
-	};
-
 	class Log : NonCopy {
 	private:
 		std::string logFile;
-		std::queue<std::string> logQueue;
-
+#if defined THREADED_LOG
 		std::mutex mutex;
 		std::shared_ptr<std::thread> threadInstance;
-
+		std::queue<std::string> queue;
+#else
+		std::ofstream ofs;
+#endif
 		void init();
+		void doWrite(std::string & path, std::string & data);
 
 	public:
 		Log(const std::string & path);
@@ -23,14 +21,13 @@ namespace AmxVHook {
 		~Log();
 
 		void log(char * format, ...);
-		void worker(std::ofstream & out);
-		void push_log();
-
-		std::thread *getThreadInstance() const {
+#if defined THREADED_LOG
+		void doWork();
+		std::thread * getThreadInstance() const {
 			return threadInstance.get();
 		}
 
 		static void Thread();
-		static void format(const char * format, std::string & out, va_list args);
+#endif
 	};
 };

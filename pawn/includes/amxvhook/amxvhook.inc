@@ -45,11 +45,8 @@ native getAllVehicles(dest[], len = sizeof dest);
 
 native setVersionVisible(bool:visible);
 
-native log(const text[]);
-native logf(const text[], {Float, _}:...);
-
-native format(dest[], size=sizeof dest, const fstr[], {Float, _}:...);
-
+native log(const text[], {Float, _}:...);
+native format(dest[], maxlen = sizeof dest, const fstr[], {Float, _}:...);
 native callFunc(const funcname[], const fstr[]="", const modname[]="self", {Float, _}:...);
 
 //native strtok(const str[], dest[][], const delims[] = " ", maxtokens = sizeof dest, maxlen = sizeof dest[]);

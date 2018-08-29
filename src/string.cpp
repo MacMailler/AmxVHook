@@ -17,10 +17,21 @@ namespace AmxVHook {
 			}
 		}
 
+		void vformat(const char * format, std::string & out, va_list args) {
+			const size_t maxBufSize = 1024 * 1000;
+			size_t length = vsnprintf(NULL, NULL, format, args);
+
+			char * buffer = (char *)alloca(++length > maxBufSize ? maxBufSize : length);
+			vsnprintf(buffer, length, format, args);
+
+			out.reserve(length);
+			out.assign(buffer);
+		}
 
 		void format(AMX * amx, const cell * params, cell * f, std::string & out) {
+			const size_t bufMaxLen = 32;
+			char buf[bufMaxLen];
 			cell index = 0, *ptr = nullptr;
-			char buff[32];
 	
 			while (*f != '\0') {
 				switch (*f) {
@@ -30,11 +41,11 @@ namespace AmxVHook {
 					case 'd': {
 						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 							#if PAWN_CELL_SIZE == 64
-								sprintf_s(buff, "%lld", *ptr);
+								sprintf_s(buf, bufMaxLen, "%lld", *ptr);
 							#else
-								sprintf_s(buff, "%d", *ptr);
+								sprintf_s(buf, bufMaxLen, "%d", *ptr);
 							#endif
-							out.append(buff);
+							out.append(buf);
 						}
 						else {
 							out.append("(null)");
@@ -58,11 +69,11 @@ namespace AmxVHook {
 					case 'X': {
 						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 							#if PAWN_CELL_SIZE == 64
-								sprintf_s(buff, *f == 'x' ? "%llx" : "%llX", *ptr);
+								sprintf_s(buf, bufMaxLen, *f == 'x' ? "%llx" : "%llX", *ptr);
 							#else
-								sprintf_s(buff, *f == 'x' ? "%x" : "%X", *ptr);
+								sprintf_s(buf, bufMaxLen, *f == 'x' ? "%x" : "%X", *ptr);
 							#endif
-							out.append(buff);
+							out.append(buf);
 						}
 						else {
 							out.append("(null)");
@@ -74,8 +85,8 @@ namespace AmxVHook {
 					#ifdef FLOATPOINT
 					case 'f': {
 						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
-							sprintf_s(buff, "%f", amx_ctof(*ptr));
-							out.append(buff);
+							sprintf_s(buf, bufMaxLen, "%f", amx_ctof(*ptr));
+							out.append(buf);
 						}
 						else {
 							out.append("(null)");
@@ -93,8 +104,8 @@ namespace AmxVHook {
 
 						if (*f == 'f') {
 							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
-								sprintf(buff, fstr.c_str(), amx_ctof(*ptr));
-								out.append(buff);
+								sprintf_s(buf, bufMaxLen, fstr.c_str(), amx_ctof(*ptr));
+								out.append(buf);
 							}
 							else {
 								out.append("(null)");
@@ -145,8 +156,8 @@ namespace AmxVHook {
 								#else
 									fstr.push_back((char)*f);
 								#endif
-								sprintf(buff, fstr.c_str(), *ptr);
-								out.append(buff);
+								sprintf_s(buf, bufMaxLen, fstr.c_str(), *ptr);
+								out.append(buf);
 							}
 							else {
 								out.append("(null)");
@@ -163,8 +174,8 @@ namespace AmxVHook {
 								#else
 									fstr.push_back((char)*f);
 								#endif
-								sprintf_s(buff, fstr.c_str(), *ptr);
-								out.append(buff);
+								sprintf_s(buf, bufMaxLen, fstr.c_str(), *ptr);
+								out.append(buf);
 							}
 							else {
 								out.append("(null)");
@@ -178,7 +189,7 @@ namespace AmxVHook {
 							if (fstr.length() > 2) {
 								if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 									for (int len = std::stoi(&fstr[2]), i = 0; i < len && *ptr != '\0'; i++)
-											out.push_back((char)*(ptr++));
+										out.push_back((char)*(ptr++));
 								}
 								else {
 									out.append("(null)");
@@ -195,8 +206,8 @@ namespace AmxVHook {
 						case 'f': {
 							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 								fstr.push_back((char)*f);
-								sprintf(buff, fstr.c_str(), amx_ctof(*ptr));
-								out.append(buff);
+								sprintf_s(buf, bufMaxLen, fstr.c_str(), amx_ctof(*ptr));
+								out.append(buf);
 							}
 							else {
 								out.append("(null)");
@@ -214,8 +225,8 @@ namespace AmxVHook {
 							if (*f == 'f') {
 								if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 									fstr.push_back((char)*f);
-									sprintf(buff, fstr.c_str(), amx_ctof(*ptr));
-									out.append(buff);
+									sprintf_s(buf, bufMaxLen, fstr.c_str(), amx_ctof(*ptr));
+									out.append(buf);
 								}
 								else {
 									out.append("(null)");
@@ -260,9 +271,9 @@ namespace AmxVHook {
 			amx_StrParam(amx, param, dest);
 			
 			if (dest != NULL)
-				return std::string(dest);
+				return { dest };
 
-			return std::string("");
+			return { "" };
 		}
 
 		bool is_dec(std::string & data) {

@@ -8,9 +8,9 @@ namespace AmxVHook {
 
 	namespace Core {
 
-		const std::string pluginDir = ".\\AmxVHook";
-		const std::string modsDir = pluginDir + "\\Mods";
-		const std::string logFile = pluginDir + "\\amxvhook.log";
+		const std::string pluginDir = "AmxVHook\\";
+		const std::string modsDir = pluginDir + "Mods\\";
+		const std::string logFile = pluginDir + "amxvhook.log";
 
 		ucell lastFrames = 0;
 		bool versionVisible = true;
@@ -68,7 +68,6 @@ namespace AmxVHook {
 		}
 
 		void cleanup() {
-			gPool->clear();
 			gPool.reset();
 			gLog.reset();
 			gTimer.reset();

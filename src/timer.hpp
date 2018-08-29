@@ -11,8 +11,8 @@ namespace AmxVHook {
 		struct Timer {
 			bool stop;
 
-			ucell interval;
-			ucell lastTime;
+			uint32_t interval;
+			uint32_t lastTime;
 
 			AMX * amx;
 			int funcindex;
@@ -23,22 +23,22 @@ namespace AmxVHook {
 		private:
 			Id ident;
 			uint32_t currTimerId = 0;
-			std::map<cell, std::shared_ptr<Timer>> pool;
+			std::map<uint32_t, std::shared_ptr<Timer>> pool;
 
 		public:
 			Pool();
 			~Pool();
 
-			cell add(std::shared_ptr<Timer> &);
-			bool drop(cell);
-			bool stop(cell, bool);
-			bool stopped(cell);
-			bool contains(cell);
+			uint32_t add(std::shared_ptr<Timer> &);
+			bool drop(uint32_t);
+			bool stop(uint32_t, bool);
+			bool stopped(uint32_t);
+			bool contains(uint32_t);
 			void clear();
 			void clearByAmx(AMX *);
-			bool setData(cell, AmxArgs &);
-			bool setInterval(cell, ucell);
-			cell getCurrId();
+			bool setData(uint32_t, AmxArgs &);
+			bool setInterval(uint32_t, uint32_t);
+			uint32_t getCurrId();
 
 			void process();
 		};

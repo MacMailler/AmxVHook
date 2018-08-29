@@ -3,20 +3,16 @@
 namespace AmxVHook {
 	namespace Aux {
 		int load(AMX * amx, std::string & path) {
-			std::ifstream file(path, std::ios::binary);
+			std::ifstream ifs(path, std::ios::binary);
 
-			if (!file.is_open())
+			if (!ifs.is_open())
 				return AMX_ERR_NOTFOUND;
 
 			void *pcode = NULL;
-			#if defined JIT
-				void *ncode = NULL;  // ncode = new machine code
-				void *rt = NULL;     // rt = relocation table (temporary)
-			#endif
 			int err = AMX_ERR_FORMAT;
 
 			AMX_HEADER hdr;
-			file.read((char *)&hdr, sizeof hdr);
+			ifs.read((char *)&hdr, sizeof hdr);
 
 			amx_Align16(&hdr.magic);
 			if (hdr.magic != AMX_MAGIC)
@@ -26,59 +22,26 @@ namespace AmxVHook {
 			amx_Align32((uint32_t *)&hdr.size);
 			amx_Align32((uint32_t *)&hdr.stp);
 
-			if ((pcode = malloc((size_t)hdr.stp)) == NULL)
+			if ((pcode = valloc((size_t)hdr.stp)) == NULL)
 				goto fail;
 
-			file.seekg(0);
-			file.read((char *)pcode, (size_t)hdr.size);
-			file.close();
+			ifs.seekg(std::ios::beg);
+			ifs.read((char *)pcode, (size_t)hdr.size);
+			ifs.close();
 
 			std::memset(amx, 0, sizeof *amx);
 
-			#if defined JIT
-				amx->flags = AMX_FLAG_JITC;
-				if ((err = amx_Init(amx, pcode)) != AMX_ERR_NONE)
-					goto fail;
+			if ((err = amx_Init(amx, pcode)) != AMX_ERR_NONE)
+				goto fail;
 
-				err = AMX_ERR_MEMORY;       /* assume "insufficient memory" */
-				if ((ncode = malloc(amx->code_size)) == NULL) /* amx->code_size is an estimate */
-					goto fail;
-
-				if (amx->reloc_size > 0)
-					if ((rt = malloc(amx->reloc_size)) == NULL)
-						goto fail;
-
-				  /* JIT rulz! (TM) */
-				if ((err = amx_InitJIT(amx, rt, ncode)) != AMX_ERR_NONE)
-					goto fail;
-
-				err = AMX_ERR_MEMORY;       /* assume "insufficient memory" */
-				if ((amx->base = (unsigned char*)valloc(amx->code_size)) == NULL)
-					goto fail;
-
-				std::memcpy(amx->base, ncode, amx->code_size);
-
-				free(pcode);
-				free(rt);
-				free(ncode);
-			#else
-				if ((err = amx_Init(amx, pcode)) != AMX_ERR_NONE)
-					goto fail;
-			#endif
 			return AMX_ERR_NONE;
 
 		fail:
-			file.close();
-
+			ifs.close();
+	
 			if (pcode != NULL)
-				free(pcode);
-#if defined JIT
-			if (rt != NULL)
-				free(rt);
+				vfree(pcode);
 
-			if (ncode != NULL)
-				free(ncode);
-#endif
 			std::memset(amx, 0, sizeof *amx);
 
 			return err;
@@ -87,12 +50,8 @@ namespace AmxVHook {
 		int cleanup(AMX * amx) {
 			if (amx->base != NULL) {
 				amx_Cleanup(amx);
-				#if defined JIT
-					vfree(amx->base);
-				#else
-					free(amx->base);
-				#endif
-				std::memset(amx, 0, sizeof AMX);
+				vfree(amx->base);
+				std::memset(amx, 0, sizeof *amx);
 			}
 
 			return AMX_ERR_NONE;
@@ -282,14 +241,14 @@ namespace AmxVHook {
 			}
 		}
 
-		void * valloc(long size) {
+		void * valloc(size_t size , bool code) {
 			void *memblk;
 			#if defined __WIN32__
-				memblk = VirtualAlloc(NULL, size, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+				memblk = VirtualAlloc(NULL, size, MEM_RESERVE | MEM_COMMIT, code ? PAGE_EXECUTE_READWRITE : PAGE_READWRITE);
 			#elif LINUX
 				memblk = malloc(size);
-				if (ptr)
-					mprotect(memblk, size, PROT_READ | PROT_WRITE | PROT_EXEC);
+				if (memblk)
+					mprotect(memblk, size, code ? PROT_READ | PROT_WRITE | PROT_EXEC : PROT_READ | PROT_WRITE);
 			#else
 				memblk = malloc(size);
 			#endif

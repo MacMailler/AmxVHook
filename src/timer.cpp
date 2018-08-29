@@ -7,7 +7,7 @@ namespace AmxVHook {
 
 	namespace Timer {
 		Pool::Pool() {
-			currTimerId = 0;
+			currTimerId = 0u;
 			ident.reset();
 			pool.clear();
 		}
@@ -16,15 +16,15 @@ namespace AmxVHook {
 			clear();
 		}
 
-		cell Pool::add(std::shared_ptr<Timer> & timer) {
-			cell id = ident.get();
+		uint32_t Pool::add(std::shared_ptr<Timer> & timer) {
+			uint32_t id = ident.get();
 
 			pool.insert({ id, std::move(timer) });
 
 			return id;
 		}
 
-		bool Pool::drop(cell id) {
+		bool Pool::drop(uint32_t id) {
 			if (!contains(id))
 				return false;
 
@@ -35,7 +35,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool Pool::stop(cell id, bool stop) {
+		bool Pool::stop(uint32_t id, bool stop) {
 			if (!contains(id))
 				return false;
 
@@ -44,14 +44,14 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool Pool::stopped(cell id) {
+		bool Pool::stopped(uint32_t id) {
 			if (!contains(id))
 				return false;
 
 			return pool[id]->stop;
 		}
 
-		bool Pool::contains(cell id) {
+		bool Pool::contains(uint32_t id) {
 			return pool.find(id) == pool.end();
 		}
 
@@ -73,7 +73,7 @@ namespace AmxVHook {
 			}
 		}
 
-		bool Pool::setData(cell id, AmxArgs & params) {
+		bool Pool::setData(uint32_t id, AmxArgs & params) {
 			if (!contains(id))
 				return false;
 			
@@ -82,7 +82,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool Pool::setInterval(cell id, ucell interval) {
+		bool Pool::setInterval(uint32_t id, uint32_t interval) {
 			if (!contains(id))
 				return false;
 
@@ -91,7 +91,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		cell Pool::getCurrId() {
+		uint32_t Pool::getCurrId() {
 			return currTimerId;
 		}
 
@@ -110,7 +110,7 @@ namespace AmxVHook {
 						i.second->stop = true;
 						break;
 					}
-					currTimerId = 0;
+					currTimerId = 0u;
 					i.second->lastTime = GAMEPLAY::GET_GAME_TIMER();
 				}
 			}

@@ -191,7 +191,7 @@ namespace AmxVHook {
 	}
 
 	cell Pool::exec(AMX * amx, const std::string & funcname, AmxArgs * params) {
-		return execByIndex(amx, Aux::getPublicIndex(amx, funcname));
+		return execByIndex(amx, Aux::getPublicIndex(amx, funcname), params);
 	}
 
 	cell Pool::execByIndex(AMX * amx, const int index, AmxArgs * params) {

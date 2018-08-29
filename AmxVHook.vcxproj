@@ -142,7 +142,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;HAVE_STDINT_H;HAVE_INTTYPES_H;HAVE_FLOAT_H;INI_NOBROWSE;AMX_NOPROPLIST;AMX_NOSTRFMT;AMX_NODYNALOAD;FLOATPOINT;AMX_USE_NEW_AMXEXEC;AMX_PTR_SIZE=64;PAWN_CELL_SIZE=32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;HAVE_STDINT_H;HAVE_INTTYPES_H;HAVE_FLOAT_H;HAVE_MALLOC_H;INI_NOBROWSE;AMX_NOPROPLIST;AMX_NOSTRFMT;AMX_NODYNALOAD;FLOATPOINT;AMX_PTR_SIZE=64;PAWN_CELL_SIZE=32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
@@ -169,7 +169,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_STDINT_H;HAVE_FLOAT_H;HAVE_INTTYPES_H;INI_NOBROWSE;AMX_NOPROPLIST;AMX_NOSTRFMT;AMX_NODYNALOAD;FLOATPOINT;AMX_PTR_SIZE=64;PAWN_CELL_SIZE=32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_STDINT_H;HAVE_FLOAT_H;HAVE_INTTYPES_H;HAVE_MALLOC_H;INI_NOBROWSE;AMX_NOPROPLIST;AMX_NOSTRFMT;AMX_NODYNALOAD;FLOATPOINT;AMX_PTR_SIZE=64;PAWN_CELL_SIZE=32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
@@ -181,7 +181,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(BOOST_LIBRARYDIR);$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AddModuleNamesToAssembly>$(OutDir)amxjits.obj;%(AddModuleNamesToAssembly)</AddModuleNamesToAssembly>
+      <AddModuleNamesToAssembly>amxjitsn.obj;%(AddModuleNamesToAssembly)</AddModuleNamesToAssembly>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) "$(GTAV_DIR)$(TargetName)$(TargetExt)"</Command>

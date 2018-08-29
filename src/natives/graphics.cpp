@@ -49,7 +49,7 @@ namespace AmxVHook {
 			MOD_NATIVE(createTexture) {
 				checkargs(1);
 
-				Fs::path path = Fs::system_complete(".\\AmxVHook\\Stuff\\" + String::get(amx, params[1]));
+				Fs::path path = Fs::system_complete("AmxVHook\\Stuff\\" + String::get(amx, params[1]));
 				if (Fs::exists(path) && !Fs::is_directory(path))
 					return ::createTexture(path.string().c_str());
 				

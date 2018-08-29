@@ -26,7 +26,7 @@ namespace AmxVHook {
 		bool setVector3(AMX * amx, cell param, Vector3 & vec);
 		void toStack(AMX * amx, const cell * params, std::string & format, AmxArgs & stk, int index = 0);
 
-		void * valloc(long size);
+		void * valloc(size_t size, bool code = false);
 		void vfree(void * memblk);
 	};
 };

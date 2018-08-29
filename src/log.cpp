@@ -13,10 +13,15 @@ namespace AmxVHook {
 	}
 
 	Log::~Log() {
+#if defined THREADED_LOG
 		threadInstance.reset();
+#else
+		ofs.close();
+#endif
 	}
 
 	void Log::init() {
+#if defined THREADED_LOG
 		try {
 			if (Fs::exists(logFile))
 				Fs::remove(logFile);
@@ -26,62 +31,73 @@ namespace AmxVHook {
 		}
 
 		threadInstance = std::make_shared<std::thread>(std::bind(&Log::Thread));
+#else
+		ofs.open(logFile, std::ios::trunc);
+#endif
 	}
 
 	void Log::log(char * format, ...) {
 		va_list args;
 		va_start(args, format);
 
-	try_lock_mutex:
-		if (mutex.try_lock()) {
-			std::string out;
-			Log::format(format, out, args);
+		std::string data;
+		String::vformat(format, data, args);
 
-			logQueue.push(std::move(out));
+#if defined THREADED_LOG
+	try_lock :
+		if (mutex.try_lock()) {
+			queue.push(data);
 			mutex.unlock();
 		}
 		else {
 			std::this_thread::yield();
-			goto try_lock_mutex;
+			goto try_lock;
 		}
-
+#else
+		String::vformat(format, data, args);
+		doWrite(logFile, data);
+#endif
 		va_end(args);
 	}
 
-	void Log::worker(std::ofstream & out) {
+	void Log::doWrite(std::string & path, std::string & data) {
+#if defined THREADED_LOG
+		std::ofstream ofs(path, std::ios::app);
+#endif
 		char timeform[16];
 		struct tm *timeinfo;
 		time_t rawtime;
 
+		time(&rawtime);
+		timeinfo = localtime(&rawtime);
+		strftime(timeform, sizeof timeform, "%X", timeinfo);
+
+		ofs << "[" << timeform << "] " << data << std::endl;
+	}
+#if defined THREADED_LOG
+	void Log::doWork() {
 		std::string data;
 
 		while (true) {
 			mutex.lock();
-			if (logQueue.empty()) {
+			if (queue.empty()) {
 				mutex.unlock();
-
 				break;
 			}
-			data = logQueue.front();
+			data = queue.front();
 			mutex.unlock();
 
-			time(&rawtime);
-			timeinfo = localtime(&rawtime);
-			strftime(timeform, sizeof timeform, "%X", timeinfo);
+			doWrite(logFile, data);
 
-			out.open(logFile, (std::ofstream::out | std::ofstream::app));
-			out << "[" << timeform << "] " << data << std::endl;
-			out.close();
-
-		try_lock_mutex:
+		try_lock:
 			if (mutex.try_lock()) {
-				logQueue.pop();
+				queue.pop();
 				mutex.unlock();
 			}
 			else {
-				gLog->log("Cannot lock log queue mutex, continuing anyway");
+//				gLog->log("Cannot lock log queue mutex, continuing anyway");
 				std::this_thread::yield();
-				goto try_lock_mutex;
+				goto try_lock;
 			}
 
 			std::this_thread::yield();
@@ -89,22 +105,13 @@ namespace AmxVHook {
 	}
 
 	void Log::Thread() {
-		assert(gLog->getThreadInstance()->get_id() == std::this_thread::get_id());
+		gLog->log("Log thread successfully started!");
 
 		while (true) {
-			std::ofstream out;
-			gLog->worker(out);
+			gLog->doWork();
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
-
-	void Log::format(const char * format, std::string & out, va_list args) {
-		size_t length = vsnprintf(NULL, NULL, format, args);
-		char * buffer = (char *)alloca(++length * sizeof(char));
-		vsnprintf(buffer, length, format, args);
-
-		out.reserve(length);
-		out.assign(buffer);
-	}
+#endif
 };

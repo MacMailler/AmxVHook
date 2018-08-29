@@ -10,7 +10,6 @@ namespace AmxVHook {
 		namespace Core {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(log)
-				MOD_DEFINE_NATIVE(logf)
 				MOD_DEFINE_NATIVE(format)
 				MOD_DEFINE_NATIVE(isModLoaded)
 				MOD_DEFINE_NATIVE(getFps)
@@ -36,22 +35,15 @@ namespace AmxVHook {
 			};
 
 			MOD_NATIVE(log) {
-				checkargs(1);
-
-				gLog->log((char *)String::get(amx, params[1]).data());
-
-				return 1;
-			}
-			
-			MOD_NATIVE(logf) {
 				cell *fstr;
 				if (amx_GetAddr(amx, params[1], &fstr) != AMX_ERR_NONE)
 					return 0;
 
 				std::string out;
+				out.reserve(255);
 				String::format(amx, &params[2], fstr, out);
 
-				gLog->log((char *)out.data());
+				gLog->log(out.data());
 
 				return 1;
 			}
@@ -89,21 +81,15 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getTickCount) {
-				return GetTickCount();
+				#if PAWN_CELL_SIZE == 64
+					return GetTickCount64();
+				#else
+					return GetTickCount();
+				#endif
 			}
 
 			MOD_NATIVE(getAllPeds) {
 				checkargs(2);
-
-	/*			cell * amxDest;
-				if (amx_GetAddr(amx, params[1], &amxDest) != AMX_ERR_NONE)
-					return 0;
-
-				int * dest = (int *)alloca(params[2] * sizeof(int));
-				int ret = worldGetAllPeds(dest, params[2]);
-				Funcs::cpy(amxDest, dest, params[2]);
-
-				return ret;*/
 
 				cell * dest;
 				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
@@ -156,7 +142,6 @@ namespace AmxVHook {
 
 				AmxArgs stk;
 				Aux::toStack(amx, params, String::get(amx, params[2]), stk, 4);
-
 				std::string modname = String::get(amx, params[3]);
 
 				if (!modname.compare("self")) {
@@ -167,14 +152,17 @@ namespace AmxVHook {
 				}
 				else {
 					if (gPool->contains(modname))
-						return gPool->exec(gPool->find(modname)->second.amx, String::get(amx, params[1]).c_str(), &stk);
+						return gPool->exec(gPool->find(modname)->second.amx, String::get(amx, params[1]), &stk);
 				}
 
 				return 1;
 			}
 
 			MOD_NATIVE(addTimer) {
-				if ((params[0] / sizeof(cell)) < 3)
+				if (argscount() < 3)
+					return 0;
+
+				if (!(params[2] > 0))
 					return 0;
 
 				std::shared_ptr<Timer::Timer> timer = std::make_shared<Timer::Timer>();
@@ -183,7 +171,7 @@ namespace AmxVHook {
 				timer->interval = params[2];
 				timer->funcindex = Aux::getPublicIndex(amx, String::get(amx, params[1]));
 
-				if (timer->funcindex != -1)
+				if (timer->funcindex == -1)
 					return 0;
 
 				Aux::toStack(amx, params, String::get(amx, params[3]), timer->params, 4);

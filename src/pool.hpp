@@ -10,7 +10,6 @@ namespace AmxVHook {
 	class Pool : NonCopy {
 	private:
 		ModPool pool;
-		PublicPool publics;
 		NativeList natives;
 		Fs::path location;
 

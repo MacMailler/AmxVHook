@@ -1,7 +1,9 @@
 #pragma once
 #include "amxvhook.hpp"
 
-#define checkargs(n) if (params[0] != (n << 2)) return 0;
+#define argscount()	(params[0] / sizeof(cell))
+#define checkargs(n) if (argscount() != n) return 0;
+
 #define MOD_NATIVE(native) cell AMX_NATIVE_CALL native(AMX *amx, const cell *params)
 #define MOD_DEFINE_NATIVE(native) {#native, native},
 
