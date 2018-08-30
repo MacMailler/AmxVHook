@@ -14,7 +14,51 @@ namespace AmxVHook {
 		void drawFloat(float value, DWORD decimal_places, float x, float y);
 
 		template<typename T1, typename T2>
-		inline void cpy(T1* dst, T2* src, size_t len);
+		inline void cpy(T1* dst, T2* src, size_t len) {
+			while (len--)
+				*(dst++) = *(src++);
+		}
+
+		template<typename R>
+		static inline R invoke(UINT64 hash, AMX * amx, const cell * params, cell * f) {
+			nativeInit(hash);
+
+			cell *val;
+
+			while (*f != '\0') {
+				switch (*(f++)) {
+				case 'i':
+				case 'd': {
+					amx_GetAddr(amx, *(params++), &val);
+					nativePush(*val);
+				}
+				break;
+
+				case 'p': {
+					amx_GetAddr(amx, *(params++), &val);
+					nativePush(val);
+				}
+				break;
+
+				case 'f': {
+					amx_GetAddr(amx, *(params++), &val);
+					nativePush(amx_ctof(*val));
+				}
+				break;
+
+				case 's': {
+					char * dest = NULL;
+					amx_StrParam(amx, *(params++), dest);
+
+					if (dest != NULL)
+						nativePush(dest);
+				}
+				break;
+				}
+			}
+
+			return *reinterpret_cast<R *>(nativeCall());
+		}
 	};
 
 	class Color {

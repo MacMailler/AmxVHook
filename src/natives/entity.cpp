@@ -264,9 +264,9 @@ namespace AmxVHook {
 			MOD_NATIVE(getEntityHealth) {
 				checkargs(1);
 
-				auto addr = getScriptHandleBaseAddress(params[1]);
+				double health = *((float *)(getScriptHandleBaseAddress(params[1]) + 0x280));
 
-				return amx_ftoc(*(float *)(addr + 0x280));
+				return amx_ftoc(health);
 			}
 
 			MOD_NATIVE(getEntityMaxHealth) {
@@ -278,14 +278,14 @@ namespace AmxVHook {
 			MOD_NATIVE(getEntitySpeed) {
 				checkargs(1);
 
-				float speed = ENTITY::GET_ENTITY_SPEED((::Entity)params[1]);
+				double speed = ENTITY::GET_ENTITY_SPEED((::Entity)params[1]);
 				return amx_ftoc(speed);
 			}
 
 			MOD_NATIVE(getEntityPitch) {
 				checkargs(1);
 
-				float pitch = ENTITY::GET_ENTITY_PITCH((::Entity)params[1]);
+				double pitch = ENTITY::GET_ENTITY_PITCH((::Entity)params[1]);
 				return amx_ftoc(pitch);
 			}
 
@@ -296,7 +296,7 @@ namespace AmxVHook {
 				if (amx_GetAddr(amx, params[2], &coords) != AMX_ERR_NONE)
 					return 0;
 
-				float height = ENTITY::GET_ENTITY_HEIGHT((::Entity)params[1], amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]), params[3], params[4]);
+				double height = ENTITY::GET_ENTITY_HEIGHT((::Entity)params[1], amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]), params[3], params[4]);
 
 				return amx_ftoc(height);
 			}
@@ -304,7 +304,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getEntityHeightAboveGround) {
 				checkargs(1);
 
-				float height = ENTITY::GET_ENTITY_HEIGHT_ABOVE_GROUND((::Entity)params[1]);
+				double height = ENTITY::GET_ENTITY_HEIGHT_ABOVE_GROUND((::Entity)params[1]);
 
 				return amx_ftoc(height);
 			}
@@ -320,7 +320,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getEntityRoll) {
 				checkargs(1);
 
-				float roll = ENTITY::GET_ENTITY_ROLL((::Entity)params[1]);
+				double roll = ENTITY::GET_ENTITY_ROLL((::Entity)params[1]);
 
 				return amx_ftoc(roll);
 			}
@@ -328,9 +328,9 @@ namespace AmxVHook {
 			MOD_NATIVE(getEntityHeading) {
 				checkargs(1);
 
-				float roll = ENTITY::GET_ENTITY_HEADING((::Entity)params[1]);
+				double heading = ENTITY::GET_ENTITY_HEADING((::Entity)params[1]);
 
-				return amx_ftoc(roll);
+				return amx_ftoc(heading);
 			}
 
 			MOD_NATIVE(getEntityQuaternion) {
@@ -343,8 +343,10 @@ namespace AmxVHook {
 				float ww;
 				Vector3 coords;
 				ENTITY::GET_ENTITY_QUATERNION((::Entity)params[1], &coords.x, &coords.y, &coords.z, &ww);
-
-				*w = amx_ftoc(ww);
+				
+				double www = static_cast<double>(ww);
+				
+				*w = amx_ftoc(www);
 
 				return Aux::setVector3(amx, params[2], coords);
 			}

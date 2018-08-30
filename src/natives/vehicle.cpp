@@ -260,8 +260,9 @@ namespace AmxVHook {
 			MOD_NATIVE(deleteVehicle) {
 				checkargs(1);
 
+				::Vehicle vehicle = (::Vehicle)params[1];
 				ENTITY::SET_ENTITY_AS_MISSION_ENTITY(params[1], true, true);
-				VEHICLE::DELETE_VEHICLE(&(::Vehicle)params[1]);
+				VEHICLE::DELETE_VEHICLE(&vehicle);
 
 				return 1;
 			}
@@ -1306,7 +1307,7 @@ namespace AmxVHook {
 					return 0;
 
 
-				return VEHICLE::GET_VEHICLE_LIGHTS_STATE((::Vehicle)params[1], lightsOn, highbeamsOn);
+				return VEHICLE::GET_VEHICLE_LIGHTS_STATE((::Vehicle)params[1], reinterpret_cast<int *>(lightsOn), reinterpret_cast<int *>(highbeamsOn));
 			}
 
 			MOD_NATIVE(getVehicleNumberPlateText) {
@@ -1381,9 +1382,9 @@ namespace AmxVHook {
 					return 0;
 					
 				if (params[2] == 1)
-					VEHICLE::GET_VEHICLE_MOD_COLOR_1((::Vehicle)params[1], paintType, color, pearlescentColor);
+					VEHICLE::GET_VEHICLE_MOD_COLOR_1((::Vehicle)params[1], reinterpret_cast<int *>(paintType), reinterpret_cast<int *>(color), reinterpret_cast<int *>(pearlescentColor));
 				else
-					VEHICLE::GET_VEHICLE_MOD_COLOR_2((::Vehicle)params[1], paintType, color);
+					VEHICLE::GET_VEHICLE_MOD_COLOR_2((::Vehicle)params[1], reinterpret_cast<int *>(paintType), reinterpret_cast<int *>(color));
 
 				return 1;
 			}
@@ -1441,7 +1442,7 @@ namespace AmxVHook {
 				if (amx_GetAddr(amx, params[3], &vehicle) != AMX_ERR_NONE)
 					return 0;
 
-				return VEHICLE::GET_VEHICLE_TRAILER_VEHICLE((::Vehicle)params[1], vehicle);
+				return VEHICLE::GET_VEHICLE_TRAILER_VEHICLE((::Vehicle)params[1], reinterpret_cast<::Vehicle *>(vehicle));
 			}
 
 			MOD_NATIVE(getVehicleTyreSmokeColor) {
@@ -1480,7 +1481,7 @@ namespace AmxVHook {
 					amx_GetAddr(amx, params[3], &secondary) != AMX_ERR_NONE)
 					return 0;
 
-				VEHICLE::GET_VEHICLE_COLOURS((::Vehicle)params[1], primary, secondary);
+				VEHICLE::GET_VEHICLE_COLOURS((::Vehicle)params[1], reinterpret_cast<int *>(primary), reinterpret_cast<int *>(secondary));
 
 				return 1;
 			}
@@ -1536,7 +1537,7 @@ namespace AmxVHook {
 					amx_GetAddr(amx, params[3], &wheelColor) != AMX_ERR_NONE)
 					return 0;
 
-				VEHICLE::GET_VEHICLE_EXTRA_COLOURS((::Vehicle)params[1], pearlescentColor, wheelColor);
+				VEHICLE::GET_VEHICLE_EXTRA_COLOURS((::Vehicle)params[1], reinterpret_cast<int *>(pearlescentColor), reinterpret_cast<int *>(wheelColor));
 
 				return 1;
 			}
@@ -1592,7 +1593,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleBodyHealth) {
 				checkargs(1);
 
-				float health = VEHICLE::GET_VEHICLE_BODY_HEALTH((::Vehicle)params[1]);
+				double health = VEHICLE::GET_VEHICLE_BODY_HEALTH((::Vehicle)params[1]);
 
 				return amx_ftoc(health);
 			}
@@ -1600,7 +1601,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleEngineHealth) {
 				checkargs(1);
 
-				float health = VEHICLE::GET_VEHICLE_ENGINE_HEALTH((::Vehicle)params[1]);
+				double health = VEHICLE::GET_VEHICLE_ENGINE_HEALTH((::Vehicle)params[1]);
 
 				return amx_ftoc(health);
 			}
@@ -1608,7 +1609,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehiclePetrolTankHealth) {
 				checkargs(1);
 
-				float health = VEHICLE::GET_VEHICLE_PETROL_TANK_HEALTH((::Vehicle)params[1]);
+				double health = VEHICLE::GET_VEHICLE_PETROL_TANK_HEALTH((::Vehicle)params[1]);
 
 				return amx_ftoc(health);
 			}
@@ -1616,7 +1617,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleMaxSpeed) {
 				checkargs(1);
 
-				float speed = VEHICLE::_GET_VEHICLE_MAX_SPEED((::Vehicle)params[1]);
+				double speed = VEHICLE::_GET_VEHICLE_MAX_SPEED((::Vehicle)params[1]);
 
 				return amx_ftoc(speed);
 			}
@@ -1624,7 +1625,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleMaxBraking) {
 				checkargs(1);
 
-				float braking = VEHICLE::GET_VEHICLE_MAX_BRAKING((::Vehicle)params[1]);
+				double braking = VEHICLE::GET_VEHICLE_MAX_BRAKING((::Vehicle)params[1]);
 
 				return amx_ftoc(braking);
 			}
@@ -1632,7 +1633,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleMaxTraction) {
 				checkargs(1);
 
-				float traction = VEHICLE::GET_VEHICLE_MAX_TRACTION((::Vehicle)params[1]);
+				double traction = VEHICLE::GET_VEHICLE_MAX_TRACTION((::Vehicle)params[1]);
 
 				return amx_ftoc(traction);
 			}
@@ -1640,7 +1641,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleAcceleration) {
 				checkargs(1);
 
-				float accel = VEHICLE::GET_VEHICLE_ACCELERATION((::Vehicle)params[1]);
+				double accel = VEHICLE::GET_VEHICLE_ACCELERATION((::Vehicle)params[1]);
 
 				return amx_ftoc(accel);
 			}
@@ -1648,7 +1649,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModelMaxSpeed) {
 				checkargs(1);
 
-				float speed = VEHICLE::_GET_VEHICLE_MAX_SPEED((::Vehicle)params[1]);
+				double speed = VEHICLE::_GET_VEHICLE_MAX_SPEED((::Vehicle)params[1]);
 
 				return amx_ftoc(speed);
 			}
@@ -1656,7 +1657,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModelMaxBraking) {
 				checkargs(1);
 
-				float braking = VEHICLE::GET_VEHICLE_MODEL_MAX_BRAKING((::Hash)params[1]);
+				double braking = VEHICLE::GET_VEHICLE_MODEL_MAX_BRAKING((::Hash)params[1]);
 
 				return amx_ftoc(braking);
 			}
@@ -1664,7 +1665,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModelMaxTraction) {
 				checkargs(1);
 
-				float traction = VEHICLE::GET_VEHICLE_MODEL_MAX_TRACTION((::Hash)params[1]);
+				double traction = VEHICLE::GET_VEHICLE_MODEL_MAX_TRACTION((::Hash)params[1]);
 
 				return amx_ftoc(traction);
 			}
@@ -1672,7 +1673,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModelMaxKnots) {
 				checkargs(1);
 
-				float knots = VEHICLE::_0xC6AD107DDC9054CC((::Hash)params[1]);
+				double knots = VEHICLE::_0xC6AD107DDC9054CC((::Hash)params[1]);
 
 				return amx_ftoc(knots);
 			}
@@ -1680,7 +1681,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModelAcceleration) {
 				checkargs(1);
 
-				float accel = VEHICLE::GET_VEHICLE_MODEL_ACCELERATION((::Hash)params[1]);
+				double accel = VEHICLE::GET_VEHICLE_MODEL_ACCELERATION((::Hash)params[1]);
 
 				return amx_ftoc(accel);
 			}
@@ -1688,7 +1689,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModelHandBrake) {
 				checkargs(1);
 
-				float handbrake = VEHICLE::_0xBFBA3BA79CFF7EBF((::Hash)params[1]);
+				double handbrake = VEHICLE::_0xBFBA3BA79CFF7EBF((::Hash)params[1]);
 
 				return amx_ftoc(handbrake);
 			}
@@ -1696,7 +1697,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModelDownForce) {
 				checkargs(1);
 
-				float downForce = VEHICLE::_0x53409B5163D5B846((::Hash)params[1]);
+				double downForce = VEHICLE::_0x53409B5163D5B846((::Hash)params[1]);
 
 				return amx_ftoc(downForce);
 			}
@@ -1704,7 +1705,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModelMoveResistance) {
 				checkargs(1);
 
-				float resist = VEHICLE::_0x5AA3F878A178C4FC((::Hash)params[1]);
+				double resist = VEHICLE::_0x5AA3F878A178C4FC((::Hash)params[1]);
 
 				return amx_ftoc(resist);
 			}
@@ -1712,7 +1713,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleClassMaxSpeed) {
 				checkargs(1);
 
-				float accel = VEHICLE::_0x00C09F246ABEDD82(params[1]);
+				double accel = VEHICLE::_0x00C09F246ABEDD82(params[1]);
 
 				return amx_ftoc(accel);
 			}
@@ -1720,7 +1721,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleClassMaxTraction) {
 				checkargs(1);
 
-				float traction = VEHICLE::GET_VEHICLE_CLASS_MAX_TRACTION(params[1]);
+				double traction = VEHICLE::GET_VEHICLE_CLASS_MAX_TRACTION(params[1]);
 
 				return amx_ftoc(traction);
 			}
@@ -1728,7 +1729,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleClassMaxBraking) {
 				checkargs(1);
 
-				float braking = VEHICLE::GET_VEHICLE_CLASS_MAX_BRAKING(params[1]);
+				double braking = VEHICLE::GET_VEHICLE_CLASS_MAX_BRAKING(params[1]);
 
 				return amx_ftoc(braking);
 			}
@@ -1736,7 +1737,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleClassMaxAgility) {
 				checkargs(1);
 
-				float agility = VEHICLE::GET_VEHICLE_CLASS_MAX_AGILITY(params[1]);
+				double agility = VEHICLE::GET_VEHICLE_CLASS_MAX_AGILITY(params[1]);
 
 				return amx_ftoc(agility);
 			}
@@ -1744,7 +1745,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleClassMaxAcceleration) {
 				checkargs(1);
 
-				float accel = VEHICLE::GET_VEHICLE_CLASS_MAX_ACCELERATION(params[1]);
+				double accel = VEHICLE::GET_VEHICLE_CLASS_MAX_ACCELERATION(params[1]);
 
 				return amx_ftoc(accel);
 			}
@@ -1752,7 +1753,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleModModifierValue) {
 				checkargs(3);
 
-				float value = VEHICLE::GET_VEHICLE_MOD_MODIFIER_VALUE((::Vehicle)params[1], params[2], params[3]);
+				double value = VEHICLE::GET_VEHICLE_MOD_MODIFIER_VALUE((::Vehicle)params[1], params[2], params[3]);
 
 				return amx_ftoc(value);
 			}
@@ -1760,7 +1761,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleDoorAngleRatio) {
 				checkargs(2);
 
-				float ratio = VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO((::Vehicle)params[1], params[2]);
+				double ratio = VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO((::Vehicle)params[1], params[2]);
 
 				return amx_ftoc(ratio);
 			}
@@ -1768,7 +1769,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getVehicleDirtLevel) {
 				checkargs(1);
 
-				float level = VEHICLE::GET_VEHICLE_DIRT_LEVEL((::Vehicle)params[1]);
+				double level = VEHICLE::GET_VEHICLE_DIRT_LEVEL((::Vehicle)params[1]);
 
 				return amx_ftoc(level);
 			}

@@ -157,7 +157,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getPlayerStealthNoise) {
-				float noise = PLAYER::GET_PLAYER_CURRENT_STEALTH_NOISE(PLAYER::PLAYER_ID());
+				double noise = PLAYER::GET_PLAYER_CURRENT_STEALTH_NOISE(PLAYER::PLAYER_ID());
 				return amx_ftoc(noise);
 			}
 

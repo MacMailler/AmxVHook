@@ -48,12 +48,6 @@ namespace AmxVHook {
 			UI::_ADD_TEXT_COMPONENT_STRING((char *)data.c_str());
 			UI::_DRAW_TEXT(x, y);
 		}
-
-		template<typename T1, typename T2>
-		inline void cpy(T1* dst, T2* src, size_t len) {
-			while (len--)
-				*(dst++) = *(src++);
-		}
 	};
 
 	Color::Color() {

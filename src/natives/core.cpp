@@ -11,6 +11,7 @@ namespace AmxVHook {
 			AMX_NATIVE_INFO list[] = {
 				MOD_DEFINE_NATIVE(log)
 				MOD_DEFINE_NATIVE(format)
+				MOD_DEFINE_NATIVE(invoke)
 				MOD_DEFINE_NATIVE(isModLoaded)
 				MOD_DEFINE_NATIVE(getFps)
 				MOD_DEFINE_NATIVE(getVersion)
@@ -62,6 +63,25 @@ namespace AmxVHook {
 				return 1;
 			}
 
+			MOD_NATIVE(invoke) {
+				if (argscount() < 3)
+					return 0;
+
+				cell *fstr;
+				if (amx_GetAddr(amx, params[3], &fstr) != AMX_ERR_NONE)
+					return 0;
+
+				switch (params[2]) {
+				case 1: return Funcs::invoke<Void>(params[1], amx, &params[4], fstr);
+				case 2: return Funcs::invoke<int>(params[1], amx, &params[4], fstr);
+				case 3:
+					double val = Funcs::invoke<float>(params[1], amx, &params[4], fstr);
+					return amx_ftoc(val);
+				}
+
+				return 0;
+			}
+
 			MOD_NATIVE(isModLoaded) {
 				checkargs(1);
 
@@ -91,41 +111,61 @@ namespace AmxVHook {
 			MOD_NATIVE(getAllPeds) {
 				checkargs(2);
 
-				cell * dest;
-				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
+				cell * amxDest;
+				if (amx_GetAddr(amx, params[1], &amxDest) != AMX_ERR_NONE)
 					return 0;
 
-				return worldGetAllPeds(dest, params[2]);
+				int * dest = (int *)alloca(params[2]);
+				int ret = worldGetAllPeds(dest, params[2]);
+
+				Funcs::cpy(amxDest, dest, params[2]);
+
+				return ret;
 			}
 
 			MOD_NATIVE(getAllObjects) {
 				checkargs(2);
 
-				cell * dest;
-				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
+				cell * amxDest;
+				if (amx_GetAddr(amx, params[1], &amxDest) != AMX_ERR_NONE)
 					return 0;
 
-				return worldGetAllObjects(dest, params[2]);
+				int * dest = (int *)alloca(params[2]);
+				int ret = worldGetAllObjects(dest, params[2]);
+
+				Funcs::cpy(amxDest, dest, params[2]);
+
+				return ret;
 			}
 
 			MOD_NATIVE(getAllPickups) {
 				checkargs(2);
 
-				cell * dest;
-				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
+				cell * amxDest;
+				if (amx_GetAddr(amx, params[1], &amxDest) != AMX_ERR_NONE)
 					return 0;
 
-				return worldGetAllPickups(dest, params[2]);
+				int * dest = (int *)alloca(params[2]);
+				int ret = worldGetAllPickups(dest, params[2]);
+
+				Funcs::cpy(amxDest, dest, params[2]);
+
+				return ret;
 			}
 
 			MOD_NATIVE(getAllVehicles) {
 				checkargs(2);
 
-				cell * dest;
-				if (amx_GetAddr(amx, params[1], &dest) != AMX_ERR_NONE)
+				cell * amxDest;
+				if (amx_GetAddr(amx, params[1], &amxDest) != AMX_ERR_NONE)
 					return 0;
 
-				return worldGetAllVehicles(dest, params[2]);
+				int * dest = (int *)alloca(params[2]);
+				int ret = worldGetAllVehicles(dest, params[2]);
+
+				Funcs::cpy(amxDest, dest, params[2]);
+
+				return ret;
 			}
 
 			MOD_NATIVE(setVersionVisible) {
@@ -137,7 +177,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(callFunc) {
-				if ((params[0] / sizeof(cell)) < 3)
+				if (argscount() < 3)
 					return 0;
 
 				AmxArgs stk;
@@ -206,7 +246,7 @@ namespace AmxVHook {
 			}
 			
 			MOD_NATIVE(setTimerData) {
-				if ((params[0] / sizeof(cell)) < 2)
+				if (argscount() < 2)
 					return 0;
 
 				AmxArgs stk;

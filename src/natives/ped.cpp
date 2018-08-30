@@ -620,7 +620,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getPedMaxRangeOfCurrentWeapon) {
 				checkargs(1);
 
-				float range = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON((::Ped)params[1]);
+				double range = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON((::Ped)params[1]);
 
 				return amx_ftoc(range);
 			}

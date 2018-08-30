@@ -65,12 +65,14 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getWindSpeed) {
-				float speed = GAMEPLAY::GET_WIND_SPEED();
+				double speed = GAMEPLAY::GET_WIND_SPEED();
+				
 				return amx_ftoc(speed);
 			}
 
 			MOD_NATIVE(getWindDirection) {
-				float speed = GAMEPLAY::GET_WIND_SPEED();
+				double speed = GAMEPLAY::GET_WIND_SPEED();
+				
 				return amx_ftoc(speed);
 			}
 
@@ -219,7 +221,9 @@ namespace AmxVHook {
 				float time;
 				GAMEPLAY::_GET_WEATHER_TYPE_TRANSITION((Any *)sourceWeather, (Any *)targetWeather, &time);
 
-				*transitionTime = amx_ftoc(time);
+				double ttime = static_cast<double>(time);
+				
+				*transitionTime = amx_ftoc(ttime);
 
 				return 1;
 			}

@@ -47,6 +47,12 @@ native setVersionVisible(bool:visible);
 
 native log(const text[], {Float, _}:...);
 native format(dest[], maxlen = sizeof dest, const fstr[], {Float, _}:...);
-native callFunc(const funcname[], const fstr[]="", const modname[]="self", {Float, _}:...);
+native callFunc(const funcname[], const fstr[] = "", const modname[] = "self", {Float, _}:...);
 
-//native strtok(const str[], dest[][], const delims[] = " ", maxtokens = sizeof dest, maxlen = sizeof dest[]);
+
+enum eInvokeRetType {
+	INVOKE_RET_VOID = 1,
+	INVOKE_RET_INT = 2,
+	INVOKE_RET_FLOAT = 3
+};
+native invoke(const nativeHash, retType = INVOKE_RET_VOID, const fstr[] = "", {Float, _}:...);

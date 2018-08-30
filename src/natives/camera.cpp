@@ -168,7 +168,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getCamFov) {
 				checkargs(1);
 
-				float fov = CAM::GET_CAM_FOV((::Cam)params[1]);
+				double fov = CAM::GET_CAM_FOV((::Cam)params[1]);
 
 				return amx_ftoc(fov);
 			}
@@ -176,7 +176,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getCamNearClip) {
 				checkargs(1);
 
-				float clip = CAM::GET_CAM_NEAR_CLIP((::Cam)params[1]);
+				double clip = CAM::GET_CAM_NEAR_CLIP((::Cam)params[1]);
 
 				return amx_ftoc(clip);
 			}
@@ -184,7 +184,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getCamFarClip) {
 				checkargs(1);
 
-				float clip = CAM::GET_CAM_FAR_CLIP((::Cam)params[1]);
+				double clip = CAM::GET_CAM_FAR_CLIP((::Cam)params[1]);
 
 				return amx_ftoc(clip);
 			}
@@ -192,7 +192,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getCamFarDof) {
 				checkargs(1);
 
-				float dof = CAM::GET_CAM_FAR_DOF((::Cam)params[1]);
+				double dof = CAM::GET_CAM_FAR_DOF((::Cam)params[1]);
 
 				return amx_ftoc(dof);
 			}
@@ -218,12 +218,14 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getGameplayCamFov) {
-				float fov = CAM::GET_GAMEPLAY_CAM_FOV();
+				double fov = CAM::GET_GAMEPLAY_CAM_FOV();
+				
 				return amx_ftoc(fov);
 			}
 
 			MOD_NATIVE(getGameplayCamZoom) {
-				float fov = CAM::_GET_GAMEPLAY_CAM_ZOOM();
+				double fov = CAM::_GET_GAMEPLAY_CAM_ZOOM();
+				
 				return amx_ftoc(fov);
 			}
 

@@ -29,7 +29,7 @@ namespace AmxVHook {
 		}
 
 		void format(AMX * amx, const cell * params, cell * f, std::string & out) {
-			const size_t bufMaxLen = 32;
+			const size_t bufMaxLen = 64;
 			char buf[bufMaxLen];
 			cell index = 0, *ptr = nullptr;
 	

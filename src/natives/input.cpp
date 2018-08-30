@@ -146,7 +146,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getCmdParamFloat) {
 				checkargs(1);
 
-				float ret = Keyboard::getCmdParamFloat(params[1]);
+				double ret = Keyboard::getCmdParamFloat(params[1]);
 
 				return amx_ftoc(ret);
 			}
@@ -224,7 +224,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getControlNormal) {
 				checkargs(2);
 
-				float normal = CONTROLS::GET_CONTROL_NORMAL(params[1], params[2]);
+				double normal = CONTROLS::GET_CONTROL_NORMAL(params[1], params[2]);
 
 				return amx_ftoc(normal);
 			}
@@ -232,7 +232,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getDisabledControlNormal) {
 				checkargs(2);
 
-				float normal = CONTROLS::GET_DISABLED_CONTROL_NORMAL(params[1], params[2]);
+				double normal = CONTROLS::GET_DISABLED_CONTROL_NORMAL(params[1], params[2]);
 
 				return amx_ftoc(normal);
 			}

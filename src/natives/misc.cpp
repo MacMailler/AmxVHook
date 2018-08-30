@@ -29,7 +29,8 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getFrameTime) {
-				float time = GAMEPLAY::GET_FRAME_TIME();
+				double time = GAMEPLAY::GET_FRAME_TIME();
+
 				return amx_ftoc(time);
 			}
 
@@ -46,7 +47,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getRandomFloat) {
 				checkargs(2);
 
-				float value = GAMEPLAY::GET_RANDOM_FLOAT_IN_RANGE(amx_ctof(params[1]), amx_ctof(params[2]));
+				double value = GAMEPLAY::GET_RANDOM_FLOAT_IN_RANGE(amx_ctof(params[1]), amx_ctof(params[2]));
 
 				return amx_ftoc(value);
 			}
@@ -59,7 +60,7 @@ namespace AmxVHook {
 					amx_GetAddr(amx, params[2], &coords2) != AMX_ERR_NONE)
 					return 0;
 
-				float dist = GAMEPLAY::GET_DISTANCE_BETWEEN_COORDS(
+				double dist = GAMEPLAY::GET_DISTANCE_BETWEEN_COORDS(
 					amx_ctof(coords1[0]), amx_ctof(coords1[1]), amx_ctof(coords1[1]),
 					amx_ctof(coords2[0]), amx_ctof(coords2[1]), amx_ctof(coords2[1]),
 					params[3]
@@ -76,7 +77,7 @@ namespace AmxVHook {
 					amx_GetAddr(amx, params[2], &vec2) != AMX_ERR_NONE)
 					return 0;
 
-				float dist = GAMEPLAY::GET_ANGLE_BETWEEN_2D_VECTORS(
+				double dist = GAMEPLAY::GET_ANGLE_BETWEEN_2D_VECTORS(
 					amx_ctof(vec1[0]), amx_ctof(vec1[1]),
 					amx_ctof(vec2[0]), amx_ctof(vec2[1])
 				);
@@ -87,7 +88,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getHeadingFromVector2d) {
 				checkargs(2);
 
-				float dist = GAMEPLAY::GET_HEADING_FROM_VECTOR_2D(amx_ctof(params[1]), amx_ctof(params[2]));
+				double dist = GAMEPLAY::GET_HEADING_FROM_VECTOR_2D(amx_ctof(params[1]), amx_ctof(params[2]));
 
 				return amx_ftoc(dist);
 			}
@@ -103,9 +104,12 @@ namespace AmxVHook {
 
 				float sx2, sy2;
 				BOOL ret = GRAPHICS::_WORLD3D_TO_SCREEN2D(amx_ctof(coords[0]), amx_ctof(coords[1]), amx_ctof(coords[2]), &sx2, &sy2);
+				
+				double sx3 = static_cast<double>(sx2);
+				double sy3 = static_cast<double>(sy2);
 
-				*sx = amx_ftoc(sx2);
-				*sy = amx_ftoc(sy2);
+				*sx = amx_ftoc(sx3);
+				*sy = amx_ftoc(sy3);
 
 				return ret;
 			}

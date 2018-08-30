@@ -145,7 +145,7 @@ namespace AmxVHook {
 			const AMX_FUNCSTUBNT *publics = getPublics(amx);
 
 			for (int i = 0; i < n; i++)
-				if (!funcname.compare(getPublicName(amx, publics[i].nameofs)))
+				if (strcmp(funcname.c_str(), getPublicName(amx, publics[i].nameofs)) == 0)
 					return i;
 
 			return -1;
@@ -185,9 +185,9 @@ namespace AmxVHook {
 			if (amx_GetAddr(amx, param, &addr) != AMX_ERR_NONE)
 				return false;
 
-			vec.x = amx_ctof(addr[0]);
-			vec.y = amx_ctof(addr[1]);
-			vec.z = amx_ctof(addr[2]);
+			vec.x = (float)amx_ctof(addr[0]);
+			vec.y = (float)amx_ctof(addr[1]);
+			vec.z = (float)amx_ctof(addr[2]);
 
 			return true;
 		}
@@ -207,9 +207,13 @@ namespace AmxVHook {
 			if (amx_GetAddr(amx, param, &addr) != AMX_ERR_NONE)
 				return false;
 
-			addr[0] = amx_ftoc(vec.x);
-			addr[1] = amx_ftoc(vec.y);
-			addr[2] = amx_ftoc(vec.z);
+			double x = vec.x;
+			double y = vec.y;
+			double z = vec.z;
+
+			addr[0] = amx_ftoc(x);
+			addr[1] = amx_ftoc(y);
+			addr[2] = amx_ftoc(z);
 
 			return true;
 		}

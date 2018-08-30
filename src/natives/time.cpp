@@ -113,7 +113,14 @@ namespace AmxVHook {
 				checkargs(2);
 
 				cell date[3], time[3];
-				TIME::GET_POSIX_TIME(&date[0], &date[1], &date[2], &time[0], &time[1], &time[2]);
+				TIME::GET_POSIX_TIME(
+					reinterpret_cast<int *>(&date[0]),
+					reinterpret_cast<int *>(&date[1]),
+					reinterpret_cast<int *>(&date[2]),
+					reinterpret_cast<int *>(&time[0]),
+					reinterpret_cast<int *>(&time[1]),
+					reinterpret_cast<int *>(&time[2])
+				);
 
 				Aux::setArray(amx, params[1], date, 3);
 				Aux::setArray(amx, params[2], time, 3);
@@ -125,7 +132,14 @@ namespace AmxVHook {
 				checkargs(2);
 
 				cell date[3], time[3];
-				TIME::GET_LOCAL_TIME(&date[0], &date[1], &date[2], &time[0], &time[1], &time[2]);
+				TIME::GET_LOCAL_TIME(
+					reinterpret_cast<int *>(&date[0]),
+					reinterpret_cast<int *>(&date[1]),
+					reinterpret_cast<int *>(&date[2]),
+					reinterpret_cast<int *>(&time[0]),
+					reinterpret_cast<int *>(&time[1]),
+					reinterpret_cast<int *>(&time[2])
+				);
 
 				Aux::setArray(amx, params[1], date, 3);
 				Aux::setArray(amx, params[2], time, 3);

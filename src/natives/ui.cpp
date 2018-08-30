@@ -86,7 +86,7 @@ namespace AmxVHook {
 			}
 
 			MOD_NATIVE(getSafeZoneSize) {
-				float size = GRAPHICS::GET_SAFE_ZONE_SIZE();
+				double size = GRAPHICS::GET_SAFE_ZONE_SIZE();
 
 				return amx_ftoc(size);
 			}
@@ -99,7 +99,7 @@ namespace AmxVHook {
 					amx_GetAddr(amx, params[2], &h) != AMX_ERR_NONE)
 					return 0;
 
-				GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(w, h);
+				GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(reinterpret_cast<int *>(w), reinterpret_cast<int *>(h));
 
 				return 1;
 			}
@@ -107,7 +107,7 @@ namespace AmxVHook {
 			MOD_NATIVE(getScreenAspectRatio) {
 				checkargs(1);
 
-				float ratio = GRAPHICS::_GET_SCREEN_ASPECT_RATIO(params[1]);
+				double ratio = GRAPHICS::_GET_SCREEN_ASPECT_RATIO(params[1]);
 
 				return amx_ftoc(ratio);
 			}
