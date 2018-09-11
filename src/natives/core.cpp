@@ -12,6 +12,8 @@ namespace AmxVHook {
 				MOD_DEFINE_NATIVE(log)
 				MOD_DEFINE_NATIVE(format)
 				MOD_DEFINE_NATIVE(invoke)
+				MOD_DEFINE_NATIVE(invoke_s)
+				MOD_DEFINE_NATIVE(invoke_v)
 				MOD_DEFINE_NATIVE(isModLoaded)
 				MOD_DEFINE_NATIVE(getFps)
 				MOD_DEFINE_NATIVE(getVersion)
@@ -71,15 +73,50 @@ namespace AmxVHook {
 				if (amx_GetAddr(amx, params[3], &fstr) != AMX_ERR_NONE)
 					return 0;
 
+				enum {
+					INVOKE_RET_DWORD,
+					INVOKE_RET_INT,
+					INVOKE_RET_FLOAT
+				};
+
 				switch (params[2]) {
-				case 1: return Funcs::invoke<Void>(params[1], amx, &params[4], fstr);
-				case 2: return Funcs::invoke<int>(params[1], amx, &params[4], fstr);
-				case 3:
+				case INVOKE_RET_DWORD: return Funcs::invoke<DWORD>(params[1], amx, &params[4], fstr);
+				case INVOKE_RET_INT: return Funcs::invoke<int>(params[1], amx, &params[4], fstr);
+				case INVOKE_RET_FLOAT:
 					double val = Funcs::invoke<float>(params[1], amx, &params[4], fstr);
 					return amx_ftoc(val);
 				}
 
 				return 0;
+			}
+
+			MOD_NATIVE(invoke_s) {
+				if (argscount() < 4)
+					return 0;
+
+				cell *fstr, *dest;
+				if (amx_GetAddr(amx, params[4], &fstr) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &dest) != AMX_ERR_NONE)
+					return 0;
+
+				char * ret = Funcs::invoke<char *>(params[1], amx, &params[5], fstr);
+				amx_SetString(dest, ret, false, false, params[3]);
+
+				return 1;
+			}
+
+			MOD_NATIVE(invoke_v) {
+				if (argscount() < 3)
+					return 0;
+
+				cell *fstr, *dest;
+				if (amx_GetAddr(amx, params[3], &fstr) != AMX_ERR_NONE ||
+					amx_GetAddr(amx, params[2], &dest) != AMX_ERR_NONE)
+					return 0;
+
+				Vector3 ret = Funcs::invoke<Vector3>(params[1], amx, &params[4], fstr);
+				
+				return Aux::setVector3(amx, params[2], ret);
 			}
 
 			MOD_NATIVE(isModLoaded) {

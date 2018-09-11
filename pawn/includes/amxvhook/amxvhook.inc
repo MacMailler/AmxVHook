@@ -51,8 +51,12 @@ native callFunc(const funcname[], const fstr[] = "", const modname[] = "self", {
 
 
 enum eInvokeRetType {
-	INVOKE_RET_VOID = 1,
-	INVOKE_RET_INT = 2,
-	INVOKE_RET_FLOAT = 3
+	INVOKE_RET_DWORD, // Void, Hash, Any, uint
+	INVOKE_RET_INT,
+	INVOKE_RET_FLOAT
+
 };
-native invoke(const nativeHash, retType = INVOKE_RET_VOID, const fstr[] = "", {Float, _}:...);
+
+native invoke(const hash, retType = INVOKE_RET_DWORD, const f[] = "", {Float, _}:...);
+native invoke_s(const hash, ret[], maxlen = sizeof ret, const f[] = "", {Float, _}:...);
+native invoke_v(const hash, ret[@Vector3], const f[] = "", {Float, _}:...);

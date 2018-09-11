@@ -7,6 +7,8 @@ namespace AmxVHook {
 			MOD_NATIVE(log);
 			MOD_NATIVE(format);
 			MOD_NATIVE(invoke);
+			MOD_NATIVE(invoke_s);
+			MOD_NATIVE(invoke_v);
 			MOD_NATIVE(isModLoaded);
 			MOD_NATIVE(getFps);
 			MOD_NATIVE(getVersion);
