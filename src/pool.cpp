@@ -61,13 +61,14 @@ namespace AmxVHook {
 
 			if (err == AMX_ERR_NONE) {
 				gLog->log("Mod '%s' loaded! Registred natives: %d", name, Aux::getNumNatives(amx));
-#if defined AMXDBG
+			#if defined AMXDBG
 				uint16_t flags;
 				amx_Flags(amx, &flags);
 				if ((flags & AMX_FLAG_DEBUG) == 0)
 					gLog->log("Debug info: '%s' has no debug information!", name);
-#endif
-				this->exec(amx, "onModLoad");
+			#endif
+				registerPublics(amx);
+				execByIndex(amx, publics[amx].default.onModLoad);
 			}
 			else {
 				gLog->log("Failed to load '%s' mod! %s", name, Aux::strError(err));
@@ -89,6 +90,7 @@ namespace AmxVHook {
 			delete i.second.amx;
 		}
 		pool.clear();
+		publics.clear();
 
 		gLog->log("All mods unloaded!");
 	}
@@ -140,39 +142,46 @@ namespace AmxVHook {
 	bool Pool::unloadMod(std::string & name) {
 		gLog->log("Unloading mod '%s.amx'...", name.c_str());
 
-		if (!this->contains(name))
+		auto i = pool.find(name);
+
+		if (i == pool.end())
 			return false;
 
-		this->exec(pool[name].amx, "onModUnload");
+		execByIndex(i->second.amx, publics[i->second.amx].default.onModUnload);
 
-		amx_StringCleanup(pool[name].amx);
-		amx_FloatCleanup(pool[name].amx);
-		amx_CoreCleanup(pool[name].amx);
-		Aux::cleanup(pool[name].amx);
+		amx_StringCleanup(i->second.amx);
+		amx_FloatCleanup(i->second.amx);
+		amx_CoreCleanup(i->second.amx);
+		Aux::cleanup(i->second.amx);
 
-		delete pool[name].amx;
+		delete i->second.amx;
 
-		pool.erase(name);
+		pool.erase(i);
+		publics.erase(i->second.amx);
 
 		return true;
 	}
 
 	bool Pool::reloadMod(std::string & name) {
-		gLog->log("Unloading mod '%s.amx'...", name.c_str());
+		gLog->log("Unloading mod '%s.amx'...", name);
 
-		if (!this->contains(name))
+		auto i = pool.find(name);
+
+		if (i == pool.end())
 			return false;
 
-		this->exec(pool[name].amx, "onModUnload");
+		execByIndex(i->second.amx, publics[i->second.amx].default.onModUnload);
 
-		amx_StringCleanup(pool[name].amx);
-		amx_FloatCleanup(pool[name].amx);
-		amx_CoreCleanup(pool[name].amx);
-		Aux::cleanup(pool[name].amx);
+		amx_StringCleanup(i->second.amx);
+		amx_FloatCleanup(i->second.amx);
+		amx_CoreCleanup(i->second.amx);
+		Aux::cleanup(i->second.amx);
 
-		gLog->log("Mod '%s.amx' unloaded!", name.c_str());
+		publics.erase(i->second.amx);
 
-		if (this->loadAmx(pool[name].amx, pool[name].path) == AMX_ERR_NONE)
+		gLog->log("Mod '%s.amx' unloaded!", name);
+
+		if (this->loadAmx(i->second.amx, i->second.path) == AMX_ERR_NONE)
 			return true;
 
 		return false;
@@ -191,7 +200,11 @@ namespace AmxVHook {
 	}
 
 	cell Pool::exec(AMX * amx, const std::string & funcname, AmxArgs * params) {
-		return execByIndex(amx, Aux::getPublicIndex(amx, funcname), params);
+		auto i = publics[amx].custom.find(funcname);
+		if (i != publics[amx].custom.end())
+			return execByIndex(amx, i->second, params);
+
+		return 0;
 	}
 
 	cell Pool::execByIndex(AMX * amx, const int index, AmxArgs * params) {
@@ -199,7 +212,7 @@ namespace AmxVHook {
 
 		if (index >= 0 && index < Aux::getNumPublics(amx)) {
 			if (params != nullptr) {
-				std::queue<cell> amxAddr;
+				cell amxAddr = -1;
 				while (!params->empty()) {
 					std::variant<cell, std::string> value = std::move(params->top());
 					if (std::holds_alternative<cell>(value)) {
@@ -208,13 +221,14 @@ namespace AmxVHook {
 					else {
 						cell tempAddr;
 						amx_PushString(amx, &tempAddr, NULL, std::get<std::string>(value).data(), 0, 0);
-						amxAddr.push(tempAddr);
+						if (amxAddr < NULL)
+							amxAddr = tempAddr;
 					}
 					params->pop();
 				}
 				handleExecError(amx, amx_Exec(amx, &ret, index));
-				while (!amxAddr.empty())
-					amx_Release(amx, amxAddr.front()), amxAddr.pop();
+				if (amxAddr >= NULL)
+					amx_Release(amx, amxAddr);
 			}
 			else {
 				handleExecError(amx, amx_Exec(amx, &ret, index));
@@ -229,13 +243,17 @@ namespace AmxVHook {
 			this->exec(i.second.amx, funcname, params);
 	}
 
+	void Pool::onModUpdate() {
+		for (const auto& i : pool)
+			execByIndex(i.second.amx, publics[i.second.amx].default.onModUpdate);
+	}
+
 	void Pool::onModInputText(const char * text) {
 		for (const auto& i : pool) {
-			int index;
 			cell ret, amx_addr, *phys_addr;
-			if (amx_FindPublic(i.second.amx, "onModInputText", &index) == AMX_ERR_NONE) {
+			if (publics[i.second.amx].default.onModInputText != -1) {
 				amx_PushString(i.second.amx, &amx_addr, &phys_addr, text, 0, 0);
-				handleExecError(i.second.amx, amx_Exec(i.second.amx, &ret, index));
+				handleExecError(i.second.amx, amx_Exec(i.second.amx, &ret, publics[i.second.amx].default.onModInputText));
 				amx_Release(i.second.amx, amx_addr);
 
 				if (ret == 1)
@@ -246,12 +264,11 @@ namespace AmxVHook {
 
 	void Pool::onModInputCommand(const std::string & cmd, cell params) {
 		for (const auto& i : pool) {
-			int index;
 			cell ret, amx_addr, *phys_addr;
-			if (amx_FindPublic(i.second.amx, "onModInputCommand", &index) == AMX_ERR_NONE) {
+			if (publics[i.second.amx].default.onModInputCommand != -1) {
 				amx_Push(i.second.amx, params);
 				amx_PushString(i.second.amx, &amx_addr, &phys_addr, cmd.c_str(), 0, 0);
-				handleExecError(i.second.amx, amx_Exec(i.second.amx, &ret, index));
+				handleExecError(i.second.amx, amx_Exec(i.second.amx, &ret, publics[i.second.amx].default.onModInputCommand));
 				amx_Release(i.second.amx, amx_addr);
 
 				if (ret == 1)
@@ -260,10 +277,32 @@ namespace AmxVHook {
 		}
 	}
 
+	void Pool::onModInputCanceled() {
+		for (const auto& i : pool)
+			execByIndex(i.second.amx, publics[i.second.amx].default.onModInputCanceled);
+	}
+
+	void Pool::registerPublics(AMX * amx) {
+		const AMX_FUNCSTUBNT * pubs = Aux::getPublics(amx);
+		const int count = Aux::getNumPublics(amx);
+		
+		auto i = publics.insert({ amx, { {-1}, {} } });
+
+		i.first->second.default.onModLoad = Aux::getPublicIndex(amx, "onModLoad");
+		i.first->second.default.onModUnload = Aux::getPublicIndex(amx, "onModUnload");
+		i.first->second.default.onModUpdate = Aux::getPublicIndex(amx, "onModUpdate");
+		i.first->second.default.onModInputText = Aux::getPublicIndex(amx, "onModInputText");
+		i.first->second.default.onModInputCommand = Aux::getPublicIndex(amx, "onModInputCommand");
+		i.first->second.default.onModInputCanceled = Aux::getPublicIndex(amx, "onModInputCanceled");
+
+		for (int j = 0; j < count; j++)
+			i.first->second.custom.insert({ Aux::getPublicName(amx, pubs[j].nameofs), j });
+	}
+
 	void Pool::handleExecError(AMX * amx,  int err) {
 		if (err != AMX_ERR_NONE) {
 			auto i = find(amx);
-#if defined AMXDBG
+		#if defined AMXDBG
 			AMX_DBG amxdbg;
 			FILE *fp = fopen(i->second.path.string().data(), "rb");
 			if (fp) {
@@ -277,15 +316,15 @@ namespace AmxVHook {
 					dbg_FreeInfo(&amxdbg);
 
 					gLog->log("%s.amx: Error #%d \"%s\"", i->first, err, Aux::strError(err));
-					gLog->log("Debug info: 0x%08lX in %s () at %s:%ld", (long)amx->cip, funcname, filename, line);
+					gLog->log("Debug info: 0x%08lX in %s () at %s:%ld", (ucell)amx->cip, funcname, filename, line);
 				}
 				else {
-					gLog->log("%s.amx: Error #%d \"%s\" on address 0x%08lX", i->first, err, Aux::strError(err), (long)amx->cip);
+					gLog->log("%s.amx: Error #%d \"%s\" on address 0x%016lX", i->first, err, Aux::strError(err), (ucell)amx->cip);
 				}
 			}
-#else
-			gLog->log("%s.amx: Error #%d \"%s\" on address 0x%08lX", i->first, err, Aux::strError(err), (long)amx->cip);
-#endif
+		#else
+			gLog->log("%s.amx: Error #5 \"%s\" on address 0x%016lX", i->first, err, Aux::strError(err), (ucell)amx->cip);
+		#endif
 		}
 	}
 };

@@ -2,6 +2,20 @@
 #include "amxvhook.hpp"
 
 namespace AmxVHook {
+	 struct DefaultPublics {
+		int onModLoad;
+		int onModUnload;
+		int onModUpdate;
+		int onModInputText;
+		int onModInputCommand;
+		int onModInputCanceled;
+	};
+
+	struct Publics {
+		DefaultPublics default;
+		std::unordered_map<std::string, int> custom;
+	};
+
 	struct Mod {
 		AMX * amx;
 		Fs::path path;
@@ -11,10 +25,12 @@ namespace AmxVHook {
 	private:
 		ModPool pool;
 		NativeList natives;
+		PublicList publics;
 		Fs::path location;
 
 		cell loadAmx(AMX * amx, Fs::path & path);
 		void handleExecError(AMX * amx, int err);
+		void registerPublics(AMX * amx);
 
 	public:
 		Pool();
@@ -44,7 +60,9 @@ namespace AmxVHook {
 		cell execByIndex(AMX * amx, const int index, AmxArgs * params = nullptr);
 		void execAll(const std::string & funcname, AmxArgs * params = nullptr);
 
+		void onModUpdate();
 		void onModInputText(const char * text);
 		void onModInputCommand(const std::string & cmd, cell params);
+		void onModInputCanceled();
 	};
 };
