@@ -13,15 +13,15 @@ namespace AmxVHook {
 	}
 
 	Log::~Log() {
-#if defined THREADED_LOG
+	#if defined THREADED_LOG
 		threadInstance.reset();
-#else
+	#else
 		ofs.close();
-#endif
+	#endif
 	}
 
 	void Log::init() {
-#if defined THREADED_LOG
+	#if defined THREADED_LOG
 		try {
 			if (Fs::exists(logFile))
 				Fs::remove(logFile);
@@ -31,9 +31,12 @@ namespace AmxVHook {
 		}
 
 		threadInstance = std::make_shared<std::thread>(std::bind(&Log::Thread));
-#else
+	#else
 		ofs.open(logFile, std::ios::trunc);
-#endif
+		ofs
+			<< "// AmxVHook " << AMXVHOOK_VER << " (build " << __DATE__ << ")" << std::endl
+			<< "// (C) MacMailler, 2018" << std::endl;
+	#endif
 	}
 
 	void Log::log(char * format, ...) {
@@ -43,7 +46,7 @@ namespace AmxVHook {
 		std::string data;
 		String::vformat(format, data, args);
 
-#if defined THREADED_LOG
+	#if defined THREADED_LOG
 	try_lock :
 		if (mutex.try_lock()) {
 			queue.push(data);
@@ -53,17 +56,17 @@ namespace AmxVHook {
 			std::this_thread::yield();
 			goto try_lock;
 		}
-#else
+	#else
 		String::vformat(format, data, args);
 		doWrite(logFile, data);
-#endif
+	#endif
 		va_end(args);
 	}
 
 	void Log::doWrite(std::string & path, std::string & data) {
-#if defined THREADED_LOG
+	#if defined THREADED_LOG
 		std::ofstream ofs(path, std::ios::app);
-#endif
+	#endif
 		char timeform[16];
 		struct tm *timeinfo;
 		time_t rawtime;
@@ -105,7 +108,8 @@ namespace AmxVHook {
 	}
 
 	void Log::Thread() {
-		gLog->log("Log thread successfully started!");
+		gLog->log("// AmxVHook %s (%s)", AMXVHOOK_VER, __DATE__);
+		gLog->log("// (C) MacMailler, 2018");
 
 		while (true) {
 			gLog->doWork();

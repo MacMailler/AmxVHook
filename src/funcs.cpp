@@ -14,10 +14,10 @@ namespace AmxVHook {
 			UI::_DRAW_SUBTITLE_TIMED(duration, drawImmediately);
 		}
 
-		void drawText(char *text, float x, float y, float scale, int font, int r, int g, int b, int a) {
+		void drawText(char *text, float x, float y, float scale, int font, Color& color) {
 			UI::SET_TEXT_FONT(font);
 			UI::SET_TEXT_SCALE(scale, scale);
-			UI::SET_TEXT_COLOUR(r, g, b, a);
+			UI::SET_TEXT_COLOUR(color.R, color.G, color.B, color.A);
 			UI::SET_TEXT_WRAP(0.0, 1.0);
 			UI::SET_TEXT_CENTRE(0);
 			UI::SET_TEXT_DROPSHADOW(2, 2, 0, 0, 0);
@@ -27,8 +27,8 @@ namespace AmxVHook {
 			UI::_DRAW_TEXT(x, y);
 		}
 
-		void drawRect(float x, float y, float width, float height, int r, int g, int b, int a) {
-			GRAPHICS::DRAW_RECT((x + (width * 0.5f)), (y + (height * 0.5f)), width, height, r, g, b, a);
+		void drawRect(float x, float y, float width, float height, Color& color) {
+			GRAPHICS::DRAW_RECT((x + (width * 0.5f)), (y + (height * 0.5f)), width, height, color.R, color.G, color.B, color.A);
 		}
 
 		void drawInt(int value, float x, float y) {

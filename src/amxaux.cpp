@@ -207,13 +207,10 @@ namespace AmxVHook {
 			if (amx_GetAddr(amx, param, &addr) != AMX_ERR_NONE)
 				return false;
 
-			double x = vec.x;
-			double y = vec.y;
-			double z = vec.z;
-
-			addr[0] = amx_ftoc(x);
-			addr[1] = amx_ftoc(y);
-			addr[2] = amx_ftoc(z);
+			double t = 0;
+			addr[0] = amx_ftoc((t = vec.x));
+			addr[1] = amx_ftoc((t = vec.y));
+			addr[2] = amx_ftoc((t = vec.z));
 
 			return true;
 		}

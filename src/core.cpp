@@ -56,12 +56,14 @@ namespace AmxVHook {
 				}
 
 				Keyboard::displayOnScreenKeyboardProcess();
-				gPool->execAll("onModUpdate");
+				gPool->onModUpdate();
 
 				gTimer->process();
-				
-				if (versionVisible)
-					Funcs::drawText("AmxVHook 0.1", 0.93500f, 0.97500f, 0.2f, 0, 255, 255, 255, 48);
+
+				if (versionVisible) {
+					static Color color(255, 255, 255, 48);
+					Funcs::drawText("AmxVHook 0.1", 0.93500f, 0.97500f, 0.2f, 0, color);
+				}
 
 				WAIT(0);
 			}

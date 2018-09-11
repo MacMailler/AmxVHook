@@ -18,21 +18,21 @@ namespace AmxVHook {
 		}
 
 		void vformat(const char * format, std::string & out, va_list args) {
-			const size_t maxBufSize = 1024 * 1000;
-			size_t length = vsnprintf(NULL, NULL, format, args);
+			const size_t maxBufSize = 512;
+			char * buffer = (char *)alloca(maxBufSize);
+			vsnprintf(buffer, maxBufSize, format, args);
 
-			char * buffer = (char *)alloca(++length > maxBufSize ? maxBufSize : length);
-			vsnprintf(buffer, length, format, args);
-
-			out.reserve(length);
+			out.reserve(maxBufSize + 1);
 			out.assign(buffer);
 		}
 
 		void format(AMX * amx, const cell * params, cell * f, std::string & out) {
 			const size_t bufMaxLen = 64;
-			char buf[bufMaxLen];
 			cell index = 0, *ptr = nullptr;
-	
+
+			char buf[bufMaxLen];
+			std::string cache;
+
 			while (*f != '\0') {
 				switch (*f) {
 				case '%': {
@@ -56,7 +56,7 @@ namespace AmxVHook {
 
 					case 'c': {
 						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
-							out.push_back(*ptr);
+							out.push_back((char)*ptr);
 						}
 						else {
 							out.append("(null)");
@@ -96,15 +96,15 @@ namespace AmxVHook {
 					break;
 
 					case '.': {
-						std::string fstr("%.");
+						cache.assign("%.");
 						while (*(++f) >= '0' && '9' >= *f)
-							fstr.push_back((char)*f);
+							cache.push_back((char)*f);
 
-						fstr.push_back((char)*f);
+						cache.push_back((char)*f);
 
 						if (*f == 'f') {
 							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
-								sprintf_s(buf, bufMaxLen, fstr.c_str(), amx_ctof(*ptr));
+								sprintf_s(buf, bufMaxLen, cache.c_str(), amx_ctof(*ptr));
 								out.append(buf);
 							}
 							else {
@@ -112,7 +112,7 @@ namespace AmxVHook {
 							}
 						}
 						else {
-							out.append(fstr);
+							out.append(cache);
 						}
 						f++;
 					}
@@ -133,7 +133,7 @@ namespace AmxVHook {
 					case 's': {
 						if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 							while (*ptr != '\0')
-								out.push_back(*(ptr++));
+								out.push_back((char)*(ptr++));
 						}
 						else {
 							out.append("(null)");
@@ -143,20 +143,20 @@ namespace AmxVHook {
 					break;
 
 					case '0': {
-						std::string fstr("%0");
+						cache.assign("%0");
 						while (*(++f) >= '0' && '9' >= *f)
-							fstr.push_back((char)*f);
+							cache.push_back((char)*f);
 
 						switch (*f) {
 						case 'i':
 						case 'd': {
 							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 								#if PAWN_CELL_SIZE == 64
-									fstr.append({ 'l', 'l', (char)*f });
+									cache.append({ 'l', 'l', (char)*f });
 								#else
-									fstr.push_back((char)*f);
+									cache.push_back((char)*f);
 								#endif
-								sprintf_s(buf, bufMaxLen, fstr.c_str(), *ptr);
+								sprintf_s(buf, bufMaxLen, cache.c_str(), *ptr);
 								out.append(buf);
 							}
 							else {
@@ -170,11 +170,11 @@ namespace AmxVHook {
 						case 'X': {
 							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
 								#if PAWN_CELL_SIZE == 64
-									fstr.append({ 'l', 'l', (char)*f });
+									cache.append({ 'l', 'l', (char)*f });
 								#else
-									fstr.push_back((char)*f);
+									cache.push_back((char)*f);
 								#endif
-								sprintf_s(buf, bufMaxLen, fstr.c_str(), *ptr);
+								sprintf_s(buf, bufMaxLen, cache.c_str(), *ptr);
 								out.append(buf);
 							}
 							else {
@@ -186,9 +186,9 @@ namespace AmxVHook {
 
 						case 's':
 						case 'S': {
-							if (fstr.length() > 2) {
+							if (cache.length() > 2) {
 								if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
-									for (int len = std::stoi(&fstr[2]), i = 0; i < len && *ptr != '\0'; i++)
+									for (int len = std::stoi(&cache[2]), i = 0; i < len && *ptr != '\0'; i++)
 										out.push_back((char)*(ptr++));
 								}
 								else {
@@ -196,7 +196,7 @@ namespace AmxVHook {
 								}
 							}
 							else {
-								out.append(fstr);
+								out.append(cache);
 							}
 							f++;
 						}
@@ -205,8 +205,8 @@ namespace AmxVHook {
 						#ifdef FLOATPOINT
 						case 'f': {
 							if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
-								fstr.push_back((char)*f);
-								sprintf_s(buf, bufMaxLen, fstr.c_str(), amx_ctof(*ptr));
+								cache.push_back((char)*f);
+								sprintf_s(buf, bufMaxLen, cache.c_str(), amx_ctof(*ptr));
 								out.append(buf);
 							}
 							else {
@@ -217,15 +217,15 @@ namespace AmxVHook {
 						break;
 
 						case '.': {
-							fstr.push_back((char)*f);
+							cache.push_back((char)*f);
 
 							while (*(++f) >= '0' && '9' >= *f)
-								fstr.push_back((char)*f);
+								cache.push_back((char)*f);
 
 							if (*f == 'f') {
 								if (amx_GetAddr(amx, params[index++], &ptr) == AMX_ERR_NONE) {
-									fstr.push_back((char)*f);
-									sprintf_s(buf, bufMaxLen, fstr.c_str(), amx_ctof(*ptr));
+									cache.push_back((char)*f);
+									sprintf_s(buf, bufMaxLen, cache.c_str(), amx_ctof(*ptr));
 									out.append(buf);
 								}
 								else {
@@ -233,8 +233,8 @@ namespace AmxVHook {
 								}
 							}
 							else {
-								fstr.push_back((char)*f);
-								out.append(fstr);
+								cache.push_back((char)*f);
+								out.append(cache);
 							}
 							f++;
 						}
@@ -242,19 +242,19 @@ namespace AmxVHook {
 						#endif
 
 						default:
-							out.append(fstr);
+							out.append(cache);
 						}
 					}
 					break;
 
 					default:
-						out.push_back(*(f++));
+						out.push_back((char)*(f++));
 					}
 				}
 				break;
 
 				default:
-					out.push_back(*(f++));
+					out.push_back((char)*(f++));
 				}
 			}
 		}

@@ -190,7 +190,7 @@ namespace AmxVHook {
 				checkargs(5);
 
 				Color color(params[5]);
-				Funcs::drawRect(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), color.R, color.G, color.B, color.A);
+				Funcs::drawRect(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), color);
 
 				return 1;
 			}
@@ -204,7 +204,6 @@ namespace AmxVHook {
 					amx_GetAddr(amx, params[4], &rot) != AMX_ERR_NONE ||
 					amx_GetAddr(amx, params[5], &scale) != AMX_ERR_NONE)
 					return 0;
-
 
 				Color color(params[6]);
 
