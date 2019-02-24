@@ -9,7 +9,7 @@ new checkpoint = -1;
 
 public onModInputCommand(cmd[], params) {
 	if (strcmp(cmd, "!test") == 0) {
-		if (params != 3) return 1;
+		if (params != 4) return 1;
 		
 		new p3[32];
 		getCommandParams(3, p3);
@@ -17,7 +17,7 @@ public onModInputCommand(cmd[], params) {
 		format(temp, sizeof temp, false, "%d, %d, %f, %s, %H", params, getCommandParamsInt(1), getCommandParamsFloat(2), p3, getCommandParamsHash(4));
 		showSubtitle(temp);
 	}
-	else if (strcmp(cmd, "!cp") == 0) {
+	else if (strcmp(cmd, "!create_cp") == 0) {
 		if (params != 1) return 1;
 		if (checkpoint != -1) deleteCP(checkpoint);
 		
@@ -33,7 +33,7 @@ public onModInputCommand(cmd[], params) {
 		format(temp, sizeof temp, false, "cpid:%d", checkpoint);
 		showSubtitle(temp, 4000);
 	}
-	else if (strcmp(cmd, "!dcheck") == 0) {
+	else if (strcmp(cmd, "!delete_cp") == 0) {
 		if (checkpoint != -1)
 			deleteCP(checkpoint);
 	}

@@ -14,5 +14,3 @@ enum @Vector2 {
 	Float:@X,
 	Float:@Y
 }
-
-#define fpublic%0(%1) forward%0(%1); public%0(%1)
