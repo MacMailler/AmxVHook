@@ -117,7 +117,7 @@ namespace AmxVHook {
 				}
 				else if (status == 2) {
 					keyboardDisplayed = false;
-					gPool->onModInputCanceled();
+					gPool->onModInputAborted();
 				}
 				else {
 					keyboardDisplayed = false;

@@ -129,7 +129,7 @@ enum eInputGroups {
 
 forward onModInputText(text[]);
 forward onModInputCommand(cmd[], params);
-forward onModInputCanceled();
+forward onModInputAborted();
 
 native isLookInverted();
 native isControlEnabled(group, control);
