@@ -266,14 +266,19 @@ namespace AmxVHook {
 			amx_SetString(dest, data.c_str(), pack, NULL, size);
 		}
 
-		std::string get(AMX * amx, cell param) {
-			char * dest = NULL;
-			amx_StrParam(amx, param, dest);
-			
-			if (dest != NULL)
-				return { dest };
+		std::string get(AMX* amx, cell amx_addr) {
+			int len{};
+			cell* addr{};
 
-			return { "" };
+			if (amx_GetAddr(amx, amx_addr, &addr) == AMX_ERR_NONE && amx_StrLen(addr, &len) == AMX_ERR_NONE && len) {
+				len++;
+
+				std::unique_ptr<char[]> buf{ new char[len]{} };
+				if (buf && amx_GetString(buf.get(), addr, 0, len) == AMX_ERR_NONE)
+					return buf.get();
+			}
+
+			return {};
 		}
 
 		bool is_dec(std::string & data) {
