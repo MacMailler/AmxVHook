@@ -57,7 +57,7 @@ namespace AmxVHook {
 
 				case 'f': {
 					amx_GetAddr(amx, *(params++), &val);
-					nativePush(amx_ctof(*val));
+					nativePush(static_cast<float>(amx_ctof(*val)));
 				}
 				break;
 

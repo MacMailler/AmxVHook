@@ -16,7 +16,7 @@ namespace AmxVHook {
 			clear();
 		}
 
-		uint32_t Pool::add(std::shared_ptr<Timer> & timer) {
+		uint32_t Pool::add(std::shared_ptr<Timer>& timer) {
 			uint32_t id = ident.get();
 
 			pool.insert({ id, std::move(timer) });
@@ -64,7 +64,7 @@ namespace AmxVHook {
 			ident.reset();
 		}
 
-		void Pool::clearByAmx(AMX * amx) {
+		void Pool::clearByAmx(AMX* amx) {
 			for (const auto& i : pool) {
 				if (i.second->amx == amx) {
 					pool.erase(i.first);
@@ -73,7 +73,7 @@ namespace AmxVHook {
 			}
 		}
 
-		bool Pool::setData(uint32_t id, AmxArgs & params) {
+		bool Pool::setData(uint32_t id, AmxArgs& params) {
 			if (!contains(id))
 				return false;
 			
@@ -106,7 +106,7 @@ namespace AmxVHook {
 						pool.erase(i.first);
 						break;
 					
-					case TIMER_CODE_PAUSE :
+					case TIMER_CODE_STOP :
 						i.second->stop = true;
 						break;
 					}

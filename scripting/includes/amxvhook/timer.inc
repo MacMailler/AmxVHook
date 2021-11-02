@@ -5,9 +5,11 @@
 
 #define timer%0(%1) forward%0(%1); public%0(%1)
 
-#define TIMER_CODE_DROP (0)
-#define TIMER_CODE_CONT (1)
-#define TIMER_CODE_PAUSE (2)
+enum {
+	TIMER_CODE_DROP,
+	TIMER_CODE_CONT,
+	TIMER_CODE_STOP
+};
 
 native addTimer(const funcname[], interval, const f[]="", {Float, _}:...);
 native dropTimer(timerid);

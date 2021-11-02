@@ -2,9 +2,11 @@
 #include "amxvhook.hpp"
 #include "id.hpp"
 
-#define TIMER_CODE_DROP 0
-#define TIMER_CODE_CONT 1
-#define TIMER_CODE_PAUSE 2
+enum {
+	TIMER_CODE_DROP,
+	TIMER_CODE_CONT,
+	TIMER_CODE_STOP
+};
 
 namespace AmxVHook {
 	namespace Timer {

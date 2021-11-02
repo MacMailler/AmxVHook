@@ -2,7 +2,7 @@
 
 namespace AmxVHook {
 	namespace Aux {
-		int load(AMX * amx, std::string & path) {
+		int load(AMX* amx, std::string& path) {
 			std::ifstream ifs(path, std::ios::binary);
 
 			if (!ifs.is_open())
@@ -47,7 +47,7 @@ namespace AmxVHook {
 			return err;
 		}
 
-		int cleanup(AMX * amx) {
+		int cleanup(AMX* amx) {
 			if (amx->base != NULL) {
 				amx_Cleanup(amx);
 				vfree(amx->base);
@@ -57,7 +57,7 @@ namespace AmxVHook {
 			return AMX_ERR_NONE;
 		}
 
-		size_t getSize(std::string & path) {
+		size_t getSize(std::string& path) {
 			std::ifstream file(path, std::ios::binary);
 
 			if (!file.is_open())
@@ -110,39 +110,39 @@ namespace AmxVHook {
 			return errstr[err];
 		}
 
-		const AMX_HEADER * getHeader(AMX * amx) {
+		const AMX_HEADER* getHeader(AMX* amx) {
 			return reinterpret_cast<AMX_HEADER *>(amx->base);
 		}
 
-		const AMX_FUNCSTUBNT * getPublics(AMX * amx) {
+		const AMX_FUNCSTUBNT* getPublics(AMX* amx) {
 			return reinterpret_cast<AMX_FUNCSTUBNT*>(getHeader(amx)->publics + amx->base);
 		}
 
-		const AMX_FUNCSTUBNT * getNatives(AMX * amx) {
+		const AMX_FUNCSTUBNT* getNatives(AMX* amx) {
 			return reinterpret_cast<AMX_FUNCSTUBNT *>(getHeader(amx)->natives + amx->base);
 		}
 
-		const int getNumPublics(AMX * amx) {
+		const int getNumPublics(AMX* amx) {
 			const AMX_HEADER *hdr = getHeader(amx);
 			return (hdr->natives - hdr->publics) / hdr->defsize;
 		}
 
-		const int getNumNatives(AMX * amx) {
+		const int getNumNatives(AMX* amx) {
 			const AMX_HEADER *hdr = getHeader(amx);
 			return (hdr->libraries - hdr->natives) / hdr->defsize;
 		}
 
-		const char * getNativeName(AMX * amx, cell offset) {
+		const char * getNativeName(AMX* amx, cell offset) {
 			return reinterpret_cast<char *>(amx->base + offset);
 		}
 
-		const char * getPublicName(AMX * amx, uint32_t offset) {
-			return reinterpret_cast<char*>(amx->base + offset);
+		const char * getPublicName(AMX* amx, uint32_t offset) {
+			return reinterpret_cast<char *>(amx->base + offset);
 		}
 
-		int getPublicIndex(AMX * amx, const std::string & funcname) {
+		int getPublicIndex(AMX* amx, const std::string& funcname) {
 			int n = getNumPublics(amx);
-			const AMX_FUNCSTUBNT *publics = getPublics(amx);
+			const AMX_FUNCSTUBNT* publics = getPublics(amx);
 
 			for (int i = 0; i < n; i++)
 				if (strcmp(funcname.c_str(), getPublicName(amx, publics[i].nameofs)) == 0)
@@ -151,7 +151,18 @@ namespace AmxVHook {
 			return -1;
 		}
 
-		cell * getAddr(AMX * amx, const cell param) {
+		int getPublicAddr(AMX* amx, int index) {
+			const auto hdr = reinterpret_cast<AMX_HEADER *>(amx->base);
+			const auto func = reinterpret_cast<AMX_FUNCSTUB *>(
+				reinterpret_cast<unsigned char *>(hdr)
+				+ static_cast<size_t>(hdr->publics)
+				+ static_cast<size_t>(index) * hdr->defsize
+			);
+
+			return func->address;
+		}
+
+		cell * getAddr(AMX* amx, const cell param) {
 			cell * ptr;
 			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
 				return nullptr;
@@ -159,7 +170,7 @@ namespace AmxVHook {
 			return ptr;
 		}
 
-		bool getArray(AMX * amx, const cell param, cell * dest, int size) {
+		bool getArray(AMX* amx, const cell param, cell* dest, int size) {
 			cell * ptr;
 			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
 				return false;
@@ -169,7 +180,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool getFloatArray(AMX * amx, const cell param, float * dest, int size) {
+		bool getFloatArray(AMX* amx, const cell param, float* dest, int size) {
 			cell * ptr;
 			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
 				return false;
@@ -180,8 +191,8 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool getVector3(AMX * amx, cell param, Vector3 & vec) {
-			cell * addr;
+		bool getVector3(AMX* amx, cell param, Vector3& vec) {
+			cell* addr;
 			if (amx_GetAddr(amx, param, &addr) != AMX_ERR_NONE)
 				return false;
 
@@ -192,7 +203,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool setArray(AMX * amx, const cell param, cell * arr, int size) {
+		bool setArray(AMX* amx, const cell param, cell* arr, int size) {
 			cell * ptr;
 			if (amx_GetAddr(amx, param, &ptr) != AMX_ERR_NONE)
 				return false;
@@ -202,8 +213,8 @@ namespace AmxVHook {
 			return true;
 		}
 
-		bool setVector3(AMX * amx, cell param, Vector3 & vec) {
-			cell * addr;
+		bool setVector3(AMX* amx, cell param, Vector3 & vec) {
+			cell* addr;
 			if (amx_GetAddr(amx, param, &addr) != AMX_ERR_NONE)
 				return false;
 
@@ -215,7 +226,7 @@ namespace AmxVHook {
 			return true;
 		}
 
-		void toStack(AMX * amx, const cell * params, std::string & format, AmxArgs & stk, int index) {
+		void toStack(AMX* amx, const cell* params, std::string& format, AmxArgs& stk, int index) {
 			for (const auto& i : format) {
 				cell * addr;
 
@@ -242,8 +253,8 @@ namespace AmxVHook {
 			}
 		}
 
-		void * valloc(size_t size , bool code) {
-			void *memblk;
+		void* valloc(size_t size, bool code) {
+			void* memblk;
 			#if defined __WIN32__
 				memblk = VirtualAlloc(NULL, size, MEM_RESERVE | MEM_COMMIT, code ? PAGE_EXECUTE_READWRITE : PAGE_READWRITE);
 			#elif LINUX
@@ -256,7 +267,7 @@ namespace AmxVHook {
 			return memblk;
 		}
 
-		void vfree(void * memblk) {
+		void vfree(void* memblk) {
 			#if defined __WIN32__
 				VirtualFree(memblk, 0, MEM_RELEASE);
 			#else

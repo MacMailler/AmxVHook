@@ -48,7 +48,7 @@ native getEntityForwardVector(entity, vector[@Vector3]);
 native getEntityQuaternion(entity, coords[@Vector3], &Float:w);
 native getEntityPos(entity, coords[@Vector3], bool:alive=true);
 native getEntitySpeedVector(entity, vector[@Vector3], bool:relative);
-native getOffsetFromEntityInWorldPos(entity, offset[@Vector3], coords[@Vector3]);
+native getOffsetFromEntityInWorldPos(entity, offset[@Vector3], const coords[@Vector3]);
 
 native setEntityHealth(entity, health);
 native setEntityMaxHealth(entity, health);

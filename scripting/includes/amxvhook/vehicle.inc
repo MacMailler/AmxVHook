@@ -3,7 +3,17 @@
 #endif
 #define __vehicle_inc__
 
-native createVehicle(modelHash, coords[@Vector3], Float:heading);
+enum {
+	VEHICLE_PLATE_BLUE_WHITE = 0,
+	VEHICLE_PLATE_YELLOW_BLACK = 1,
+	VEHICLE_PLATE_YELLOW_BLUE = 2,
+	VEHICLE_PLATE_BLUE_WHITE2 = 3,
+	VEHICLE_PLATE_BLUE_WHITE3 = 4,
+	VEHICLE_PLATE_YANKTON = 5
+};
+
+native createVehicle(modelHash, const coords[@Vector3], Float:heading);
+native createVehicleAsync(modelHash, const coords[@Vector3], Float:heading, const callback[]);
 native deleteVehicle(vehicle);
 
 native isVehicleModel(vehicle, modelHash);
@@ -149,6 +159,7 @@ native getVehicleLastPedInSeat(vehicle, seatIndex);
 native getVehicleLightsState(vehicle, &bool:lightsOn, &bool:highbeamsOn);
 native getVehicleNumberPlates(vehicle);
 native getVehicleNumberPlateText(vehicle, dest[], len = sizeof dest);
+native getVehicleNumberPlateTextIndex(vehicle);
 native getVehicleClass(vehicle);
 native getVehicleClassFromModel(modelHash);
 native getVehicleMod(vehicle, modType);
@@ -181,7 +192,6 @@ native getVehicleNumberColors(vehicle);
 native getVehicleExtraColors(vehicle, &pearlescentColor, &wheelColor);
 native getVehicleDoorLockStatus(vehicle);
 native getVehiclePedUsingDoor(vehicle, doorIndex);
-native getVehicleNumberPlateTextIndex(vehicle);
 native getVehicleAttachedToCargobob(cargobob);
 native getVehicleAttachedToEntity(entity);
 native getVehicleCustomPrimaryColor(vehicle);
